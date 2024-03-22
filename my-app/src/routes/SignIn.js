@@ -3,7 +3,7 @@ import React from 'react'
 const SignIn = () => {
   return (
     <div>
-      SignIn
+      <h2>Sign In</h2>
     </div>
   )
 }
