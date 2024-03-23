@@ -41,3 +41,12 @@
   background: radial-gradient(circle at 3% 25%, rgba(0, 255, 235, 1) 0%, rgba(68, 103, 191, 1) 0%, rgba(0, 43, 114, 1) 0%);
 }; */
 
+
+/*make the links look bolder*/
+.navbar-nav .nav-link{
+  color: #333;
+  margin-right: 10px;
+  font-weight: bold;
+}
+
+
