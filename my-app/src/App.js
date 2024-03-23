@@ -17,8 +17,15 @@ function App() {
                       <div className="navbar-nav">
                           <Link className="nav-link active" to="Home" >Home</Link>
                           <Link className="nav-link" to="About" >About</Link>
-                          <Link className="nav-link" to="SignIn" >SignIn</Link>
-                          <Link className="nav-link" to="Register" >Register</Link>
+                          <div className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Login
+                            </a>
+                            <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><Link className="dropdown-item" to="SignIn" >Sign in for student</Link></li>
+                                <li><Link className="nav-link" to="Register" >Register</Link></li> 
+                            </ul>
+                          </div>
                       </div>
                   </div>
               </div>
