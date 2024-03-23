@@ -23,6 +23,7 @@ function App() {
                             </a>
                             <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><Link className="dropdown-item" to="SignIn" >Sign in for student</Link></li>
+                                <li><Link className="dropdown-item" to="SignIn" >Sign in for Staff</Link></li>
                                 <li><Link className="nav-link" to="Register" >Register</Link></li> 
                             </ul>
                           </div>
