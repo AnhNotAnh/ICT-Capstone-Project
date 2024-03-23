@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/*applying css style for the image*/
+
+.home-container{
+  display: flex;
+  flex-direction: column ;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.centered-content{
+  text-align: center;
+}
+
+.centre-image {
+  width: 200px;
+  height:auto;
+  margin-top: 20px;
+
+}
