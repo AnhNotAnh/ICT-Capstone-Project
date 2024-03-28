@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, About, SignIn, Register, SignInAsStaff } from './routes';
+import { Home, About, SignIn, Register, SignInAsStaff,Student_Home,Staff_Home } from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,6 +17,8 @@ root.render(
                     <Route path="SignIn" element={<SignIn />} />
                     <Route path="SignInAsStaff" element={<SignInAsStaff />} />
                     <Route path="Register" element={<Register />} />
+                    <Route path="Student_Home" element={<Student_Home />} />
+                    <Route path="Staff_Home" element={<Staff_Home />} />
                     <Route path="" element={<Home />} />
                     <Route path="*" element={<Home />} />
                 </Route>

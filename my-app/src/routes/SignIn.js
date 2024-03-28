@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {Link} from 'react-router-dom'
 const SignIn = () => {
   return (
  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
@@ -8,7 +8,9 @@ const SignIn = () => {
         <input type="text" id="username" name="username" style={{ marginBottom: '10px', width: '100%' }} />
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" style={{ marginBottom: '10px', width: '100%' }} />
+        <Link to= "/Student_Home">
         <button type="submit" style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
+        </Link>   
       </form>
     </div>
   )
