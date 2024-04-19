@@ -1,5 +1,5 @@
 import React from 'react'
-import image from '../Images/bkg2.webp';
+import image from '../Images/UniSABackground.jpg';
 import NavbarContext from '../components/NavbarContext';
 import { useContext } from 'react';
 const Home = () => {
