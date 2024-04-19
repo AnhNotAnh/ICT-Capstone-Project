@@ -21,32 +21,17 @@ const CoursePage = () => {
               <tbody>
                 <tr>
                   <td>
-                    <button
-                      className="btn btn-outline-primary"
-                      style={{ paddingLeft: "108px", paddingRight: "108px" }}
-                    >
-                      Upload Scan
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      className="btn btn-outline-primary"
-                      style={{ paddingLeft: "100px", paddingRight: "100px" }}
-                    >
-                      Upload Report
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <button
-                      className="btn btn-outline-primary"
-                      style={{ paddingLeft: "100px", paddingRight: "100px" }}
-                    >
-                      View Summary
-                    </button>
+                    <div class="d-grid gap-2 col-8 mx-auto">
+                      <button class="btn btn-outline-primary" type="button">
+                        Upload Scan
+                      </button>
+                      <button class="btn btn-outline-primary" type="button">
+                        Upload Report
+                      </button>
+                      <button class="btn btn-outline-primary" type="button">
+                        View Summary
+                      </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
