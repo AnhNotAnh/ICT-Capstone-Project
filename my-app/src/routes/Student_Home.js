@@ -7,10 +7,10 @@ const Student_Home = () => {
       <h2>Home Page</h2>
       <p>This page is for students to see their activity</p>
         <button>General Logbook</button>
-        <button>Cardiac Logbook</button>
+        <Link to={"/StudentHome/CoursePage"} ><button>Cardiac Logbook</button></Link>
         <button>Vascular Logbook</button>
         <Link to="/Supervisor_Details">
-        <button style={{ position: 'absolute', top: '10px', right: '10px' }}>Supervisor Details</button>
+          <button style={{ position: 'absolute', top: '10px', right: '10px' }}>Supervisor Details</button>
         </Link>
       
     </div>
