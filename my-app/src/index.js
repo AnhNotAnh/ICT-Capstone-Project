@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, About, SignIn, Register, SignInAsStaff,Student_Home,Staff_Home, Supervisor_Details, CoursePage } from './routes';
+import { Home, About, SignIn, Register, SignInAsStaff,Student_Home,Staff_Home, Supervisor_Details, CoursePage, Logbook } from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -19,6 +19,7 @@ root.render(
                     <Route path="Register" element={<Register />} />
                     <Route path="Student_Home" element={<Student_Home />} />
                     <Route path="StudentHome/CoursePage" element={<CoursePage />} />
+                    <Route path="Logbook" element={<Logbook />} /> 
                     <Route path="Staff_Home" element={<Staff_Home />} />
                     <Route path="Supervisor_Details" element={<Supervisor_Details />} />
                     <Route path="" element={<Home />} />

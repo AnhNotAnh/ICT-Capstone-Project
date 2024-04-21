@@ -22,9 +22,10 @@ const CoursePage = () => {
                 <tr>
                   <td>
                     <div class="d-grid gap-2 col-8 mx-auto">
-                      <button class="btn btn-outline-primary" type="button">
-                        Upload Scan
-                      </button>
+                      <Link
+                        to="/Logbook"
+                        className="btn btn-outline-primary"
+                      >Manage Logbook</Link>
                       <button class="btn btn-outline-primary" type="button">
                         Upload Report
                       </button>
