@@ -21,15 +21,15 @@ const CoursePage = () => {
               <tbody>
                 <tr>
                   <td>
-                    <div class="d-grid gap-2 col-8 mx-auto">
+                    <div className="d-grid gap-2 col-8 mx-auto">
                       <Link
                         to="/Logbook"
                         className="btn btn-outline-primary"
                       >Manage Logbook</Link>
-                      <button class="btn btn-outline-primary" type="button">
+                      <button className="btn btn-outline-primary" type="button">
                         Upload Report
                       </button>
-                      <button class="btn btn-outline-primary" type="button">
+                      <button className="btn btn-outline-primary" type="button">
                         View Summary
                       </button>
                     </div>

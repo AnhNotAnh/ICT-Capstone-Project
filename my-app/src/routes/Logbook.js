@@ -2,17 +2,26 @@ import React, {useState} from 'react';
 
 function Logbook() {
     {/* Consider the path to have student id so that supervisor and student id access */ }
-    const [supervisionStatus, setSupervisionStatus] = useState("");
+    const [supervisionStatus, setSupervisionStatus] = useState("full");
     const [date, setDate] = useState("");
     const [pathology, setPathology] = useState("");
+    const [logbook, setLogbook] = useState([]);
 
     function handleSubmit(e) {
         e.preventDefault();
         console.log("Date: ", date);
         console.log("Supervision status: ", supervisionStatus);
         console.log("Pathology: ", pathology);
-    }
+        setLogbook(currentLogbook => {
+            return [...currentLogbook,
+            { id: crypto.randomUUID() , number:currentLogbook.length + 1 , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
+            ];
+        })
+        setDate("");
+        setSupervisionStatus("full");
+        setPathology("");
 
+    };
 
     return (
     <div className="container">
@@ -38,16 +47,17 @@ function Logbook() {
                     Supervision status
                     </label>
                     <select
-                    defaultValue={supervisionStatus}
+                    value={supervisionStatus}
                     className="form-select"
-                    onSelect={(e) => setSupervisionStatus(e.target.value)}
+                    onChange={e => setSupervisionStatus(e.target.value)}
                     id="supervisionStatus"
+                    required
                     >
-                    <option value="Full supervision">
-                        Select status (default status is full supervision)
+                    <option value="">
+                        Please select status
                     </option>
-                    <option value="Full supervision">Full supervision</option>
-                    <option value="Partial supervision">Partial supervision</option>
+                    <option value="Full">Full supervision</option>
+                    <option value="Partial">Partial supervision</option>
                     </select>
                 </div>
                 <div className="col-3">
@@ -90,20 +100,17 @@ function Logbook() {
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <th scope="row">1</th>
-                    <td>15/04/2024</td>
-                    <td></td>
-                    <td>Yes</td>
-                    <td>ABC</td>
-                </tr>
-                <tr>
-                    <th scope="row">2</th>
-                    <td>16/04/2024</td>
-                    <td>Yes</td>
-                    <td></td>
-                    <td>ABC</td>
-                </tr>
+                {logbook.map(scan => {
+                    return(
+                    <tr key={scan.id}>
+                      <th scope="row">{scan.number}</th>
+                      <td>{scan.date}</td>
+                      <td>{scan.supervisionStatus === "Full" && "Yes"}</td>
+                      <td>{scan.supervisionStatus === "Partial" && "Yes"}</td>
+                      <td>{scan.pathology}</td>
+                    </tr>
+                    );
+                })}
                 </tbody>
             </table>
         </div>
