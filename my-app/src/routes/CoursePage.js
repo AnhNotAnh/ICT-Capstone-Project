@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { useLocation, Link } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const CoursePage = () => {
-  const location = useLocation();
-  return (
+    return (
     <div className="container text-center">
       <h2 style={{ padding: "30px" }}>Cardiac Course Page</h2>
       <div className="row justify-content-center">
@@ -22,12 +21,14 @@ const CoursePage = () => {
                 <tr>
                   <td>
                     <div className="d-grid gap-2 col-8 mx-auto">
-                      <Link
-                        to="/Logbook"
-                        className="btn btn-outline-primary"
-                      >Manage Logbook</Link>
+                      <Link to="/Logbook" className="btn btn-outline-primary">
+                        Manage Logbook
+                      </Link>
                       <button className="btn btn-outline-primary" type="button">
                         Upload Report
+                      </button>
+                      <button className="btn btn-outline-primary" type="button">
+                        Upload Manual Logbook
                       </button>
                       <button className="btn btn-outline-primary" type="button">
                         View Summary
