@@ -5,7 +5,7 @@ const CoursePage = () => {
   const location = useLocation();
   return (
     <div className="container text-center">
-      <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
+      <h2 style={{ padding: "30px" }}>Cardiac Course Page</h2>
       <div className="row justify-content-center">
         {/* <div className="col-md-4 align-self-center"> */}
         <div className="col-md-4">
