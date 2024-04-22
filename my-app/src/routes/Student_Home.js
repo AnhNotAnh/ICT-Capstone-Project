@@ -5,7 +5,7 @@ const Student_Home = () => {
   return (
     <div>
       <h2>Home Page</h2>
-      <p>This page is for students to see their activity</p>
+      <p>Please select your logbook</p>
         <button>General Logbook</button>
         <Link to={"/StudentHome/CoursePage"} ><button>Cardiac Logbook</button></Link>
         <button>Vascular Logbook</button>
