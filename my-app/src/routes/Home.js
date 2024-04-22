@@ -7,17 +7,17 @@ const Home = () => {
     return (
         <div className="home-container">
           <div className="centered-content">
-            <h2 style={{ position: 'relative', zIndex: 1,color:'white', fontWeight:'bold', fontFamily:'helvetica', fontSize: '600%' ,top:'0%' }}>Medical Sonography<br/> Logbook</h2>
+            <h2 style={{ position: 'relative', zIndex: 1,color:'white', fontWeight:'bold', fontFamily:'helvetica', fontSize: '300%' ,top:'-40%' }}>Medical Sonography<br/> Logbook</h2>
             <img
               src={image}
               alt=""
               className="center-image"
               style={{
                 position: 'absolute',
-                top: `${navbarHeight}px`, // Set top margin dynamically
+                top: `${navbarHeight}px`, 
                 left: '50%',
                 transform: 'translateX(-50%)',
-                maxWidth: '70%',
+                maxWidth: '49%',
                 height: 'auto',
                 zIndex: 0
               }}
