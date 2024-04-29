@@ -225,18 +225,19 @@ function Logbook() {
                 </tr>
                 </thead>
                 <tbody>
-                {logbook1.map((scan) => {
+                {logbook.map((scan) => {
                     const date = new Date(scan.date);
                     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                     return (
-                      <tr key={scan.logbookID}>
-                        {/* <th scope="row">{scan.number}</th> */}
-                        <th scope="row">{scan.logbookID}</th>
+                    <tr key={scan.id}>
+                        {/* <tr key={scan.logbookID}> */}
+                        <th scope="row">{scan.number}</th>
+                        {/* <th scope="row">{scan.logbookID}</th> */}
                         <td>{formattedDate}</td>
                         <td>{scan.supervisionStatus === "Full" && "Yes"}</td>
                         <td>{scan.supervisionStatus === "Partial" && "Yes"}</td>
                         <td>{scan.pathology}</td>
-                      </tr>
+                    </tr>
                     );
                 })}
                 </tbody>
