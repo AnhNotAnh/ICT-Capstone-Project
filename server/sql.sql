@@ -42,6 +42,9 @@
 --     PRIMARY KEY(logbookID ASC)
 -- );
 
-INSERT INTO LOGBOOK (studentID, date, supervisionStatus, pathology) VALUES (1, '2021-01-01', 'Supervised', 'Pathology 1');
+-- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (1, 1, '2021-01-01', 'Full', 'Pathology 1');
+-- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (2, 1, '2021-02-01', 'Partial', 'Pathology 2');
+-- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (3, 2, '2021-02-01', 'Partial', 'Pathology 2');
+-- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (4, 1, '2021-02-01', 'Partial', 'Pathology 2');
 SELECT * FROM LOGBOOK;
 -- DROP TABLE LOGBOOK;

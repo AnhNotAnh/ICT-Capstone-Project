@@ -1,11 +1,34 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 function Logbook() {
+
     {/* Consider the path to have student id so that supervisor and student id access */ }
     const [supervisionStatus, setSupervisionStatus] = useState("full");
     const [date, setDate] = useState("");
     const [pathology, setPathology] = useState("");
     const [logbook, setLogbook] = useState([]);
+    
+    {/* Testing */ }
+    const [studentID, setStudentID] = useState(1);
+    const [logbook1, setLogbook1] = useState([]);
+    useEffect(() => {
+      fetch(`http://localhost:8081/Logbook/${studentID}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `Failed to fetch student logbook for student ID: ${studentID}`
+            );
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log(data);
+          setLogbook1(data);
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }, [studentID]);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -202,17 +225,18 @@ function Logbook() {
                 </tr>
                 </thead>
                 <tbody>
-                {logbook.map((scan) => {
+                {logbook1.map((scan) => {
                     const date = new Date(scan.date);
                     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                     return (
-                    <tr key={scan.id}>
-                        <th scope="row">{scan.number}</th>
+                      <tr key={scan.logbookID}>
+                        {/* <th scope="row">{scan.number}</th> */}
+                        <th scope="row">{scan.logbookID}</th>
                         <td>{formattedDate}</td>
                         <td>{scan.supervisionStatus === "Full" && "Yes"}</td>
                         <td>{scan.supervisionStatus === "Partial" && "Yes"}</td>
                         <td>{scan.pathology}</td>
-                    </tr>
+                      </tr>
                     );
                 })}
                 </tbody>
