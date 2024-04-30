@@ -27,6 +27,23 @@ app.get('/Logbook/:studentID', (req, res) => {
 
 const PORT = process.env.PORT ?? 8081; 
 
+
+//for testing login.
+app.post('/validatePassword',(req,res) => {
+    const {username,password} = req.body
+
+    db.all(`select * from ACCOUNT where username = '${username}'and password ='${password}'`,(err , rows)=>{
+         if (err){
+            throw err;
+         }   
+         if(rows.length > 0){
+            res.send({validation: true})
+         }else{
+            res.send({validation: false})
+         }
+    })
+})
+
 app.listen(PORT, () => {
-  console.log("Server running on port 8081");
+  console.log("Server running on port 8081,listening");
 });

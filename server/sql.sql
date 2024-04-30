@@ -46,5 +46,11 @@
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (2, 1, '2021-02-01', 'Partial', 'Pathology 2');
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (3, 2, '2021-02-01', 'Partial', 'Pathology 2');
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (4, 1, '2021-02-01', 'Partial', 'Pathology 2');
-SELECT * FROM LOGBOOK;
+--SELECT * FROM LOGBOOK;
 -- DROP TABLE LOGBOOK;
+
+
+--INSERT INTO ACCOUNT ( username, password, role)
+--VALUES ( 'TESTUSER', 'TESTPASSWORD', 'STUDENT');
+
+SELECT * FROM ACCOUNT;
