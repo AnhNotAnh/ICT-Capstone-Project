@@ -7,43 +7,92 @@ function Logbook() {
     const [date, setDate] = useState("");
     const [pathology, setPathology] = useState("");
     const [logbook, setLogbook] = useState([]);
+    const [scanNumber, setScanNumber] = useState(1);
+    const [nextLogbookID, setNextLogbookID] = useState(0);
     
-    {/* Testing */ }
+    {/* Testing, change studentID = useParams() later*/ }
     const [studentID, setStudentID] = useState(1);
     const [logbook1, setLogbook1] = useState([]);
     useEffect(() => {
-      fetch(`http://localhost:8081/Logbook/${studentID}`)
+    fetch(`http://localhost:8081/Logbook`)
         .then((response) => {
-          if (!response.ok) {
+        if (!response.ok) {
             throw new Error(
-              `Failed to fetch student logbook for student ID: ${studentID}`
+            `Failed to fetch logbook`
             );
-          }
-          return response.json();
+        }
+        return response.json();
         })
         .then((data) => {
-          console.log(data);
-          setLogbook1(data);
+        console.log(data);
+        setNextLogbookID(data.length + 1);
         })
         .catch((err) => {
-          console.error(err.message);
+        console.error(err.message);
+        });
+    }, []);
+
+    useEffect(() => {
+    fetch(`http://localhost:8081/Logbook/${studentID}`)
+        .then((response) => {
+        if (!response.ok) {
+            throw new Error(
+            `Failed to fetch student logbook for student ID: ${studentID}`
+            );
+        }
+        return response.json();
+        })
+        .then((data) => {
+        console.log(data);
+        setLogbook1(data);
+        setScanNumber(data.length + 1);
+        })
+        .catch((err) => {
+        console.error(err.message);
         });
     }, [studentID]);
 
-    function handleSubmit(e) {
-        e.preventDefault();
-        console.log("Date: ", date);
-        console.log("Supervision status: ", supervisionStatus);
-        console.log("Pathology: ", pathology);
-        setLogbook(currentLogbook => {
-            return [...currentLogbook,
-            { id: crypto.randomUUID() , number:currentLogbook.length + 1 , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
-            ];
-        })
-        setDate("");
-        setSupervisionStatus("full");
-        setPathology("");
+    // function handleSubmit(e) {
+    //     e.preventDefault();
+    //     console.log("Date: ", date);
+    //     console.log("Supervision status: ", supervisionStatus);
+    //     console.log("Pathology: ", pathology);
+    //     setLogbook(currentLogbook => {
+    //         return [...currentLogbook,
+    //         { id: crypto.randomUUID() , number:currentLogbook.length + 1 , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
+    //         ];
+    //     })
+    //     setDate("");
+    //     setSupervisionStatus("full");
+    //     setPathology("");
+    // };
 
+    const handleSubmit = async (event) => {
+    event.preventDefault(); 
+    const logbookData = {
+    logbookID: nextLogbookID,
+    studentID: studentID,
+    date: date,
+    supervisionStatus: supervisionStatus,
+    pathology: pathology,
+    };
+    console.log(logbookData);
+    try {
+        const response = await fetch(`http://localhost:8081/Logbook/studentID`, {
+        method: "POST",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+            body: JSON.stringify(logbookData),
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to create account`);
+        }
+        const responseBody = await response.json();
+    } catch (error) {
+        console.error(error);
+    }
     };
 
     return (
@@ -225,14 +274,14 @@ function Logbook() {
                 </tr>
                 </thead>
                 <tbody>
-                {logbook.map((scan) => {
+                {logbook1.map((scan) => {
                     const date = new Date(scan.date);
                     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                     return (
-                    <tr key={scan.id}>
-                        {/* <tr key={scan.logbookID}> */}
-                        <th scope="row">{scan.number}</th>
-                        {/* <th scope="row">{scan.logbookID}</th> */}
+                    // <tr key={scan.id}>
+                    <tr key={scan.logbookID}>
+                        {/* <th scope="row">{scan.number}</th> */}
+                        <th scope="row">{scan.logbookID}</th>
                         <td>{formattedDate}</td>
                         <td>{scan.supervisionStatus === "Full" && "Yes"}</td>
                         <td>{scan.supervisionStatus === "Partial" && "Yes"}</td>
