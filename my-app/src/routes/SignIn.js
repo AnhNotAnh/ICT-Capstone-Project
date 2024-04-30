@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
+//USERNAME SIGN IN : TESTUSER
+//PASSWORD : TESTPASSWORD
+
+
 const SignIn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
