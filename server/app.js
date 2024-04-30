@@ -14,6 +14,17 @@ app.use(express.json());
 
 
 //for testing purposes
+app.get('/Logbook', (req, res) => {
+    const sql = "SELECT * FROM LOGBOOK"
+    db.all(sql ,(err, results) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            res.json(results);
+        }
+    })
+});
+
 app.get('/Logbook/:studentID', (req, res) => {
     const sql = "SELECT * FROM LOGBOOK WHERE studentID = ?"
     db.all(sql, [req.params.studentID] ,(err, results) => {
@@ -23,6 +34,17 @@ app.get('/Logbook/:studentID', (req, res) => {
             res.json(results);
         }
     })
+});
+
+app.post('/Logbook/studentID/', (req, res) => {
+    const sql = "INSERT INTO LOGBOOK (logbookID, studentID, date, supervisionStatus, pathology) VALUES (?, ?, ?, ?, ?)";
+    db.run(sql, [req.body.logbookID, req.body.studentID, req.body.date, req.body.supervisionStatus, req.body.pathology], (err) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            res.json({message: "success"});
+        }
+    });
 });
 
 const PORT = process.env.PORT ?? 8081; 

@@ -45,6 +45,7 @@
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (1, 1, '2021-01-01', 'Full', 'Pathology 1');
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (2, 1, '2021-02-01', 'Partial', 'Pathology 2');
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (3, 2, '2021-02-01', 'Partial', 'Pathology 2');
+<<<<<<< HEAD
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (4, 1, '2021-02-01', 'Partial', 'Pathology 2');
 --SELECT * FROM LOGBOOK;
 -- DROP TABLE LOGBOOK;
@@ -54,3 +55,7 @@
 --VALUES ( 'TESTUSER', 'TESTPASSWORD', 'STUDENT');
 
 SELECT * FROM ACCOUNT;
+=======
+SELECT * FROM LOGBOOK;
+-- DROP TABLE LOGBOOK;
+>>>>>>> 12b56a3d03bd19a7369c4cb33d27065398870270
