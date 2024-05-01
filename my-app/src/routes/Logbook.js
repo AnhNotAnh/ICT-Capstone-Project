@@ -26,7 +26,6 @@ function Logbook() {
         .then((data) => {
         console.log(data);
         setNextLogbookID(data.length + 1);
-        console.log(nextLogbookID);
         })
         .catch((err) => {
         console.error(err.message);
@@ -291,19 +290,19 @@ function Logbook() {
                 </tr>
                 </thead>
                 <tbody>
-                {logbook.map((scan) => {
+                {logbook.map((scan, index) => {
                     const date = new Date(scan.date);
                     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                     return (
-                    // <tr key={scan.id}>
-                    <tr key={scan.logbookID}>
+                      // <tr key={scan.id}>
+                      <tr key={scan.logbookID}>
                         {/* <th scope="row">{scan.number}</th> */}
-                        <th scope="row">{scan.logbookID}</th>
+                        <th scope="row">{index + 1}</th>
                         <td>{formattedDate}</td>
                         <td>{scan.supervisionStatus === "Full" && "Yes"}</td>
                         <td>{scan.supervisionStatus === "Partial" && "Yes"}</td>
                         <td>{scan.pathology}</td>
-                    </tr>
+                      </tr>
                     );
                 })}
                 </tbody>
