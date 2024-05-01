@@ -26,7 +26,7 @@ app.get('/Logbook', (req, res) => {
 });
 
 app.get('/Logbook/:studentID', (req, res) => {
-    const sql = "SELECT * FROM LOGBOOK WHERE studentID = ?"
+    const sql = "SELECT * FROM LOGBOOK WHERE studentID = ? ORDER BY date"
     db.all(sql, [req.params.studentID] ,(err, results) => {
         if (err) {
             console.error(err.message);
@@ -47,9 +47,6 @@ app.post('/Logbook/studentID/', (req, res) => {
     });
 });
 
-const PORT = process.env.PORT ?? 8081; 
-
-
 //for testing login.
 app.post('/validatePassword',(req,res) => {
     const {username,password} = req.body
@@ -66,6 +63,8 @@ app.post('/validatePassword',(req,res) => {
     })
 })
 
+
+const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
   console.log("Server running on port 8081,listening");
 });

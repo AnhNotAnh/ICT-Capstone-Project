@@ -26,6 +26,7 @@ function Logbook() {
         .then((data) => {
         console.log(data);
         setNextLogbookID(data.length + 1);
+        console.log(nextLogbookID);
         })
         .catch((err) => {
         console.error(err.message);
@@ -45,12 +46,17 @@ function Logbook() {
         .then((data) => {
         console.log(data);
         setLogbook1(data);
-        setScanNumber(data.length + 1);
+        setScanNumber(data.length);
         })
         .catch((err) => {
         console.error(err.message);
         });
     }, [studentID]);
+
+    useEffect(() => {
+    const sortedData = [...logbook1].sort((a, b) => new Date(a.date) - new Date(b.date));
+    setLogbook(sortedData);
+}, [logbook1]);
 
     // function handleSubmit(e) {
     //     e.preventDefault();
@@ -67,8 +73,8 @@ function Logbook() {
     //     setPathology("");
     // };
 
-    const handleSubmit = async (event) => {
-    event.preventDefault(); 
+    const handleSubmit = async (event) => { 
+    event.preventDefault();
     const logbookData = {
     logbookID: nextLogbookID,
     studentID: studentID,
@@ -90,6 +96,16 @@ function Logbook() {
             throw new Error(`Failed to create account`);
         }
         const responseBody = await response.json();
+        setLogbook1(currentLogbook => {
+            return [...currentLogbook,
+            {logbookID: logbookData.logbookID, studentID : studentID , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
+            ];
+        })
+        setDate("");
+        setSupervisionStatus("full");
+        setPathology("");
+        setNextLogbookID(nextLogbookID + 1);
+        setScanNumber(scanNumber + 1);
     } catch (error) {
         console.error(error);
     }
@@ -97,7 +113,8 @@ function Logbook() {
 
     return (
     <div className="container">
-        <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
+            <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
+            <p>No of Scan: {scanNumber}</p>
         <form onSubmit={handleSubmit} className="new-scan-form">
             <div
                 className="row justify-content-center"
@@ -274,7 +291,7 @@ function Logbook() {
                 </tr>
                 </thead>
                 <tbody>
-                {logbook1.map((scan) => {
+                {logbook.map((scan) => {
                     const date = new Date(scan.date);
                     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                     return (
