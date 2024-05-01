@@ -94,7 +94,6 @@ function Logbook() {
         if (!response.ok) {
             throw new Error(`Failed to create account`);
         }
-        const responseBody = await response.json();
         setLogbook1(currentLogbook => {
             return [...currentLogbook,
             {logbookID: logbookData.logbookID, studentID : studentID , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
@@ -105,6 +104,7 @@ function Logbook() {
         setPathology("");
         setNextLogbookID(nextLogbookID + 1);
         setScanNumber(scanNumber + 1);
+        return await response.json();
     } catch (error) {
         console.error(error);
     }
