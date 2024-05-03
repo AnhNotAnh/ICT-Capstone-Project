@@ -1,9 +1,10 @@
+ -- DROP TABLE STUDENT;
 -- CREATE TABLE STUDENT (
 --     studentID INT PRIMARY KEY,
 --     name VARCHAR(255) NOT NULL,
 --     email VARCHAR(255) NOT NULL,
 --     accountID INT NOT NULL,
---     phoneNumber INT NOT NULL,
+--     phoneNumber VARCHAR(255) NOT NULL,
 --     FOREIGN KEY (accountID) REFERENCES ACCOUNT(accountID));
 
 -- CREATE TABLE STAFF
@@ -56,8 +57,9 @@ SELECT * FROM LOGBOOK;
 
 -- INSERT INTO ACCOUNT ( username, password, role)
 -- VALUES ( 'staff@unisa.edu.au', 'staff', 'STAFF');
-SELECT * FROM ACCOUNT;
 
 -- INSERT INTO ACCOUNT ( username, password, role)
 -- VALUES ( 'admin@unisa.edu.au', 'admin', 'ADMIN');
+
+SELECT * FROM ACCOUNT;
 
