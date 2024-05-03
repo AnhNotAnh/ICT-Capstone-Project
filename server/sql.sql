@@ -58,3 +58,8 @@ SELECT * FROM ACCOUNT;
 --VALUES ( 'staff@unisa.edu.au', 'staff', 'STAFF');
 SELECT * FROM ACCOUNT;
 
+INSERT INTO ACCOUNT ( username, password, role)
+VALUES ( 'admin@unisa.edu.au', 'admin', 'ADMIN');
+SELECT * FROM ACCOUNT;
+
+
