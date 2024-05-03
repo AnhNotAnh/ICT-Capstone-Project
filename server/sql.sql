@@ -23,12 +23,14 @@
 --     PRIMARY KEY (studentID, staffID)
 -- );
 
+-- DROP TABLE ACCOUNT;
 -- CREATE TABLE ACCOUNT 
 -- (
---     accountID INT PRIMARY KEY,
+--     accountID INTEGER,
 --     username VARCHAR(255) NOT NULL,
 --     password VARCHAR(255) NOT NULL,
---     role VARCHAR(255) NOT NULL
+--     role VARCHAR(255) NOT NULL,
+--     PRIMARY KEY(accountID ASC)
 -- );
 
 -- CREATE TABLE LOGBOOK
@@ -46,15 +48,13 @@
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (2, 1, '2021-02-01', 'Partial', 'Pathology 2');
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (3, 2, '2021-02-01', 'Partial', 'Pathology 2');
 SELECT * FROM LOGBOOK;
--- DROP TABLE LOGBOOK;
+DROP TABLE LOGBOOK;
 
 
---INSERT INTO ACCOUNT ( username, password, role)
---VALUES ( 'TESTUSER', 'TESTPASSWORD', 'STUDENT');
-SELECT * FROM ACCOUNT;
+-- INSERT INTO ACCOUNT ( username, password, role)
+-- VALUES ( 'TESTUSER', 'TESTPASSWORD', 'STUDENT');
 
-
---INSERT INTO ACCOUNT ( username, password, role)
---VALUES ( 'staff@unisa.edu.au', 'staff', 'STAFF');
+-- INSERT INTO ACCOUNT ( username, password, role)
+-- VALUES ( 'staff@unisa.edu.au', 'staff', 'STAFF');
 SELECT * FROM ACCOUNT;
 
