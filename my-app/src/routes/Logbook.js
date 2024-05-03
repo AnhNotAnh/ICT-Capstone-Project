@@ -57,21 +57,6 @@ function Logbook() {
     setLogbook(sortedData);
 }, [logbook1]);
 
-    // function handleSubmit(e) {
-    //     e.preventDefault();
-    //     console.log("Date: ", date);
-    //     console.log("Supervision status: ", supervisionStatus);
-    //     console.log("Pathology: ", pathology);
-    //     setLogbook(currentLogbook => {
-    //         return [...currentLogbook,
-    //         { id: crypto.randomUUID() , number:currentLogbook.length + 1 , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
-    //         ];
-    //     })
-    //     setDate("");
-    //     setSupervisionStatus("full");
-    //     setPathology("");
-    // };
-
     const handleSubmit = async (event) => { 
     event.preventDefault();
     const logbookData = {

@@ -36,7 +36,7 @@ app.get('/Logbook/:studentID', (req, res) => {
     })
 });
 
-app.post('/Logbook/studentID/', (req, res) => {
+app.post('/Logbook/studentID', (req, res) => {
     const sql = "INSERT INTO LOGBOOK (logbookID, studentID, date, supervisionStatus, pathology) VALUES (?, ?, ?, ?, ?)";
     db.run(sql, [req.body.logbookID, req.body.studentID, req.body.date, req.body.supervisionStatus, req.body.pathology], (err) => {
         if (err) {
