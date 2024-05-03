@@ -42,7 +42,7 @@ app.post('/Logbook/studentID', (req, res) => {
         if (err) {
             console.error(err.message);
         } else {
-            res.json({message: "success"});
+            res.json({ message: "success" });
         }
     });
 });
@@ -63,8 +63,39 @@ app.post('/validatePassword',(req,res) => {
     })
 })
 
+//for registration of student
+app.post('/registerStudent', (req, res) => {
+    const insertAcc = "INSERT INTO ACCOUNT (username, password, role) VALUES (?, ?, ?)";
+    db.run(insertAcc, [req.body.username, req.body.password, req.body.role], (err) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            const getAccID = "SELECT accountID FROM ACCOUNT WHERE username = ? and password = ?";
+            db.all(getAccID, [req.body.username, req.body.password], (err, results) => {
+            if (err) {
+                console.error(err.message);
+            } else {
+                    if (results.length > 0) {
+                        const accountID = results[0].accountID;
+                        // Now can use accountID to insert data into your student table
+                        const sql = "INSERT INTO STUDENT (studentID, name, email, accountID, phoneNumber) VALUES (?, ?, ?, ?, ?)";
+                        db.run(sql, [req.body.studentID, req.body.name, req.body.email, accountID ,req.body.phoneNumber], (err) => {
+                            if (err) {
+                                console.error(err.message);
+                            } else {
+                                res.json({ message: "Student registration success" });
+                            }
+                        });  
+                    } else {
+                    res.json({ message: "No account found with the provided username and password" });
+                    }
+                }
+            });
+                }
+            });       
+});
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
-  console.log("Server running on port 8081,listening");
+    console.log("Server running on port 8081,listening");
 });
