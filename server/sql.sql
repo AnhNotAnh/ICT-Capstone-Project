@@ -54,3 +54,7 @@ SELECT * FROM LOGBOOK;
 SELECT * FROM ACCOUNT;
 
 
+--INSERT INTO ACCOUNT ( username, password, role)
+--VALUES ( 'staff@unisa.edu.au', 'staff', 'STAFF');
+SELECT * FROM ACCOUNT;
+
