@@ -48,7 +48,7 @@
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (2, 1, '2021-02-01', 'Partial', 'Pathology 2');
 -- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (3, 2, '2021-02-01', 'Partial', 'Pathology 2');
 SELECT * FROM LOGBOOK;
-DROP TABLE LOGBOOK;
+-- DROP TABLE LOGBOOK;
 
 
 -- INSERT INTO ACCOUNT ( username, password, role)
@@ -60,6 +60,4 @@ SELECT * FROM ACCOUNT;
 
 INSERT INTO ACCOUNT ( username, password, role)
 VALUES ( 'admin@unisa.edu.au', 'admin', 'ADMIN');
-SELECT * FROM ACCOUNT;
-
 
