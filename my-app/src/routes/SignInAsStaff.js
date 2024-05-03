@@ -1,7 +1,37 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {Link} from 'react-router-dom'
+import axios from 'axios'
+
 
 const SignInAsStaff = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [Login, setLogin] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!username || !password) {
+      setError('Please enter username and password');
+      return;
+    }
+
+    try {
+      const response = await axios.post('http://localhost:8081/validatePassword', { username, password });
+
+      if (response.data.validation) {
+        setLogin(true);
+        console.log('Login successful');
+      } else {
+        setError('Invalid username or password');
+      }
+    } catch (error) {
+      console.error('Error logging in:', error);
+      setError('An error occurred while logging in');
+    }
+  };
+
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
     <h2>Staff Login Page</h2>
@@ -15,6 +45,7 @@ const SignInAsStaff = () => {
       </form>
       </div>
   )
-}
 
-export default SignInAsStaff
+};
+
+export default SignInAsStaff;
