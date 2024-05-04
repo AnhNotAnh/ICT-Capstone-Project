@@ -20,10 +20,10 @@ const handleSubmit = async (e) => {
     try {
         const response = await axios.post('http://localhost:8081/validateStaff', { username, password });
 
-        if (response.data.validation && response.data.role === 'STAFF') {
+        if (response.data.validation && (response.data.role === 'STAFF' || response.data.role ==='ADMIN' )) {
             setLogin(true);
             console.log('Login successful');
-            navigate('/Staff_Home'); // Navigate to Staff Home page
+            navigate('/Staff_Home'); // If the creds are accurate it should lead to staff page 
         } else {
             setError('Access denied');
         }
