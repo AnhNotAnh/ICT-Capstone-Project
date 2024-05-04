@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
-  
+  const navigate = useNavigate();
   const [role, setRole] = useState("STUDENT");
   const [fName, setfName] = useState("");
   const [lName, setlName] = useState("");
@@ -40,6 +40,7 @@ const Register = () => {
         if (!response.ok) {
           throw new Error(`Failed to create account`);
         }
+        navigate("/SignIn")
         return await response.json();
       } catch (error) {
         console.error(error);
@@ -69,6 +70,7 @@ const Register = () => {
         if (!response.ok) {
           throw new Error(`Failed to create account`);
         }
+        navigate('/SignInAsStaff');
         return await response.json();
       } catch (error) {
         console.error(error);
@@ -82,6 +84,7 @@ const Register = () => {
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-8">
+            <form onSubmit={handleSubmit} className="new-registration">
             <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
               <div className="card-body p-0">
                 <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Registration Form</b></h3>
@@ -152,12 +155,10 @@ const Register = () => {
                     </div>  
                   </div> 
                 </div>
-                {/* let imagine success register will lead to signIn page*/}
-                <Link to="/SignIn">
-                  <button type="button" className="btn btn-success">Create</button> 
-                </Link>    
+                <button type="submit" className="btn btn-success">Create</button>    
               </div>
             </div>
+            </form>
           </div>
         </div>
       </div>

@@ -95,6 +95,39 @@ app.post('/registerStudent', (req, res) => {
             });       
 });
 
+//for registration of supervisor
+app.post('/registerSupervisor', (req, res) => {
+    const insertAcc = "INSERT INTO ACCOUNT (username, password, role) VALUES (?, ?, ?)";
+    db.run(insertAcc, [req.body.username, req.body.password, req.body.role], (err) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            const getAccID = "SELECT accountID FROM ACCOUNT WHERE username = ? and password = ?";
+            db.all(getAccID, [req.body.username, req.body.password], (err, results) => {
+            if (err) {
+                console.error(err.message);
+            } else {
+                    if (results.length > 0) {
+                        const accountID = results[0].accountID;
+                        // Now can use accountID to insert data into your student table
+                        const sql =
+                          "INSERT INTO STAFF (name, email, phoneNumber, accountID,) VALUES (?, ?, ?, ?)";
+                        db.run(sql, [ req.body.name, req.body.email, req.body.phoneNumber, accountID], (err) => {
+                            if (err) {
+                                console.error(err.message);
+                            } else {
+                                res.json({ message: "Supervisor registration success" });
+                            }
+                        });  
+                    } else {
+                    res.json({ message: "No account found with the provided username and password" });
+                    }
+                }
+            });
+                }
+            });       
+});
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081,listening");
