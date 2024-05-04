@@ -47,24 +47,25 @@ app.post('/Logbook/studentID', (req, res) => {
     });
 });
 
-//for testing login.
-
-app.post('/validatePassword',(req,res) => {
+//for testing student login.
+app.post('/validateStudent',(req,res) => {
     const {username,password} = req.body
 
-    db.all(`select * from ACCOUNT where username = '${username}'and password ='${password}'`,(err , rows)=>{
+    db.all(`SELECT * FROM ACCOUNT WHERE username = ? AND password = ? AND role = 'STUDENT'`,[username, password],(err , rows)=>{
          if (err){
-            throw err;
+            console.error(err.message);
+            return res.status(500).send({error: 'An error occured'});
          }   
-         if(rows.length > 0){
-            res.send({validation: true})
-         }else{
-            res.send({validation: false})
-         }
-    })
-})
 
-//for staff login
+         if(rows.length > 0){
+            res.send({validation: true});
+         }else{
+            res.send({validation: false});
+         }
+    });
+});
+
+//for staff and admin login
 app.post('/validateStaff', (req, res) => {
     const { username, password } = req.body;
 

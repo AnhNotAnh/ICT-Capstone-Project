@@ -21,10 +21,11 @@ const SignIn = () => {
     }
 
     try {
-      const response = await axios.post('http://localhost:8081/validatePassword', { username, password });
+      const response = await axios.post('http://localhost:8081/validateStudent', { username, password });
 
       if (response.data.validation) {
         setLoginSuccess(true);
+        setError('');
         console.log('Login successful');
       } else {
         setError('Invalid username or password');
