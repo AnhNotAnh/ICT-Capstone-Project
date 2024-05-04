@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const Register = () => {
   const navigate = useNavigate();
-  const [role, setRole] = useState("STUDENT");
+  const [role, setRole] = useState("");
   const [fName, setfName] = useState("");
   const [lName, setlName] = useState("");
   const [phone, setPhoneNumb] = useState("");
@@ -128,14 +128,14 @@ const Register = () => {
                     <div className="form-outline form-white">
                       <label style={{color:"black"}} className="form-label label-style">Phone Number</label>
                       <input type="text" className="form-control form-control-md" value={phone} placeholder="Phone Number"
-                      onChange={(e)=>(setPhoneNumb(e.target.value))}></input>
+                      onChange={(e)=>(setPhoneNumb(e.target.value))} required></input>
                     </div>  
                   </div> 
                   <div className='col-md-7 mb-4 pb-2'>
                     <div className="form-outline form-white">
                       <label style={{color:"black"}} className="form-label label-style">Email Address</label>
-                      <input type="text" className="form-control form-control-md" value={email} placeholder="Email Address"
-                      onChange={(e)=>(setEmail(e.target.value))}></input>
+                      <input type="email" className="form-control form-control-md" value={email} placeholder="Email Address"
+                      onChange={(e)=>(setEmail(e.target.value))} required></input>
                     </div>  
                   </div> 
                 </div>
@@ -144,14 +144,14 @@ const Register = () => {
                     <div className="form-outline form-white">
                       <label style={{color:"black"}} className="form-label label-style" >User Name</label>
                       <input type="text" className="form-control form-control-md" value={username} placeholder="User Name"
-                      onChange={(e)=>(setUserName(e.target.value))}></input>
+                      onChange={(e)=>(setUserName(e.target.value))} required></input>
                     </div>  
                   </div> 
                   <div className='col-md-7 mb-4 pb-2'>
                     <div className="form-outline form-white">
                       <label style={{color:"black"}} className="form-label label-style">Password</label>
                       <input type="password" className="form-control form-control-md" value={password} placeholder="Password"
-                      onChange={(e)=>(setPassword(e.target.value))}></input>
+                      onChange={(e)=>(setPassword(e.target.value))} required></input>
                     </div>  
                   </div> 
                 </div>

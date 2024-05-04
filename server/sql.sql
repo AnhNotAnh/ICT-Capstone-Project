@@ -63,3 +63,5 @@ SELECT * FROM LOGBOOK;
 
 SELECT * FROM ACCOUNT;
 
+-- delete from ACCOUNT where username = 'anhtest';
+-- delete from STUDENT where accountID = 4;
