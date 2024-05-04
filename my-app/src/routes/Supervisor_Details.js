@@ -32,6 +32,13 @@ const Supervisor_Details = () => {
                         name={`supervisorName${index}`}
                         style={{ marginBottom: '10px', width: '100%', padding: '5px', border: '1px solid #ccc', borderRadius: '3px' }}
                     />
+                    <label htmlFor={`supervisorName${index}`}>Supervisor's Occupation</label>
+                    <input
+                        type="text"
+                        id={`supervisorOccupation${index}`}
+                        name={`supervisorOccupation${index}`}
+                        style={{ marginBottom: '10px', width: '100%', padding: '5px', border: '1px solid #ccc', borderRadius: '3px' }}
+                    />
 
                     <button onClick={() => handleConfirmSupervisor(index)} style={{ marginBottom: '10px' }}>Confirm</button>
                 </div>
