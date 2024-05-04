@@ -30,6 +30,9 @@ const underLine = {
             <Link to="/Supervisor_Details">
                 <button style={{position:'absolute',top:'40px',right:'10px' }}>Supervisor Details</button>
             </Link>
+            <Link to="/Current_Supervisor">
+                <button style={{ position: 'absolute', top: '40px', left: '1224px' }}>Current Supervisor</button>
+            </Link>
         </div>
     );
 };
