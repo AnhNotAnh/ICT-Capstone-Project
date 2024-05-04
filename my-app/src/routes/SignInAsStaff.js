@@ -9,29 +9,29 @@ const SignInAsStaff = () => {
   const [login, setLogin] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setError('Please enter username and password');
-      return;
+        setError('Please enter username and password');
+        return;
     }
 
     try {
-      const response = await axios.post('http://localhost:8081/validatePassword', { username, password });
+        const response = await axios.post('http://localhost:8081/validateStaff', { username, password });
 
-      if (response.data.validation) {
-        setLogin(true);
-        console.log('Login successful');
-        navigate('/Staff_Home'); // Navigate to Staff Home page
-      } else {
-        setError('Invalid username or password');
-      }
+        if (response.data.validation && response.data.role === 'STAFF') {
+            setLogin(true);
+            console.log('Login successful');
+            navigate('/Staff_Home'); // Navigate to Staff Home page
+        } else {
+            setError('Access denied');
+        }
     } catch (error) {
-      console.error('Error logging in:', error);
-      setError('An error occurred while logging in');
+        console.error('Error logging in:', error);
+        setError('An error occurred while logging in');
     }
-  };
+}
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>
@@ -48,5 +48,6 @@ const SignInAsStaff = () => {
     </div>
   );
 };
+
 
 export default SignInAsStaff;

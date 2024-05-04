@@ -48,6 +48,7 @@ app.post('/Logbook/studentID', (req, res) => {
 });
 
 //for testing login.
+
 app.post('/validatePassword',(req,res) => {
     const {username,password} = req.body
 
@@ -62,6 +63,25 @@ app.post('/validatePassword',(req,res) => {
          }
     })
 })
+
+//for staff login
+app.post('/validateStaff', (req, res) => {
+    const { username, password } = req.body;
+
+    db.all(`SELECT * FROM ACCOUNT WHERE username = ? AND password = ? AND role = 'STAFF'`, [username, password], (err, rows) => {
+        if (err) {
+            console.error(err.message);
+            return res.status(500).send({ error: 'An error occurred while checking the credentials' });
+        }
+
+        if (rows.length > 0) {
+            return res.send({ validation: true, role: 'STAFF' });
+        } else {
+            return res.send({ validation: false });
+        }
+    });
+});
+
 
 //for registration of student
 app.post('/registerStudent', (req, res) => {
