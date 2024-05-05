@@ -132,7 +132,7 @@ app.post('/registerSupervisor', (req, res) => {
                         const accountID = results[0].accountID;
                         // Now can use accountID to insert data into your student table
                         const sql =
-                          "INSERT INTO STAFF (name, email, phoneNumber, accountID,) VALUES (?, ?, ?, ?)";
+                          "INSERT INTO STAFF (name, email, phoneNumber, accountID) VALUES (?, ?, ?, ?)";
                         db.run(sql, [ req.body.name, req.body.email, req.body.phoneNumber, accountID], (err) => {
                             if (err) {
                                 console.error(err.message);

@@ -10,12 +10,13 @@
 -- DROP TABLE STAFF;
 -- CREATE TABLE STAFF
 -- (
---     staffID INT PRIMARY KEY,
+--     staffID INTEGER,
 --     name VARCHAR(255) NOT NULL,
 --     email VARCHAR(255) NOT NULL,
 --     phoneNumber VARCHAR(255) NOT NULL,
 --     accountID INT NOT NULL,
---     FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID)
+--     FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID),
+--     PRIMARY KEY(staffID ASC)
 -- );
 
 -- CREATE TABLE SYSTEMMANAGER (
