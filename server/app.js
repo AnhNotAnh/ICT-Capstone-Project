@@ -69,7 +69,7 @@ app.post('/validateStudent',(req,res) => {
 app.post('/validateStaff', (req, res) => {
     const { username, password } = req.body;
 
-    db.all(`SELECT * FROM ACCOUNT WHERE username = ? AND password = ? AND (role = 'STAFF' OR role = 'ADMIN')`, [username, password], (err, rows) => {
+    db.all(`SELECT * FROM ACCOUNT WHERE username = ? AND password = ? AND (role = 'STAFF' OR role = 'ADMIN' OR role = 'SUPERVISOR')`, [username, password], (err, rows) => {
         if (err) {
             console.error(err.message);
             return res.status(500).send({ error: 'An error occurred while checking the credentials' });
