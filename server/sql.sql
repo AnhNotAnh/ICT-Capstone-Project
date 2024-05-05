@@ -65,3 +65,17 @@ SELECT * FROM ACCOUNT;
 
 -- delete from ACCOUNT where username = 'anhtest';
 -- delete from STUDENT where accountID = 4;
+
+-- DROP TABLE SUPERVISOR; 
+-- CREATE TABLE SUPERVISOR
+-- (
+--     supervisorID INTEGER,
+--     name VARCHAR(255) NOT NULL,
+--     email VARCHAR(255) NOT NULL,
+--     qualification varchar(255) NOT NULL,
+--     accountID INT NOT NULL,
+--     FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID),
+--     PRIMARY KEY(supervisorID ASC)
+-- );
+
+-- INSERT INTO SUPERVISOR (name, email, qualification, accountID) VALUES ( 'Dr. John', 'john@abc.com', 'PhD', 5);
