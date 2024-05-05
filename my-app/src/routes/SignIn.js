@@ -11,21 +11,24 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
+  const [studentId, setStudentId] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!username || !password) {
       setError('Please enter username and password');
       return;
     }
-
+  
     try {
       const response = await axios.post('http://localhost:8081/validateStudent', { username, password });
-
+  
       if (response.data.validation) {
         setLoginSuccess(true);
         setError('');
+        setStudentId(response.data.studentId); // Set studentId in state
+        console.log('Student ID:', response.data.studentId);
         console.log('Login successful');
       } else {
         setError('Invalid username or password');
@@ -46,12 +49,12 @@ const SignIn = () => {
         <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ marginBottom: '10px', width: '100%' }} />
         {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
         {loginSuccess ? (
-          <Link to="/Student_Home" style={{ textDecoration: 'none' }}>
-            <button style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
-          </Link>
-        ) : (
-          <button type="submit" style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
-        )}
+        <Link to={`/Student_Home/${studentId}`} style={{ textDecoration: 'none' }}>
+          <button style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
+        </Link>
+          ) : (
+            <button type="submit" onClick={handleSubmit} style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
+          )}
       </form>
     </div>
   );
