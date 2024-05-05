@@ -7,12 +7,13 @@
 --     phoneNumber VARCHAR(255) NOT NULL,
 --     FOREIGN KEY (accountID) REFERENCES ACCOUNT(accountID));
 
+-- DROP TABLE STAFF;
 -- CREATE TABLE STAFF
 -- (
 --     staffID INT PRIMARY KEY,
 --     name VARCHAR(255) NOT NULL,
 --     email VARCHAR(255) NOT NULL,
---     phoneNumber INT NOT NULL,
+--     phoneNumber VARCHAR(255) NOT NULL,
 --     accountID INT NOT NULL,
 --     FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID)
 -- );
