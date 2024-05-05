@@ -74,7 +74,6 @@ app.post('/validateStaff', (req, res) => {
             console.error(err.message);
             return res.status(500).send({ error: 'An error occurred while checking the credentials' });
         }
-
         if (rows.length > 0) {
             return res.send({ validation: true, role: 'STAFF' });
         } else {
@@ -131,9 +130,8 @@ app.post('/registerSupervisor', (req, res) => {
                     if (results.length > 0) {
                         const accountID = results[0].accountID;
                         // Now can use accountID to insert data into your student table
-                        const sql =
-                          "INSERT INTO STAFF (name, email, phoneNumber, accountID) VALUES (?, ?, ?, ?)";
-                        db.run(sql, [ req.body.name, req.body.email, req.body.phoneNumber, accountID], (err) => {
+                        const sql = "INSERT INTO SUPERVISOR (name, email, qualification, accountID) VALUES (?, ?, ?, ?)";
+                        db.run(sql, [ req.body.name, req.body.email, req.body.qualification, accountID], (err) => {
                             if (err) {
                                 console.error(err.message);
                             } else {

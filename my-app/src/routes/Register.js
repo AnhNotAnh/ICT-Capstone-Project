@@ -9,7 +9,7 @@ const Register = () => {
   const [phone, setPhoneNumb] = useState("");
   const [email, setEmail] = useState("");
   const [studentID, setStudentID] = useState("");
-  // const [suburb, setSuburb] = useState("");
+  const [qualification, setQualification] = useState("");
   // const [street, setStreet] = useState("");
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -52,7 +52,7 @@ const Register = () => {
         //assume we don't need supervisorID
         name: fName + " " + lName,
         email: email,
-        phoneNumber: phone,
+        qualification: qualification,
         username: username,
         password: password,
         role: role,
@@ -124,13 +124,22 @@ const Register = () => {
                   </div>
                 </div>
                 <div className='row p-3'>
+                  {(role === "SUPERVISOR") ? 
+                  <div className='col-md-5 mb-4 pb-2'>
+                    <div className="form-outline form-white">
+                      <label style={{color:"black"}} className="form-label label-style">Qualification</label>
+                      <input type="text" className="form-control form-control-md" value={qualification} placeholder="Qualification"
+                      onChange={(e)=>(setQualification(e.target.value))} required></input>
+                    </div>  
+                  </div>
+                  :
                   <div className='col-md-5 mb-4 pb-2'>
                     <div className="form-outline form-white">
                       <label style={{color:"black"}} className="form-label label-style">Phone Number</label>
                       <input type="text" className="form-control form-control-md" value={phone} placeholder="Phone Number"
                       onChange={(e)=>(setPhoneNumb(e.target.value))} required></input>
                     </div>  
-                  </div> 
+                  </div>}
                   <div className='col-md-7 mb-4 pb-2'>
                     <div className="form-outline form-white">
                       <label style={{color:"black"}} className="form-label label-style">Email Address</label>
