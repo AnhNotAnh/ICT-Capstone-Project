@@ -2,7 +2,8 @@ import React from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 const Student_Home = () => {
-    const { studentId } = useParams();
+
+    const { studentID } = useParams();
 
     const buttonStyle = {
         padding: '10px 20px',
@@ -22,21 +23,27 @@ const Student_Home = () => {
     };
 
     return (
-        <div>
-          <h2>Home Page</h2>
-          {/*for testing the id */}
-          <h3>Welcome, student {studentId}</h3>     
-            <p style={underLine}>Please select your logbook</p>
-            <button style={buttonStyle}>General Logbook</button>
-            <Link to="/StudentHome/CoursePage" style={{ textDecoration: 'none' }}><button style={buttonStyle}>Cardiac Logbook</button></Link>
-            <button style={buttonStyle}>Vascular Logbook</button>
-            <Link to="/Supervisor_Details">
-                <button style={{ position: 'absolute', top: '40px', right: '10px' }}>Supervisor Details</button>
-            </Link>
-            <Link to="/Current_Supervisor">
-                <button style={{ position: 'absolute', top: '40px', left: '1224px' }}>Current Supervisor</button>
-            </Link>
-        </div>
+      <div>
+        <h2>Home Page</h2>
+        {/*for testing the id */}
+        <h3>Welcome, student {studentID}</h3>
+        <p style={underLine}>Please select your logbook</p>
+        <button style={buttonStyle}>General Logbook</button>
+        <Link to={`/CoursePage/${studentID}`} style={{ textDecoration: "none" }}>
+          <button style={buttonStyle}>Cardiac Logbook</button>
+        </Link>
+        <button style={buttonStyle}>Vascular Logbook</button>
+        <Link to="/Supervisor_Details">
+          <button style={{ position: "absolute", top: "40px", right: "10px" }}>
+            Supervisor Details
+          </button>
+        </Link>
+        <Link to="/Current_Supervisor">
+          <button style={{ position: "absolute", top: "40px", left: "1224px" }}>
+            Current Supervisor
+          </button>
+        </Link>
+      </div>
     );
 };
 

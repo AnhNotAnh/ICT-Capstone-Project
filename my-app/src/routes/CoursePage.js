@@ -1,7 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const CoursePage = () => {
+  const { studentID } = useParams();
+
     return (
     <div className="container text-center">
       <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
@@ -21,7 +23,7 @@ const CoursePage = () => {
                 <tr>
                   <td>
                     <div className="d-grid gap-2 col-8 mx-auto">
-                      <Link to="/Logbook" className="btn btn-outline-primary">
+                      <Link to={`/Logbook/${studentID}`} className="btn btn-outline-primary">
                         Manage Logbook
                       </Link>
                       <button className="btn btn-outline-primary" type="button">

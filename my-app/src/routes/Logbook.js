@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 function Logbook() {
+    const { studentID } = useParams();
 
     {/* Consider the path to have student id so that supervisor and student id access */ }
     const [supervisionStatus, setSupervisionStatus] = useState("full");
@@ -11,8 +13,8 @@ function Logbook() {
     const [nextLogbookID, setNextLogbookID] = useState(0);
     
     {/* Testing, change studentID = useParams() later*/ }
-    const [studentID, setStudentID] = useState(1);
     const [logbook1, setLogbook1] = useState([]);
+
     useEffect(() => {
     fetch(`http://localhost:8081/Logbook`)
         .then((response) => {
