@@ -27,8 +27,8 @@ const SignIn = () => {
       if (response.data.validation) {
         setLoginSuccess(true);
         setError('');
-        setStudentId(response.data.studentId); // Set studentId in state
-        console.log('Student ID:', response.data.studentId);
+        setStudentId(response.data.studentID); // Set studentId in state
+        console.log('Student ID:', response.data.studentID);
         console.log('Login successful');
       } else {
         setError('Invalid username or password');

@@ -51,14 +51,15 @@ app.post('/Logbook/studentID', (req, res) => {
 app.post('/validateStudent',(req,res) => {
     const {username,password} = req.body
 
-    db.all(`SELECT * FROM ACCOUNT WHERE username = ? AND password = ? AND role = 'STUDENT'`,[username, password],(err , rows)=>{
+    db.all(`SELECT * FROM ACCOUNT JOIN STUDENT ON ACCOUNT.accountID = STUDENT.accountID
+        WHERE username = ? AND password = ? AND role = 'STUDENT'`, [username, password], (err, rows) => {
          if (err){
             console.error(err.message);
             return res.status(500).send({error: 'An error occured'});
          }   
 
          if(rows.length > 0){
-            res.send({validation: true});
+            res.json({ validation: true, studentID: rows[0].studentID });
          }else{
             res.send({validation: false});
          }
