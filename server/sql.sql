@@ -81,3 +81,11 @@ SELECT * FROM ACCOUNT;
 -- );
 
 -- INSERT INTO SUPERVISOR (name, email, qualification, accountID) VALUES ( 'Dr. John', 'john@abc.com', 'PhD', 5);
+
+-- CREATE TABLE SUPERVISION
+-- (
+--     supervisorID INTEGER,
+--     studentID INTEGER,
+--     isSupervised BOOLEAN NOT NULL,
+--     PRIMARY KEY(supervisorID, studentID)
+-- );
