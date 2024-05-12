@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser';
 
 const EmailForm = () => {
     const [email, setEmail] = useState('');
+    const [emailTo, setEmailTo] = useState('');
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
 
@@ -18,7 +19,8 @@ const EmailForm = () => {
         const emailParams = {
         from_name: name,
         from_email: email,
-        to_name: 'Em',
+        to_email: emailTo,
+        to_name: 'Your Supervisor name',
         message: message
         }
 
@@ -27,6 +29,7 @@ const EmailForm = () => {
             console.log('SUCCESS!', response.status, response.text);
             setName('');
             setEmail('');
+            setEmailTo('');
             setMessage('');
         })
         .catch(error => {
@@ -48,6 +51,18 @@ const EmailForm = () => {
                         placeholder="Your Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                    /> 
+                </div>
+                <div className="col-3">
+                    <label htmlFor="Supervisor">Supervisor's email:</label>
+                    <input
+                        type="text"
+                        className="form-control"
+                        id="Supervisor"
+                        required
+                        placeholder="Supervisor's Email here"
+                        value={emailTo}
+                        onChange={(e) => setEmailTo(e.target.value)}
                     /> 
                 </div>
                 <div className="col-3">
