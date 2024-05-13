@@ -1,16 +1,38 @@
 import React, { useState } from 'react';
+import emailjs from 'emailjs-com';
 
 const Supervisor_Details = () => {
     const [numSupervisors, setNumSupervisors] = useState(1);
+    const [showAlert, setShowAlert] = useState(false);
 
     const handleAddSupervisor = () => {
         setNumSupervisors(numSupervisors + 1);
     };
 
+
     const handleConfirmSupervisor = (index) => {
-        // Add logic to handle confirmation for the supervisor at the specified index
+        const supervisorEmail = document.getElementById(`supervisorEmail${index}`).value;
+        const supervisorName = document.getElementById(`supervisorName${index}`).value;
+        const supervisorQualification = document.getElementById(`supervisorQualification${index}`).value;
+    
+        emailjs.send('service_otfz7pr', 'template_g28nptg', {
+            to: 'rijinreju@gmail.com',
+            from: 'sonographymedical@gmail.com', //our address
+            body: `Hello ${supervisorName},\n\nPlease confirm your details.`
+        }, '9So_wYKnefvG9Mdqr')
+            .then(() => {
+                console.log('Email Sent Successfully');
+                setShowAlert(true);
+            })
+            .catch((error) => {
+                console.error('Error sending email', error);
+            });
+    
         console.log(`Supervisor at index ${index} confirmed`);
     };
+    
+    
+    // testing purposes
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
@@ -32,17 +54,19 @@ const Supervisor_Details = () => {
                         name={`supervisorName${index}`}
                         style={{ marginBottom: '10px', width: '100%', padding: '5px', border: '1px solid #ccc', borderRadius: '3px' }}
                     />
-                    <label htmlFor={`supervisorName${index}`}>Supervisor's Occupation</label>
+                    <label htmlFor={`supervisorQualification${index}`}>Supervisor's Qualification</label>
                     <input
                         type="text"
-                        id={`supervisorOccupation${index}`}
-                        name={`supervisorOccupation${index}`}
+                        id={`supervisorQualification${index}`}
+                        name={`supervisorQualification${index}`}
                         style={{ marginBottom: '10px', width: '100%', padding: '5px', border: '1px solid #ccc', borderRadius: '3px' }}
                     />
 
                     <button onClick={() => handleConfirmSupervisor(index)} style={{ marginBottom: '10px' }}>Confirm</button>
                 </div>
             ))}
+
+            {showAlert && <p style={{ color: 'green' }}>An email has been sent to your supervisor advising them to confirm their details.</p>}
             <p style={{ color: 'red' }}>Note: Please note once you click update there will be an automated email sent to the supervisor</p>
 
             <button onClick={handleAddSupervisor} style={{ marginBottom: '10px' }}>Add More Supervisors</button>
