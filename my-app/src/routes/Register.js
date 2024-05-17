@@ -10,9 +10,9 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [studentID, setStudentID] = useState("");
   const [qualification, setQualification] = useState("");
-  // const [street, setStreet] = useState("");
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
+  const [asarNumber, setASARNumber] = useState("");
 
   // Insert user's info into the database
   const handleSubmit = async (event) => {
@@ -27,6 +27,7 @@ const Register = () => {
         username: username,
         password: password,
         role: role
+        //asarNumber: asarNumber
       };
       try {
         const response = await fetch(`http://localhost:8081/registerStudent`, {
@@ -55,7 +56,8 @@ const Register = () => {
         qualification: qualification,
         username: username,
         password: password,
-        role: role,
+        role: role
+        //asarNumber: asarNumber
       };
       console.log(userInfo);
       try {
@@ -105,6 +107,7 @@ const Register = () => {
                       </input>
                     </div>
                   </div>}
+                  {studentID.length > 9 && <p style={{color: 'red'}}>Student ID cannot exceed 9 digits</p>}
                 </div>
                 <div className="row p-3">
                   <div className="col-md-6 mb-4 pb-2">
@@ -164,7 +167,18 @@ const Register = () => {
                     </div>  
                   </div> 
                 </div>
-                <button type="submit" className="btn btn-success">Create</button>    
+                <div className='row p-3'>
+                  <div className='col-md-5 mb-4 pb-2'>
+                    <div className="form-outline form-white">
+                      <label style={{color:"black"}} className="form-label label-style" >ASAR number</label>
+                      {(role === "SUPERVISOR") ?  <input type="text" className="form-control form-control-md" value={asarNumber} placeholder="4 digits ASAR or N/A if not applicable"
+                      onChange={(e)=>(setASARNumber(e.target.value))} required maxLength={4}></input>
+                      : <input type="text" className="form-control form-control-md" value={asarNumber} placeholder="Student's required to enter ASAR number"
+                      onChange={(e)=>(setASARNumber(e.target.value))} required minLength={4} maxLength={4}></input>}
+                    </div>  
+                  </div> 
+                </div>
+                <button type="submit" className="btn btn-success mb-2">Create</button>    
               </div>
             </div>
             </form>
