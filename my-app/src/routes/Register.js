@@ -26,8 +26,8 @@ const Register = () => {
         phoneNumber: phone,
         username: username,
         password: password,
-        role: role
-        //asarNumber: asarNumber
+        role: role,
+        asarNumber: asarNumber
       };
       try {
         const response = await fetch(`http://localhost:8081/registerStudent`, {
@@ -56,8 +56,8 @@ const Register = () => {
         qualification: qualification,
         username: username,
         password: password,
-        role: role
-        //asarNumber: asarNumber
+        role: role,
+        asarNumber: asarNumber
       };
       console.log(userInfo);
       try {

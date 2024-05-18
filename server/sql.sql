@@ -1,4 +1,4 @@
- -- DROP TABLE STUDENT;
+-- DROP TABLE STUDENT;
 -- CREATE TABLE STUDENT (
 --     studentID INT PRIMARY KEY,
 --     name VARCHAR(255) NOT NULL,
@@ -63,8 +63,8 @@ SELECT * FROM LOGBOOK;
 
 SELECT * FROM ACCOUNT;
 
--- delete from ACCOUNT where username = 'anhtest';
--- delete from STUDENT where accountID = 4;
+-- delete from ACCOUNT where role = 'STUDENT';
+-- delete from ACCOUNT where role = 'SUPERVISOR';
 
 -- DROP TABLE SUPERVISOR; 
 -- CREATE TABLE SUPERVISOR
