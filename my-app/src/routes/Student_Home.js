@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 
 const Student_Home = () => {
 
-    const { studentID } = useParams();
+    const { studentID,username } = useParams();
 
     const buttonStyle = {
         padding: '10px 20px',
@@ -26,7 +26,7 @@ const Student_Home = () => {
       <div>
         <h2>Home Page</h2>
         {/*for testing the id */}
-        <h3>Welcome, student {studentID}</h3>
+        <h3>Welcome, {username}</h3> {/*Display the student username here  */}
         <p style={underLine}>Please select your logbook</p>
         <button style={buttonStyle}>General Logbook</button>
         <Link to={`/CoursePage/${studentID}`} style={{ textDecoration: "none" }}>
@@ -39,7 +39,7 @@ const Student_Home = () => {
           </button>
         </Link>
         <Link to="/Current_Supervisor">
-          <button style={{ position: "absolute", top: "40px", left: "1224px" }}>
+          <button style={{ position: "absolute", top: "40px", left: "1994px" }}>
             Current Supervisor
           </button>
         </Link>

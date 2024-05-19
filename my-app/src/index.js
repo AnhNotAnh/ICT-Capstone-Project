@@ -18,7 +18,7 @@ root.render(
                     <Route path="SignIn" element={<SignIn />} />
                     <Route path="SignInAsStaff" element={<SignInAsStaff />} />
                     <Route path="Register" element={<Register />} />
-                    <Route path="Student_Home/:studentID" element={<Student_Home />} />
+                    <Route path="Student_Home/:studentID/:username" element={<Student_Home />} />
                     <Route path="CoursePage/:studentID" element={<CoursePage />} />
                     <Route path="Logbook/:studentID" element={<Logbook />} /> 
                     <Route path="Milestone" element={<EmailForm />} />

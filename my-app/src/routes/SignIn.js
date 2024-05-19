@@ -29,8 +29,9 @@ const SignIn = () => {
         setLoginSuccess(true);
         setError('');
         setStudentID(response.data.studentID); // Set studentID in state
- //       setStudentName(response.data.studentName); // Set studentName 
+    //    setStudentName(response.data.studentName); // Set studentName 
         console.log('Student ID:', response.data.studentID);
+        console.log('USERNAME:', username);
         console.log('Login successful');
       } else {
         setError('Invalid username or password');
@@ -51,9 +52,9 @@ const SignIn = () => {
         <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} style={{ marginBottom: '10px', width: '100%' }} />
         {error && <p style={{ color: 'red', marginBottom: '10px' }}>{error}</p>}
         {loginSuccess ? (
-        <Link to={`/Student_Home/${studentID}`} style={{ textDecoration: 'none' }}>
-          <button style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
-        </Link>
+      <Link to={`/Student_Home/${studentID}/${username}`} style={{ textDecoration: 'none' }}>
+         <button style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
+      </Link>
           ) : (
             <button type="submit" style={{ width: '100%', padding: '5px', background: 'blue', color: 'white', border: 'none', borderRadius: '3px', cursor: 'pointer' }}>Login</button>
           )}
