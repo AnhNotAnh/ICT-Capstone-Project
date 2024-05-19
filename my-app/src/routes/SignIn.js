@@ -12,6 +12,7 @@ const SignIn = () => {
   const [error, setError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [studentID, setStudentID] = useState('');
+  //const [studentName, setstudentName] = useState('')
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +29,7 @@ const SignIn = () => {
         setLoginSuccess(true);
         setError('');
         setStudentID(response.data.studentID); // Set studentID in state
+ //       setStudentName(response.data.studentName); // Set studentName 
         console.log('Student ID:', response.data.studentID);
         console.log('Login successful');
       } else {

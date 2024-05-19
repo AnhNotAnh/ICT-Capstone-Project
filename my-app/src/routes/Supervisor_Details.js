@@ -1,38 +1,50 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
 
 const Supervisor_Details = () => {
     const [numSupervisors, setNumSupervisors] = useState(1);
     const [showAlert, setShowAlert] = useState(false);
+   // const [sentEmail, setSentEmail] = useState([]);
 
     const handleAddSupervisor = () => {
         setNumSupervisors(numSupervisors + 1);
     };
 
-
     const handleConfirmSupervisor = (index) => {
-        const supervisorEmail = document.getElementById(`supervisorEmail${index}`).value;
+        const supervisorEmailInput = document.getElementById(`supervisorEmail${index}`);
+        const supervisorEmail = supervisorEmailInput ? supervisorEmailInput.value : null;
         const supervisorName = document.getElementById(`supervisorName${index}`).value;
         const supervisorQualification = document.getElementById(`supervisorQualification${index}`).value;
     
+        /*
+        if (!supervisorEmail) {
+            console.error('Supervisor email is empty');
+            return;
+        }
+
+        */
+
         emailjs.send('service_otfz7pr', 'template_g28nptg', {
-            to: 'rijinreju@gmail.com',
-            from: 'sonographymedical@gmail.com', //our address
-            body: `Hello ${supervisorName},\n\nPlease confirm your details.`
+            name: supervisorName,
+            to: supervisorEmail,
+            from: 'sonographymedical@gmail.com',
+            body: `Hello ${supervisorName},\n\nPlease confirm your details on the UniSA Medical Sonography website .`
         }, '9So_wYKnefvG9Mdqr')
-            .then(() => {
-                console.log('Email Sent Successfully');
-                setShowAlert(true);
-            })
-            .catch((error) => {
-                console.error('Error sending email', error);
-            });
+        .then(() => {
+            console.log('Email Sent Successfully');
+            setShowAlert(true);
+        })
+        .catch((error) => {
+            console.error('Error sending email', error);
+        });
     
         console.log(`Supervisor at index ${index} confirmed`);
     };
-    
-    
-    // testing purposes
+
+    //testing purpose
+  //  useEffect(() => {
+   //     console.log('Emails sent to:', sentEmails);
+   // }, [sentEmails]);
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
