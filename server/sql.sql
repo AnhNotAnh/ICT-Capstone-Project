@@ -1,10 +1,11 @@
- -- DROP TABLE STUDENT;
+-- DROP TABLE STUDENT;
 -- CREATE TABLE STUDENT (
 --     studentID INT PRIMARY KEY,
 --     name VARCHAR(255) NOT NULL,
 --     email VARCHAR(255) NOT NULL,
 --     accountID INT NOT NULL,
 --     phoneNumber VARCHAR(255) NOT NULL,
+--     asarNumber VARCHAR(4) NOT NULL,
 --     FOREIGN KEY (accountID) REFERENCES ACCOUNT(accountID));
 
 -- DROP TABLE STAFF;
@@ -47,9 +48,6 @@
 --     PRIMARY KEY(logbookID ASC)
 -- );
 
--- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (1, 1, '2021-01-01', 'Full', 'Pathology 1');
--- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (2, 1, '2021-02-01', 'Partial', 'Pathology 2');
--- INSERT INTO LOGBOOK (logbookID , studentID, date, supervisionStatus, pathology) VALUES (3, 2, '2021-02-01', 'Partial', 'Pathology 2');
 SELECT * FROM LOGBOOK;
 -- DROP TABLE LOGBOOK;
 
@@ -65,8 +63,8 @@ SELECT * FROM LOGBOOK;
 
 SELECT * FROM ACCOUNT;
 
--- delete from ACCOUNT where username = 'anhtest';
--- delete from STUDENT where accountID = 4;
+-- delete from ACCOUNT where role = 'STUDENT';
+-- delete from ACCOUNT where role = 'SUPERVISOR';
 
 -- DROP TABLE SUPERVISOR; 
 -- CREATE TABLE SUPERVISOR
@@ -76,6 +74,7 @@ SELECT * FROM ACCOUNT;
 --     email VARCHAR(255) NOT NULL,
 --     qualification varchar(255) NOT NULL,
 --     accountID INT NOT NULL,
+--     asarNumber VARCHAR(4) NOT NULL,
 --     FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID),
 --     PRIMARY KEY(supervisorID ASC)
 -- );
