@@ -88,3 +88,17 @@ SELECT * FROM ACCOUNT;
 --     isSupervised BOOLEAN NOT NULL,
 --     PRIMARY KEY(supervisorID, studentID)
 -- );
+
+-- INSERT INTO SUPERVISION (supervisorID, studentID, isSupervised) VALUES ( 1, 123123123, 1);
+
+
+-- CREATE TABLE MILESTONE
+-- (
+--     studentID INTEGER,
+--     supervisorID INTEGER,
+--     studentSignature VARCHAR(255) NOT NULL,
+--     supervisorSignature VARCHAR(255) NOT NULL,
+--     milestoneAchievement INTEGER, e.g 400 scans, 800 scans,...
+--     status VARCHAR(255) NOT NULL, e.g waiting or completed.
+--     PRIMARY KEY(studentID, supervisorID)
+-- );

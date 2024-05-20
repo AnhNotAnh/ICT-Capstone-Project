@@ -148,6 +148,44 @@ app.post('/registerSupervisor', (req, res) => {
             });       
 });
 
+app.get('/getStudent/:studentID', (req, res) => {
+    const sql = "SELECT name, email FROM STUDENT WHERE studentID = ?"
+    db.all(sql, [req.params.studentID], (err, results) => {
+        if (err) {
+            console.error(err.message);
+            res.status(500).json({ error: 'Database error' });
+        } else if (results.length === 0) {
+            res.status(404).json({ error: 'Student not found' });
+        } else {
+            res.json({ studentName: results[0].name, studentEmail: results[0].email });
+        }
+    });
+})
+
+
+app.get('/getSupervision/:studentID', (req, res) => {
+    const sql = "SELECT SUPERVISION.supervisorID FROM STUDENT JOIN SUPERVISION ON STUDENT.studentID = SUPERVISION.studentID WHERE SUPERVISION.studentID = ? AND SUPERVISION.isSupervised = 1"
+    db.all(sql, [req.params.studentID], (err, results) => {
+        if (err) {
+            console.error(err.message);
+        } else {
+            if (results.length === 0) {
+                console.error("No supervision found");
+            } else {
+                const supervisorIDs = results.map(result => result.supervisorID);
+                const sql2 = `SELECT * FROM SUPERVISOR WHERE supervisorID IN (${supervisorIDs.join(',')})`;
+                db.all(sql2, [], (err2, supervisorResults) => {
+                    if (err2) {
+                        console.error(err2.message);
+                    } else {
+                        res.json(supervisorResults);
+                    }
+                });
+            }
+        }
+    });
+});
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081,listening");
