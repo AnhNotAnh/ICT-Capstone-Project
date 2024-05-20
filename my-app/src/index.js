@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Home, About, SignIn, Register, SignInAsStaff,Student_Home,Staff_Home, Supervisor_Details, CoursePage, Logbook, Current_Supervisor } from './routes';
-import EmailForm from './components/EmailForm';
+import Milestone from './components/Milestone';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
