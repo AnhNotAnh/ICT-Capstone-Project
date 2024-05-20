@@ -5,7 +5,6 @@ import emailjs from '@emailjs/browser';
 
 const Milestone = () => {
     const [email, setEmail] = useState('');
-    const [emailTo, setEmailTo] = useState('');
     const [name, setName] = useState('');
     const [message, setMessage] = useState('');
     const [fName, setfName] = useState("");
@@ -14,10 +13,10 @@ const Milestone = () => {
     const [studentSignature, setSignature] = useState('');
     const { studentID } = useParams();
     const [supervisorID, setSupervisorID] = useState(0);
-    const [supervisorName, setSupervisionName] = useState('');
-    const [supervisorEmail, setSupervisionEmail] = useState('');
+    const [supervisorName, setSupervisorName] = useState('');
+    const [supervisorEmail, setSupervisorEmail] = useState('');
     const [supervisors, setSupervisors] = useState([]);
-    const [student, setStudent] = useState([]);
+    const [supervisorInfo, setSupervisorInfo] = useState([]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -29,18 +28,14 @@ const Milestone = () => {
         const emailParams = {
         from_name: name,
         from_email: email,
-        to_email: emailTo,
-        to_name: 'Your Supervisor name',
-        message: message
+        to_email: supervisorEmail,
+        to_name: supervisorName,
+        message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
         }
 
         emailjs.send(serviceID, templateID, emailParams, publicKey)
         .then(response => {
             console.log('SUCCESS!', response.status, response.text);
-            setName('');
-            setEmail('');
-            setEmailTo('');
-            setMessage('');
         })
         .catch(error => {
             console.log('FAILED...', error);
@@ -99,10 +94,18 @@ const Milestone = () => {
                     <div className="row p-3 mb-4 pb-2">
                         <div className="col-md-6 mb-4 pb-2">
                             <label style={{color:"black"}} className="form-label label-style">Send to Supervisor</label>
-                            <select value={emailTo} className='form-select' onChange={(e) => (setEmailTo(e.target.value))} required>
+                            <select value={supervisorID} required className='form-select' 
+                            onChange={(e) => {
+                            const selectedSupervisor = supervisors.find(superV => superV.supervisorID === Number(e.target.value));
+                            if (selectedSupervisor) {
+                                setSupervisorEmail(selectedSupervisor.email);
+                                setSupervisorName(selectedSupervisor.name);
+                                setSupervisorID(selectedSupervisor.id);
+                            }
+                            }}>
                                 <option value="">Select supervisor you want to send to </option>
                                 {supervisors.map((supervisor, index) => 
-                                <option key={index} value={supervisor.email}>{supervisor.name}</option>
+                                <option key={index} value={supervisor.supervisorID}>{supervisor.name}</option>
                                 )}
                             </select>
                         </div>
@@ -161,7 +164,7 @@ const Milestone = () => {
                             </div>  
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-success mb-2">Create</button>    
+                    <button type="submit" className="btn btn-success mb-2">Submit</button>    
                 </div>
                 </div>
                 </form>

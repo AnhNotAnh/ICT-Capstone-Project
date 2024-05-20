@@ -89,7 +89,7 @@ SELECT * FROM ACCOUNT;
 --     PRIMARY KEY(supervisorID, studentID)
 -- );
 
--- INSERT INTO SUPERVISION (supervisorID, studentID, isSupervised) VALUES ( 1, 123123123, 1);
+-- INSERT INTO SUPERVISION (supervisorID, studentID, isSupervised) VALUES ( 2, 123123123, 1);
 
 
 -- CREATE TABLE MILESTONE
