@@ -39,7 +39,7 @@
 
 -- CREATE TABLE LOGBOOK
 -- (
---     logbookID INT,
+--     logbookID INT, // change to INTEGER for auto increment
 --     studentID INT NOT NULL,
 --     date VARCHAR(255) NOT NULL,
 --     supervisionStatus VARCHAR(255) NOT NULL,

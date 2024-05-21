@@ -16,7 +16,8 @@ const Milestone = () => {
     const [supervisorName, setSupervisorName] = useState('');
     const [supervisorEmail, setSupervisorEmail] = useState('');
     const [supervisors, setSupervisors] = useState([]);
-    const [supervisorInfo, setSupervisorInfo] = useState([]);
+
+    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -89,7 +90,7 @@ const Milestone = () => {
                 <form onSubmit={handleSubmit} className="new-registration">
                 <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
                 <div className="card-body p-0">
-                    <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of 2000 scan milestone
+                    <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of 400 scan milestone
                     (Mandatory)</b></h3>
                     <div className="row p-3 mb-4 pb-2">
                         <div className="col-md-6 mb-4 pb-2">
@@ -164,69 +165,13 @@ const Milestone = () => {
                             </div>  
                         </div>
                     </div>
-                    <button type="submit" className="btn btn-success mb-2">Submit</button>    
+                    <button type="submit" className="btn btn-primary mb-2">Submit</button>    
                 </div>
                 </div>
                 </form>
             </div>
         </div>
     </div>
-    {/* <div>
-        <form onSubmit={handleSubmit}>
-            <div className="row justify-content-center">
-                <div className="col-3">
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        type="email"
-                        className="form-control"
-                        id="email"
-                        required
-                        placeholder="Your Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    /> 
-                </div>
-                <div className="col-3">
-                    <label htmlFor="Supervisor">Supervisor's email:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="Supervisor"
-                        required
-                        placeholder="Supervisor's Email here"
-                        value={emailTo}
-                        onChange={(e) => setEmailTo(e.target.value)}
-                    /> 
-                </div>
-                <div className="col-3">
-                    <label htmlFor="name">Name:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        required
-                        placeholder="Your name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                    /> 
-                </div>
-                <div className="col-3">
-                    <label htmlFor="message">Message:</label>
-                    <textarea
-                        className="form-control"
-                        cols="30"
-                        rows="10"
-                        id="text"
-                        required
-                        placeholder="Your message"
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                    /> 
-                </div>
-            </div> 
-            <button type="submit" className="btn btn-primary">Send Email</button>
-        </form>
-    </div> */}
     </>
   )
 }

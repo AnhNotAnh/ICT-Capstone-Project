@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function Logbook() {
     const { studentID } = useParams();
-
     {/* Consider the path to have student id so that supervisor and student id access */ }
     const [supervisionStatus, setSupervisionStatus] = useState("full");
     const [date, setDate] = useState("");
     const [pathology, setPathology] = useState("");
     const [logbook, setLogbook] = useState([]);
-    const [scanNumber, setScanNumber] = useState(1);
+    const [scanNumber, setScanNumber] = useState(0);
     const [nextLogbookID, setNextLogbookID] = useState(0);
-    
-    {/* Testing, change studentID = useParams() later*/ }
     const [logbook1, setLogbook1] = useState([]);
-
+    const remainder = scanNumber % 5;
+    //Could be removed as logbook ID now is auto increment
     useEffect(() => {
     fetch(`http://localhost:8081/Logbook`)
         .then((response) => {
@@ -99,8 +98,16 @@ function Logbook() {
 
     return (
     <div className="container">
-            <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
-            <p>No of Scan: {scanNumber}</p>
+        <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
+        <p>No of Scan: {scanNumber}</p>
+        {(remainder === 0 & scanNumber !== 0) && 
+        <div className="row justify-content-center">
+            <div className='col-7'>
+                <p style={{color: 'red'}}>You have reach a Milestone, please go to Milestone page to finish your document !</p>
+                <Link to={`/Milestone/${studentID}`} className="btn btn-danger">Milestone</Link>
+            </div>
+        </div>
+        }
         <form onSubmit={handleSubmit} className="new-scan-form">
             <div
                 className="row justify-content-center"
