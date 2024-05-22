@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
-//import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const Supervisor_Details = () => {
- //   const {studentID} = useParams();
+    const {studentID} = useParams();
     const [numSupervisors, setNumSupervisors] = useState(1);
     const [showAlert, setShowAlert] = useState(false);
    // const [sentEmail, setSentEmail] = useState([]);
@@ -18,14 +18,49 @@ const Supervisor_Details = () => {
         const supervisorName = document.getElementById(`supervisorName${index}`).value;
         const supervisorQualification = document.getElementById(`supervisorQualification${index}`).value;
     
-        /*
         if (!supervisorEmail) {
             console.error('Supervisor email is empty');
             return;
         }
 
-        */
+        console.log('Sending request to add supervisor:', {
+            studentID,
+            name: supervisorName,
+            email: supervisorEmail,
+            qualification: supervisorQualification,
+        });
 
+        fetch('http://localhost:8081/addSupervisor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                studentID,
+                name: supervisorName,
+                email: supervisorEmail,
+                qualification: supervisorQualification,
+            }),
+        })
+        .then(async response => {
+            console.log('Response status:', response.status);
+            const responseData = await response.json();
+            if (response.ok) {
+                console.log('Supervisor added and linked to student successfully', responseData);
+                setShowAlert(true);
+            } else {
+                throw new Error(responseData.error || 'Failed to add supervisor');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+        console.log(`Supervisor at index ${index} confirmed`);
+    };
+
+        //commenting this out to not finish the quota for testing
+        /*
         emailjs.send('service_otfz7pr', 'template_g28nptg', {
             name: supervisorName,
             to: supervisorEmail,
@@ -39,14 +74,13 @@ const Supervisor_Details = () => {
         .catch((error) => {
             console.error('Error sending email', error);
         });
+
     
         console.log(`Supervisor at index ${index} confirmed`);
     };
+    */
 
-    //testing purpose
-  //  useEffect(() => {
-   //     console.log('Emails sent to:', sentEmails);
-   // }, [sentEmails]);
+
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>

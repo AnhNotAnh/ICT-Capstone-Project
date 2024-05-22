@@ -186,6 +186,70 @@ app.get('/getSupervision/:studentID', (req, res) => {
     });
 });
 
+
+//testing for linking student and supervisor from supervisor detail page
+
+app.post('/addSupervisor', (req, res) => {
+    const { studentID, name, email, qualification } = req.body;
+
+    // Use placeholder values for accountID and asarNumber
+    const placeholderAccountID = 0;
+    const placeholderAsarNumber = '0000';
+
+    // Log the incoming request data
+    console.log('Received request to add supervisor:', req.body);
+
+    // SQL to insert or update the supervisor
+    const insertSupervisor = `
+        INSERT INTO SUPERVISOR (name, email, qualification, accountID, asarNumber)
+        VALUES (?, ?, ?, ?, ?)
+        ON CONFLICT(email) DO UPDATE SET 
+        name = excluded.name,
+        qualification = excluded.qualification
+    `;
+    
+    // Execute the SQL to insert or update the supervisor
+    db.run(insertSupervisor, [name, email, qualification, placeholderAccountID, placeholderAsarNumber], function(err) {
+        if (err) {
+            console.error('Error inserting/updating supervisor:', err.message);
+            return res.status(500).json({ error: 'Error adding or updating supervisor: ' + err.message });
+        }
+
+        console.log('Supervisor inserted/updated successfully');
+
+        // SQL to get the supervisorID of the newly inserted/updated supervisor
+        const getSupervisorID = "SELECT supervisorID FROM SUPERVISOR WHERE email = ?";
+        db.get(getSupervisorID, [email], (err, row) => {
+            if (err) {
+                console.error('Error retrieving supervisor ID:', err.message);
+                return res.status(500).json({ error: 'Error retrieving supervisor ID: ' + err.message });
+            }
+
+            if (row) {
+                const supervisorID = row.supervisorID;
+                console.log('Supervisor ID retrieved:', supervisorID);
+
+                // SQL to link the supervisor to the student
+                const insertSupervision = "INSERT INTO SUPERVISION (studentID, supervisorID, isSupervised) VALUES (?, ?, ?)";
+
+                // Execute the SQL to link the supervisor to the student
+                db.run(insertSupervision, [studentID, supervisorID, true], (err) => {
+                    if (err) {
+                        console.error('Error linking supervisor to student:', err.message);
+                        return res.status(500).json({ error: 'Error linking supervisor to student: ' + err.message });
+                    }
+
+                    console.log('Supervisor linked to student successfully');
+                    return res.status(200).json({ message: 'Supervisor added and linked to student successfully' });
+                });
+            } else {
+                console.error('Supervisor ID not found after insertion');
+                return res.status(500).json({ error: 'Supervisor ID not found after insertion' });
+            }
+        });
+    });
+});
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081,listening");
