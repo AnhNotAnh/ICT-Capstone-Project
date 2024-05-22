@@ -192,11 +192,11 @@ app.get('/getSupervision/:studentID', (req, res) => {
 app.post('/addSupervisor', (req, res) => {
     const { studentID, name, email, qualification } = req.body;
 
-    // Use placeholder values for accountID and asarNumber
+    // Using default values for testing purpose
     const placeholderAccountID = 0;
     const placeholderAsarNumber = '0000';
 
-    // Log the incoming request data
+    // Log the incoming request data for testing purpose
     console.log('Received request to add supervisor:', req.body);
 
     // SQL to insert or update the supervisor
@@ -208,7 +208,7 @@ app.post('/addSupervisor', (req, res) => {
         qualification = excluded.qualification
     `;
     
-    // Execute the SQL to insert or update the supervisor
+    
     db.run(insertSupervisor, [name, email, qualification, placeholderAccountID, placeholderAsarNumber], function(err) {
         if (err) {
             console.error('Error inserting/updating supervisor:', err.message);
@@ -232,7 +232,6 @@ app.post('/addSupervisor', (req, res) => {
                 // SQL to link the supervisor to the student
                 const insertSupervision = "INSERT INTO SUPERVISION (studentID, supervisorID, isSupervised) VALUES (?, ?, ?)";
 
-                // Execute the SQL to link the supervisor to the student
                 db.run(insertSupervision, [studentID, supervisorID, true], (err) => {
                     if (err) {
                         console.error('Error linking supervisor to student:', err.message);
