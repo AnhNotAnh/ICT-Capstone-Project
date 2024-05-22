@@ -250,6 +250,30 @@ app.post('/addSupervisor', (req, res) => {
     });
 });
 
+
+//fetch the current supervisor onto the student for current supervisor page
+
+
+app.get('/currentSupervisors/:studentID', (req, res) => {
+    const studentID = req.params.studentID;
+
+    const sql = `
+        SELECT SUPERVISOR.name, SUPERVISOR.email, SUPERVISOR.qualification
+        FROM SUPERVISOR
+        JOIN SUPERVISION ON SUPERVISOR.supervisorID = SUPERVISION.supervisorID
+        WHERE SUPERVISION.studentID = ? AND SUPERVISION.isSupervised = 1
+    `;
+    
+    db.all(sql, [studentID], (err, rows) => {
+        if (err) {
+            console.error('Error fetching current supervisors:', err.message);
+            return res.status(500).json({ error: 'Error fetching current supervisors: ' + err.message });
+        }
+        res.status(200).json(rows);
+    });
+});
+
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081,listening");

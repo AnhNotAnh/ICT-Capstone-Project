@@ -90,7 +90,7 @@ SELECT * FROM ACCOUNT;
 -- );
 
 -- INSERT INTO SUPERVISION (supervisorID, studentID, isSupervised) VALUES ( 2, 123123123, 1);
-
+--DELETE FROM SUPERVISION WHERE supervisorID = 1 AND studentID = 123123123;
 
 -- CREATE TABLE MILESTONE
 -- (
