@@ -23,8 +23,8 @@ root.render(
                     <Route path="Logbook/:studentID" element={<Logbook />} /> 
                     <Route path="Milestone/:studentID" element={<Milestone />} />
                     <Route path="Staff_Home" element={<Staff_Home />} />
-                    <Route path="Supervisor_Details" element={<Supervisor_Details />} />
-                    <Route path="Current_Supervisor" element={<Current_Supervisor />} />
+                    <Route path="Supervisor_Details/:studentID" element={<Supervisor_Details />} />
+                    <Route path="Current_Supervisor/:studentID" element={<Current_Supervisor />} />
                     <Route path="" element={<Home />} />
                     <Route path="*" element={<Home />} />
                 </Route>

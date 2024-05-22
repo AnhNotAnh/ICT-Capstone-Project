@@ -33,12 +33,12 @@ const Student_Home = () => {
           <button style={buttonStyle}>Cardiac Logbook</button>
         </Link>
         <button style={buttonStyle}>Vascular Logbook</button>
-        <Link to="/Supervisor_Details">
+        <Link to={`/Supervisor_Details/${studentID}`}>
           <button style={{ position: "absolute", top: "40px", right: "10px" }}>
             Supervisor Details
           </button>
         </Link>
-        <Link to="/Current_Supervisor">
+        <Link to={`/Current_Supervisor/${studentID}`}>
           <button style={{ position: "absolute", top: "40px", left: "1994px" }}>
             Current Supervisor
           </button>

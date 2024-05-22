@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
+//import { useParams } from 'react-router-dom';
 
 const Supervisor_Details = () => {
+ //   const {studentID} = useParams();
     const [numSupervisors, setNumSupervisors] = useState(1);
     const [showAlert, setShowAlert] = useState(false);
    // const [sentEmail, setSentEmail] = useState([]);
