@@ -6,9 +6,6 @@ import emailjs from '@emailjs/browser';
 const Milestone = () => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
-    const [message, setMessage] = useState('');
-    const [fName, setfName] = useState("");
-    const [lName, setlName] = useState("");
     const [milestone, setMilestone] = useState(0);
     const [studentSignature, setSignature] = useState('');
     const { studentID } = useParams();
@@ -17,7 +14,211 @@ const Milestone = () => {
     const [supervisorEmail, setSupervisorEmail] = useState('');
     const [supervisors, setSupervisors] = useState([]);
 
-    
+    const [rows, setRows] = useState([
+        { 
+        title: 'A) Initiative and enterprise',
+        questions: [ 
+            {question: 'Trainee establishes professional role within scope of practice.'},
+            {question: 'Trainee is goal directed, motivated and a team player.'},
+            {question: ' Trainee delivers safe patient centred services.'},
+            {question: ' Trainee respects patient diversity.' },
+            {question: ' Trainee practices within professional and ethical frameworks.'},
+            {question: ' Trainee promotes a safe and healthy workplace environment and conforms to organisational protocols for maintaining standards and quality assurance. This also includes infection prevention and control as well as housekeeping issues such as room preparation'}
+            ],
+        selectedAnswer: '',
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: ' Shows NO initiative and enterprise', checked: false },
+                    { label: ' Requires a high degree of guidance from supervisor to identify and adapt to the role', checked: false },
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: ' Shows some initiative and enterprise', checked: false },
+                    { label: ' Requires a high degree of guidance from supervisor to identify and adapt to professional role', checked: false },
+                ],
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: ' Identifies with role and clarifies requirements with some degree of guidance from supervisor', checked: false },
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: ' Able to establish professional role requirements, adapts with minimal or no guidance from supervisor', checked: false },
+                ],
+                },
+            ],
+        },
+        { 
+        title: 'B) Learning, evaluating and reflecting and Self-Management ',
+        questions: [ 
+            {question: 'Trainee critically evaluates and reflects on own performance, learns from errors and shows commitment to improvement in order to establish lifelong learning skills and career management .'},
+            {question: 'Trainee uses reflective practice to organise self and manage realistic goals.'},
+            {question: 'Trainee is calm under pressure.'}
+            ],
+        selectedAnswer: '',
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: ' Self-evaluations are brief, cursory and not used to improve  performance even after prompting by supervisor', checked: false },
+                    { label: ' Justifies personal decisions and choices without evaluating them ', checked: false },
+                    { label: ' Trainee is unable to see the need for improvement  ', checked: false },
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: 'Shows some initiative and enterprise', checked: false },
+                    { label: 'Requires a high degree of guidance from supervisor to identify and adapt to professional role', checked: false },
+                ],
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: 'Identifies with role and clarifies requirements with some degree of guidance from supervisor', checked: false },
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: 'Able to establish professional role requirements, adapts with minimal or no guidance from supervisor', checked: false },
+                ],
+                },
+            ],
+        },
+        { 
+        title: 'A) Initiative and enterprise:',
+        questions: [ 
+            {question: 'Trainee establishes professional role within scope of practice.'},
+            {question: 'Trainee is goal directed, motivated and a team player.'},
+            {question: ' Trainee delivers safe patient centred services.'},
+            {question: ' Trainee respects patient diversity.' },
+            {question: ' Trainee practices within professional and ethical frameworks.'},
+            {question: ' Trainee promotes a safe and healthy workplace environment and conforms to organisational protocols for maintaining standards and quality assurance. This also includes infection prevention and control as well as housekeeping issues such as room preparation'}
+            ],
+        selectedAnswer: '',
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: 'Shows NO initiative and enterprise', checked: false },
+                    { label: 'Requires a high degree of guidance from supervisor to identify and adapt to the role', checked: false },
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: 'Shows some initiative and enterprise', checked: false },
+                    { label: 'Requires a high degree of guidance from supervisor to identify and adapt to professional role', checked: false },
+                ],
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: 'Identifies with role and clarifies requirements with some degree of guidance from supervisor', checked: false },
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: 'Able to establish professional role requirements, adapts with minimal or no guidance from supervisor', checked: false },
+                ],
+                },
+            ],
+        },
+        { 
+        title: 'A) Initiative and enterprise:',
+        questions: [ 
+            {question: 'Trainee establishes professional role within scope of practice.'},
+            {question: 'Trainee is goal directed, motivated and a team player.'},
+            {question: ' Trainee delivers safe patient centred services.'},
+            {question: ' Trainee respects patient diversity.' },
+            {question: ' Trainee practices within professional and ethical frameworks.'},
+            {question: ' Trainee promotes a safe and healthy workplace environment and conforms to organisational protocols for maintaining standards and quality assurance. This also includes infection prevention and control as well as housekeeping issues such as room preparation'}
+            ],
+        selectedAnswer: '',
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: 'Shows NO initiative and enterprise', checked: false },
+                    { label: 'Requires a high degree of guidance from supervisor to identify and adapt to the role', checked: false },
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: 'Shows some initiative and enterprise', checked: false },
+                    { label: 'Requires a high degree of guidance from supervisor to identify and adapt to professional role', checked: false },
+                ],
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: 'Identifies with role and clarifies requirements with some degree of guidance from supervisor', checked: false },
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: 'Able to establish professional role requirements, adapts with minimal or no guidance from supervisor', checked: false },
+                ],
+                },
+            ],
+        },
+        { 
+        title: 'A) Initiative and enterprise:',
+        questions: [ 
+            {question: 'Trainee establishes professional role within scope of practice.'},
+            {question: 'Trainee is goal directed, motivated and a team player.'},
+            {question: ' Trainee delivers safe patient centred services.'},
+            {question: ' Trainee respects patient diversity.' },
+            {question: ' Trainee practices within professional and ethical frameworks.'},
+            {question: ' Trainee promotes a safe and healthy workplace environment and conforms to organisational protocols for maintaining standards and quality assurance. This also includes infection prevention and control as well as housekeeping issues such as room preparation'}
+            ],
+        selectedAnswer: '',
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: 'Shows NO initiative and enterprise', checked: false },
+                    { label: 'Requires a high degree of guidance from supervisor to identify and adapt to the role', checked: false },
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: 'Shows some initiative and enterprise', checked: false },
+                    { label: 'Requires a high degree of guidance from supervisor to identify and adapt to professional role', checked: false },
+                ],
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: 'Identifies with role and clarifies requirements with some degree of guidance from supervisor', checked: false },
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: 'Able to establish professional role requirements, adapts with minimal or no guidance from supervisor', checked: false },
+                ],
+                },
+            ],
+        }
+        ]);
+
+    const selectedAnswers = rows.map((row, index) => ({
+        question: row.title,
+        answer: row.selectedAnswer
+        }));
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -85,7 +286,7 @@ const Milestone = () => {
   return (
     <>
     <div className="container">
-        <div className="row justify-content-center">
+        <div className="row justify-content-center mb-4">
             <div className="col-8">
                 <form onSubmit={handleSubmit} className="new-registration">
                 <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
@@ -136,25 +337,10 @@ const Milestone = () => {
                             <div className="form-outline">
                             <label style={{color:"black"}} className="form-label label-style">Student Email</label>
                             <input type="email" className="form-control form-control-md" value={email} placeholder="Student Email"
-                            onChange={(e)=>(setEmail(e.target.value))} required>
+                            onChange={(e)=>(setEmail(e.target.value))} disabled required>
                             </input>
                             </div>
                         </div>
-                        {/* <div className="col-md-6 mb-4 pb-2">
-                            <div className="form-outline">
-                            <label style={{color:"black"}} className="form-label label-style">Student Given Name</label>
-                            <input type="text" className="form-control form-control-md" value={fName} placeholder="First Name"
-                            onChange={(e)=>(setfName(e.target.value))} required>
-                            </input>
-                            </div>
-                        </div>
-                        <div className="col-md-6 mb-4 pb-2">
-                            <div className="form-outline">
-                            <label style={{color:"black"}} className="form-label label-style">Student Family Name</label>
-                            <input type="text" className="form-control form-control-md" value={lName} placeholder="Last Name"
-                            onChange={(e)=>(setlName(e.target.value))} required></input>
-                            </div>
-                        </div> */}
                     </div>
                     <div className='row p-3'>
                         <div className='col-md-6 mb-4 pb-2'>
@@ -171,9 +357,101 @@ const Milestone = () => {
                 </form>
             </div>
         </div>
+        {/* <div className="row">
+        <div className="col-11">
+            <table className="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col" style={{width: '30%'}}>
+                        <strong><u>Professional capabilities</u></strong>
+                        <p style={{fontWeight: 'normal'}}>Trainee sonographers are required to meet
+                        the ASA Competency Standards and ASA
+                        Code of Conduct.</p>
+                    </th>
+                    <th scope="col" style={{width: '17.5%'}}>Significant need for improvement </th>
+                    <th scope="col" style={{width: '17.5%'}}>Novice</th>
+                    <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
+                    <th scope="col" style={{width: '17.5%'}}>Competent</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
+                        <p>
+                        <strong>A) Initiative and enterprise:</strong> <br/>
+                            • Trainee establishes professional role within scope of practice <br/>
+                            • Trainee is goal directed, motivated and a team player <br/>
+                            • Trainee delivers safe patient centred services <br/>
+                            • Trainee respects patient diversity <br/>
+                            • Trainee practices within professional and ethical frameworks <br/>
+                            • Trainee promotes a safe and healthy workplace environment and conforms to organisational protocols for maintaining standards and quality assurance. This also includes infection prevention and control as well as housekeeping issues such as room preparation
+                        </p>
+                    </th>
+                    <td>
+                        <label htmlFor="noInitiative"> <input type="checkbox" id="noInitiative" name="noInitiative" />
+                        Shows NO initiative and enterprise</label>
+                    </td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
+        </div> */}
+        <table className='table table-bordered'>
+            <thead>
+                <tr>
+                    <th scope="col" style={{width: '30%'}}>Question</th>
+                    <th scope="col" style={{width: '17.5%'}}>Significant need for improvement</th>
+                    <th scope="col" style={{width: '17.5%'}}>Novice</th>
+                    <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
+                    <th scope="col" style={{width: '17.5%'}}>Competent</th>
+                </tr>
+            </thead>
+            <tbody>
+            {rows.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+                <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
+                        <strong>{row.title}</strong>
+                        {row.questions.map((dot, dotIndex) => (
+                            <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
+                        ))}
+                </th>
+                {row.columns.map((column, columnIndex) => (
+                <td key={columnIndex}>
+                {column.answers.map((answer, answerIndex) => (
+                    <label htmlFor={`${rowIndex}-${columnIndex}-${answerIndex}`} key={answerIndex}>
+                    <input 
+                        type="checkbox" 
+                        id={`${rowIndex}-${columnIndex}-${answerIndex}`} 
+                        name={`${rowIndex}-${columnIndex}-${answerIndex}`} 
+                        checked={answer.checked}
+                        onChange={() => {
+                        const newRows = [...rows];
+                        newRows[rowIndex].columns.forEach((column) => {
+                            column.answers.forEach((answer) => {
+                            answer.checked = false;
+                            });
+                        });
+                        newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked = true;
+                        newRows[rowIndex].selectedAnswer = answer.label;
+                        setRows(newRows);
+                        console.log(`Selected answer for row ${rowIndex + 1}: ${answer.label}`);
+                        }} 
+                    />
+                    {answer.label}
+                    </label>
+                ))}
+                </td>
+            ))}
+            </tr>
+            ))}
+            </tbody>
+        </table>
     </div>
     </>
-  )
+    )
 }
 
 export default Milestone

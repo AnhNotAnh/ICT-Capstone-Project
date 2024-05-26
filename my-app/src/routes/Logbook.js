@@ -100,7 +100,7 @@ function Logbook() {
     <div className="container">
         <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
         <p>No of Scan: {scanNumber}</p>
-        {(remainder === 0 & scanNumber !== 0) && 
+        {(remainder === 0 && scanNumber !== 0) && 
         <div className="row justify-content-center">
             <div className='col-7'>
                 <p style={{color: 'red'}}>You have reach a Milestone, please go to Milestone page to finish your document !</p>
