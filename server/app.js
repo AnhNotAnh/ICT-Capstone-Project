@@ -270,17 +270,35 @@ app.get('/currentSupervisors/:studentID', (req, res) => {
     });
 });
 
+//Add milestone doc to the database
 app.post('/submitMilestone', (req, res) => {
-    const { studentID, studentSignature, supervisorID, milestoneAchievement, status } = req.body;
+    const { studentID, studentSignature, supervisorID, milestoneAchievement, status, answers } = req.body;
     const sql = 'INSERT INTO MILESTONE (studentID, supervisorID, studentSignature, supervisorSignature , milestoneAchievement, status) VALUES (?, ?, ?, ?, ?, ?)';
     db.run(sql, [studentID, supervisorID, studentSignature, 'Not signed', milestoneAchievement, status], (err) => {
         if (err) {
             console.error('Error submitting milestone:', err.message);
             return res.status(500).json({ error: 'Error submitting milestone: ' + err.message });
         }
-        res.json({ message: 'Milestone submitted successfully' });
-    });
-})
+        else {
+            const getMilestoneID = "SELECT milestoneID FROM MILESTONE WHERE studentID = ? and supervisorID = ? and milestoneAchievement = ? and status = ?";
+            db.all(getMilestoneID, [studentID, supervisorID, milestoneAchievement, status], (err, results) => {
+            if (err) {
+                console.error(err.message);
+            }
+            else {
+                const milestoneID = results[0].milestoneID;
+                res.json({ message: 'Milestone submitted successfully' });
+                const insertDoc = 'INSERT INTO MILESTONEDOC (milestoneID, answerSectionA, answerSectionBC, answerSectionD, answerSectionE) VALUES (?, ?, ?, ?, ?)';
+                db.run(insertDoc, [milestoneID, answers.sectionA, answers.sectionBC, answers.sectionD, answers.sectionE], (err) => {
+                    if (err) {
+                        console.error('Error inserting milestone doc:', err.message);
+                    }
+                    console.log('Milestone doc inserted successfully');
+                }); 
+            }
+            });
+        }});
+    })
 
 
 const PORT = process.env.PORT ?? 8081; 

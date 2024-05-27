@@ -110,10 +110,11 @@ SELECT * FROM ACCOUNT;
 -- (
 --     milestoneID INTEGER,
 --     docID INTEGER,
---     answerSectionA VARCHAR(255) NOT NULL,
---     answerSectionBC VARCHAR(255) NOT NULL,
---     answerSectionD VARCHAR(255) NOT NULL,
---     answerSectionE VARCHAR(255) NOT NULL,
+--     answerSectionA TEXT NOT NULL,
+--     answerSectionBC TEXT NOT NULL,
+--     answerSectionD TEXT NOT NULL,
+--     answerSectionE TEXT NOT NULL,
 --     PRIMARY KEY(docID ASC)
 -- );
+
 

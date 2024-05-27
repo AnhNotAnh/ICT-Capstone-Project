@@ -13,6 +13,7 @@ const Milestone = () => {
     const [supervisorName, setSupervisorName] = useState('');
     const [supervisorEmail, setSupervisorEmail] = useState('');
     const [supervisors, setSupervisors] = useState([]);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     const [rows, setRows] = useState([
         { 
@@ -56,7 +57,7 @@ const Milestone = () => {
             ],
         },
         { 
-        title: 'B, C) Learning, evaluating and reflecting and Self-Management ',
+        title: 'B, C) Learning, evaluating and reflecting and Self-Management',
         questions: [ 
             {question: 'Trainee critically evaluates and reflects on own performance, learns from errors and shows commitment to improvement in order to establish lifelong learning skills and career management .'},
             {question: 'Trainee uses reflective practice to organise self and manage realistic goals.'},
@@ -195,15 +196,49 @@ const Milestone = () => {
         },
     ]);
 
-    const selectedAnswers = rows.map((row, index) => ({
-        question: row.title,
-        answer: row.selectedAnswer
-        }));
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const selectedAnswers = rows.map((row, index) => ({
+            question: row.title,
+            answer: row.selectedAnswer
+            }));
+        const answersToInsert = {
+            sectionA: null,
+            sectionBC: null,
+            sectionD: null,
+            sectionE: null,
+        };
+            
         try{
+            if (selectedAnswers.length > 0 && selectedAnswers[0].answer !== '' && selectedAnswers[1].answer !== '' && selectedAnswers[2].answer !== '' && selectedAnswers[3].answer !== '') {
+                console.log('Total answers : ' + selectedAnswers.length);
+                selectedAnswers.forEach((row) => {
+                    switch (row.question) {
+                        case 'A) Initiative and enterprise':
+                            answersToInsert.sectionA = row.answer;
+                        break;
+                        case 'B, C) Learning, evaluating and reflecting and Self-Management':
+                            answersToInsert.sectionBC = row.answer;
+                        break;
+                        case 'D) Problem solving skills':
+                            answersToInsert.sectionD = row.answer;
+                        break;
+                        case 'E) Communication skills':
+                            answersToInsert.sectionE = row.answer;
+                        break;
+                        default:
+                        console.error('Invalid section:', row.question);
+                    }
+                });
+                setErrorMessage(null);
+                console.log('Answers to insert:', answersToInsert);
+            }
+            else {
+                setErrorMessage('Please fill in all the answers');
+                return;
+            }
             const response = await fetch(`http://localhost:8081/submitMilestone`, {
                 method: 'POST',
                 headers: {
@@ -214,7 +249,8 @@ const Milestone = () => {
                     studentSignature: studentSignature,
                     supervisorID: supervisorID,
                     milestoneAchievement: milestone,
-                    status: 0
+                    status: 0,
+                    answers: answersToInsert,
                 }),
             })
             if (!response.ok) {
@@ -458,6 +494,9 @@ const Milestone = () => {
             ))}
             </tbody>
         </table>
+        <div>
+            {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
+        </div>
     </div>
     </>
     )
