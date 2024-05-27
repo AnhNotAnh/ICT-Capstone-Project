@@ -100,7 +100,7 @@ SELECT * FROM ACCOUNT;
 --     supervisorID INTEGER,
 --     studentSignature VARCHAR(255) NOT NULL,
 --     supervisorSignature VARCHAR(255) NOT NULL,
---     milestoneAchievement VARCHAR(255) NOT NULL, 
+--     milestoneAchievement INTEGER, 
 --     status BOOLEAN NOT NULL, 
 --     PRIMARY KEY(milestoneID ASC)
 -- );
