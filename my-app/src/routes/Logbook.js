@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Milestone from '../components/Milestone';
 
 function Logbook() {
     const { studentID } = useParams();
@@ -13,6 +14,8 @@ function Logbook() {
     const [nextLogbookID, setNextLogbookID] = useState(0);
     const [logbook1, setLogbook1] = useState([]);
     const remainder = scanNumber % 5;
+    const [isDocSubmitted, setIsDocSubmitted] = useState(false);
+
     //Could be removed as logbook ID now is auto increment
     useEffect(() => {
     fetch(`http://localhost:8081/Logbook`)
@@ -58,6 +61,28 @@ function Logbook() {
     setLogbook(sortedData);
 }, [logbook1]);
 
+    //Milestone alert
+    useEffect(() => {
+        fetch('http://localhost:8081/milestoneVerification', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                studentID : studentID,
+                milestoneAchievement : scanNumber,
+            }),
+            })
+            .then((response) =>  response.json())
+            .then((data) => {
+                setIsDocSubmitted(data.verification);
+                console.log(data.verification);
+            })
+            .catch((err) => {
+                console.error(err.message);
+            });
+    }, [scanNumber, studentID]);
+
     const handleSubmit = async (event) => { 
     event.preventDefault();
     const logbookData = {
@@ -100,7 +125,7 @@ function Logbook() {
     <div className="container">
         <h2 style={{ padding: "30px" }}>Cardiac Logbook</h2>
         <p>No of Scan: {scanNumber}</p>
-        {(remainder === 0 & scanNumber !== 0) && 
+        {(remainder === 0 && scanNumber !== 0 && isDocSubmitted !== true) && 
         <div className="row justify-content-center">
             <div className='col-7'>
                 <p style={{color: 'red'}}>You have reach a Milestone, please go to Milestone page to finish your document !</p>
@@ -109,10 +134,7 @@ function Logbook() {
         </div>
         }
         <form onSubmit={handleSubmit} className="new-scan-form">
-            <div
-                className="row justify-content-center"
-                style={{ paddingBottom: "30px" }}
-            >
+            <div className="row justify-content-center" style={{ paddingBottom: "30px" }}>
                 <div className="col-3">
                 <label htmlFor="dateLogbook" className="form-label">
                     Date

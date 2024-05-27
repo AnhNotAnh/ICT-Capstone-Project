@@ -92,13 +92,31 @@ SELECT * FROM ACCOUNT;
 -- INSERT INTO SUPERVISION (supervisorID, studentID, isSupervised) VALUES ( 2, 123123123, 1);
 --DELETE FROM SUPERVISION WHERE supervisorID = 1 AND studentID = 123123123;
 
+-- DROP TABLE MILESTONE;
 -- CREATE TABLE MILESTONE
 -- (
+--     milestoneID INTEGER,
 --     studentID INTEGER,
 --     supervisorID INTEGER,
 --     studentSignature VARCHAR(255) NOT NULL,
 --     supervisorSignature VARCHAR(255) NOT NULL,
---     milestoneAchievement INTEGER, e.g 400 scans, 800 scans,...
---     status VARCHAR(255) NOT NULL, e.g waiting or completed.
---     PRIMARY KEY(studentID, supervisorID)
+--     milestoneAchievement INTEGER, 
+--     status BOOLEAN NOT NULL, 
+--     PRIMARY KEY(milestoneID ASC)
 -- );
+
+-- DROP TABLE MILESTONEDOC;
+-- CREATE TABLE MILESTONEDOC
+-- (
+--     milestoneID INTEGER,
+--     docID INTEGER,
+--     answerSectionA TEXT NOT NULL,
+--     answerSectionBC TEXT NOT NULL,
+--     answerSectionD TEXT NOT NULL,
+--     answerSectionE TEXT NOT NULL,
+--     PRIMARY KEY(docID ASC)
+-- );
+
+-- delete from MILESTONE where milestoneID = 1;
+
+

@@ -39,7 +39,7 @@ const Student_Home = () => {
           </button>
         </Link>
         <Link to={`/Current_Supervisor/${studentID}`}>
-          <button style={{ position: "absolute", top: "40px", left: "1994px" }}>
+          <button style={{ position: "absolute", top: "40px", right: "175px" }}>
             Current Supervisor
           </button>
         </Link>

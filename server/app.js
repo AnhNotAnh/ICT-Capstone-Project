@@ -250,8 +250,6 @@ app.post('/addSupervisor', (req, res) => {
 
 
 //fetch the current supervisor onto the student for current supervisor page
-
-
 app.get('/currentSupervisors/:studentID', (req, res) => {
     const studentID = req.params.studentID;
 
@@ -268,6 +266,55 @@ app.get('/currentSupervisors/:studentID', (req, res) => {
             return res.status(500).json({ error: 'Error fetching current supervisors: ' + err.message });
         }
         res.status(200).json(rows);
+    });
+});
+
+//Add milestone doc to the database
+app.post('/submitMilestone', (req, res) => {
+    const { studentID, studentSignature, supervisorID, milestoneAchievement, status, answers } = req.body;
+    const sql = 'INSERT INTO MILESTONE (studentID, supervisorID, studentSignature, supervisorSignature , milestoneAchievement, status) VALUES (?, ?, ?, ?, ?, ?)';
+    db.run(sql, [studentID, supervisorID, studentSignature, 'Not signed', milestoneAchievement, status], (err) => {
+        if (err) {
+            console.error('Error submitting milestone:', err.message);
+            return res.status(500).json({ error: 'Error submitting milestone: ' + err.message });
+        }
+        else {
+            const getMilestoneID = "SELECT milestoneID FROM MILESTONE WHERE studentID = ? and supervisorID = ? and milestoneAchievement = ? and status = ?";
+            db.all(getMilestoneID, [studentID, supervisorID, milestoneAchievement, status], (err, results) => {
+            if (err) {
+                console.error(err.message);
+            }
+            else {
+                const milestoneID = results[0].milestoneID;
+                res.json({ message: 'Milestone submitted successfully' });
+                const insertDoc = 'INSERT INTO MILESTONEDOC (milestoneID, answerSectionA, answerSectionBC, answerSectionD, answerSectionE) VALUES (?, ?, ?, ?, ?)';
+                db.run(insertDoc, [milestoneID, answers.sectionA, answers.sectionBC, answers.sectionD, answers.sectionE], (err) => {
+                    if (err) {
+                        console.error('Error inserting milestone doc:', err.message);
+                    }
+                    console.log('Milestone doc inserted successfully');
+                }); 
+            }
+            });
+        }});
+    })
+
+//Check if the milestone is submited by student.
+app.post('/milestoneVerification', (req, res) => {
+    const {studentID, milestoneAchievement} = req.body;
+    const sql = 'SELECT * FROM MILESTONE WHERE studentID = ? AND milestoneAchievement = ?';
+    db.all(sql, [studentID, milestoneAchievement], (err, rows) => {
+        if (err) {
+            console.error('Error fetching milestone:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestone: ' + err.message });
+        }
+        else {
+            if (rows.length > 0) {
+                res.json({ verification: true });
+            } else {
+                res.json({ verification: false });
+            }
+        }
     });
 });
 
@@ -321,5 +368,5 @@ app.post('/rejectStudent', (req, res) => {
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
-    console.log("Server running on port 8081,listening");
+    console.log("Server running on port 8081, listening for requests..");
 });
