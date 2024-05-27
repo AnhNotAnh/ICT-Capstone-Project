@@ -193,35 +193,64 @@ const Milestone = () => {
                 },
             ],
         },
-        ]);
+    ]);
 
     const selectedAnswers = rows.map((row, index) => ({
         question: row.title,
         answer: row.selectedAnswer
         }));
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        const serviceID = process.env.REACT_APP_SERVICE_ID;
-        const templateID = process.env.REACT_APP_TEMPLATE_ID;
-        const publicKey = process.env.REACT_APP_PUBLISH_KEY;
 
-        const emailParams = {
-        from_name: name,
-        from_email: email,
-        to_email: supervisorEmail,
-        to_name: supervisorName,
-        message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
+        try{
+            const response = await fetch(`http://localhost:8081/submitMilestone`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    studentID: studentID,
+                    studentSignature: studentSignature,
+                    supervisorID: supervisorID,
+                    milestoneAchievement: milestone,
+                    status: 0
+                }),
+            })
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            try {
+                const data = await response.json();
+                console.log('Success:', data.message);
+            } catch (error) {
+                console.log('No data returned from server');
+            }
+        }
+        catch (error) {
+            console.error('Error: ', error);
         }
 
-        emailjs.send(serviceID, templateID, emailParams, publicKey)
-        .then(response => {
-            console.log('SUCCESS!', response.status, response.text);
-        })
-        .catch(error => {
-            console.log('FAILED...', error);
-        });
+        
+        // const serviceID = process.env.REACT_APP_SERVICE_ID;
+        // const templateID = process.env.REACT_APP_TEMPLATE_ID;
+        // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
+
+        // const emailParams = {
+        // from_name: name,
+        // from_email: email,
+        // to_email: supervisorEmail,
+        // to_name: supervisorName,
+        // message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
+        // }
+
+        // emailjs.send(serviceID, templateID, emailParams, publicKey)
+        // .then(response => {
+        //     console.log('SUCCESS!', response.status, response.text);
+        // })
+        // .catch(error => {
+        //     console.log('FAILED...', error);
+        // });
     }
     //student's information
     useEffect(() => {
@@ -282,7 +311,7 @@ const Milestone = () => {
                             if (selectedSupervisor) {
                                 setSupervisorEmail(selectedSupervisor.email);
                                 setSupervisorName(selectedSupervisor.name);
-                                setSupervisorID(selectedSupervisor.id);
+                                setSupervisorID(selectedSupervisor.supervisorID);
                             }
                             }}>
                                 <option value="">Select supervisor you want to send to </option>

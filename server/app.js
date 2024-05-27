@@ -251,8 +251,6 @@ app.post('/addSupervisor', (req, res) => {
 
 
 //fetch the current supervisor onto the student for current supervisor page
-
-
 app.get('/currentSupervisors/:studentID', (req, res) => {
     const studentID = req.params.studentID;
 
@@ -272,8 +270,20 @@ app.get('/currentSupervisors/:studentID', (req, res) => {
     });
 });
 
+app.post('/submitMilestone', (req, res) => {
+    const { studentID, studentSignature, supervisorID, milestoneAchievement, status } = req.body;
+    const sql = 'INSERT INTO MILESTONE (studentID, supervisorID, studentSignature, supervisorSignature , milestoneAchievement, status) VALUES (?, ?, ?, ?, ?, ?)';
+    db.run(sql, [studentID, supervisorID, studentSignature, 'Not signed', milestoneAchievement, status], (err) => {
+        if (err) {
+            console.error('Error submitting milestone:', err.message);
+            return res.status(500).json({ error: 'Error submitting milestone: ' + err.message });
+        }
+        res.json({ message: 'Milestone submitted successfully' });
+    });
+})
+
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
-    console.log("Server running on port 8081,listening");
+    console.log("Server running on port 8081, listening for requests..");
 });
