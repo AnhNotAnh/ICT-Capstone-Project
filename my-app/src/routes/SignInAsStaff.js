@@ -13,25 +13,34 @@ const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
-        setError('Please enter username and password');
-        return;
-    }
+      setError('Please enter username and password');
+      return;
+  }
 
-    try {
-        const response = await axios.post('http://localhost:8081/validateStaff', { username, password });
+  try {
+      const response = await axios.post('http://localhost:8081/validateStaff', { username, password });
 
-        if (response.data.validation && (response.data.role === 'STAFF' || response.data.role ==='ADMIN' || response.data.role === 'SUPERVISOR')) {
-            setLogin(true);
-            console.log('Login successful');
-            navigate('/Staff_Home'); // If the creds are accurate it should lead to staff page 
-        } else {
-            setError('Access denied');
-        }
-    } catch (error) {
-        console.error('Error logging in:', error);
-        setError('An error occurred while logging in');
-    }
-}
+      console.log('Response data:', response.data);
+
+      if (response.data.validation && (response.data.role === 'STAFF' || response.data.role === 'ADMIN' || response.data.role === 'SUPERVISOR')) {
+          setLogin(true);
+          console.log('Login successful');
+          console.log('Role:', response.data.role);
+          console.log('Account ID:', response.data.accountId);
+
+          if (response.data.role === 'SUPERVISOR') {
+              navigate(`/Supervisor_Home/${response.data.accountId}`); // Navigate to SupervisorHome if role is SUPERVISOR
+          } else {
+              navigate('/Staff_Home'); // Navigate to Staff_Home for other roles
+          }
+      } else {
+          setError('Access denied');
+      }
+  } catch (error) {
+      console.error('Error logging in:', error);
+      setError('An error occurred while logging in');
+  }
+};
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', flexDirection: 'column' }}>

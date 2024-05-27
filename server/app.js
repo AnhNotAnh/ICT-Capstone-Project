@@ -66,23 +66,22 @@ app.post('/validateStudent',(req,res) => {
     });
 });
 
-//for staff and admin login
+//for staff and admin login and supervisor 
 app.post('/validateStaff', (req, res) => {
     const { username, password } = req.body;
 
-    db.all(`SELECT * FROM ACCOUNT WHERE username = ? AND password = ? AND (role = 'STAFF' OR role = 'ADMIN' OR role = 'SUPERVISOR')`, [username, password], (err, rows) => {
+    db.get(`SELECT * FROM ACCOUNT WHERE username = ? AND password = ? AND (role = 'STAFF' OR role = 'ADMIN' OR role = 'SUPERVISOR')`, [username, password], (err, row) => {
         if (err) {
             console.error(err.message);
             return res.status(500).send({ error: 'An error occurred while checking the credentials' });
         }
-        if (rows.length > 0) {
-            return res.send({ validation: true, role: 'STAFF' });
+        if (row) {
+            return res.send({ validation: true, role: row.role, accountId: row.accountID });
         } else {
             return res.send({ validation: false });
         }
     });
 });
-
 
 //for registration of student
 app.post('/registerStudent', (req, res) => {
@@ -272,6 +271,53 @@ app.get('/currentSupervisors/:studentID', (req, res) => {
     });
 });
 
+
+//fetch the student for supervisor home page
+
+app.get('/getSupervisedStudents/:accountId', (req, res) => {
+    const accountId = req.params.accountId;
+
+    const sql = `
+        SELECT STUDENT.studentID, STUDENT.name, STUDENT.email, SUPERVISOR.qualification
+        FROM STUDENT
+        JOIN SUPERVISION ON STUDENT.studentID = SUPERVISION.studentID
+        JOIN SUPERVISOR ON SUPERVISOR.supervisorID = SUPERVISION.supervisorID
+        WHERE SUPERVISOR.accountID = ? AND SUPERVISION.isSupervised = 1
+    `;
+    
+    db.all(sql, [accountId], (err, rows) => {
+        if (err) {
+            console.error('Error fetching supervised students:', err.message);
+            return res.status(500).json({ error: 'Error fetching supervised students: ' + err.message });
+        }
+        res.status(200).json(rows);
+    });
+});
+
+
+//rejecting students
+
+
+app.post('/rejectStudent', (req, res) => {
+    const { studentID, accountId } = req.body;
+
+    const getSupervisorIDSql = "SELECT supervisorID FROM SUPERVISOR WHERE accountID = ?";
+    db.get(getSupervisorIDSql, [accountId], (err, supervisor) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error fetching supervisor' });
+        }
+
+        const supervisorID = supervisor.supervisorID;
+        const updateSupervisionSql = "UPDATE SUPERVISION SET isSupervised = 0 WHERE studentID = ? AND supervisorID = ?";
+
+        db.run(updateSupervisionSql, [studentID, supervisorID], function (err) {
+            if (err) {
+                return res.status(500).json({ error: 'Error updating supervision' });
+            }
+            res.status(200).json({ message: 'Student rejected successfully' });
+        });
+    });
+});
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
