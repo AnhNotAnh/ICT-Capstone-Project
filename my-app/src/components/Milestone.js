@@ -196,7 +196,7 @@ const Milestone = () => {
         },
     ]);
 
-
+    //Store data and send email to supervisor
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -204,16 +204,18 @@ const Milestone = () => {
             question: row.title,
             answer: row.selectedAnswer
             }));
+
         const answersToInsert = {
             sectionA: null,
             sectionBC: null,
             sectionD: null,
             sectionE: null,
-        };
-            
+        };  
+
         try{
             if (selectedAnswers.length > 0 && selectedAnswers[0].answer !== '' && selectedAnswers[1].answer !== '' && selectedAnswers[2].answer !== '' && selectedAnswers[3].answer !== '') {
                 console.log('Total answers : ' + selectedAnswers.length);
+                //Transform the selected answers into the format that the backend expects
                 selectedAnswers.forEach((row) => {
                     switch (row.question) {
                         case 'A) Initiative and enterprise':
@@ -236,7 +238,7 @@ const Milestone = () => {
                 console.log('Answers to insert:', answersToInsert);
             }
             else {
-                setErrorMessage('Please fill in all the answers');
+                setErrorMessage('Please fill in all the answers !!!');
                 return;
             }
             const response = await fetch(`http://localhost:8081/submitMilestone`, {
@@ -328,177 +330,137 @@ const Milestone = () => {
         });
     }, [studentID])
 
-  return (
-    <>
+return (
     <div className="container">
-        <div className="row justify-content-center mb-4">
-            <div className="col-8">
-                <form onSubmit={handleSubmit} className="new-registration">
-                <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
-                <div className="card-body p-0">
-                    <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of 400 scan milestone
-                    (Mandatory)</b></h3>
-                    <div className="row p-3 mb-4 pb-2">
-                        <div className="col-md-6 mb-4 pb-2">
-                            <label style={{color:"black"}} className="form-label label-style">Send to Supervisor</label>
-                            <select value={supervisorID} required className='form-select' 
-                            onChange={(e) => {
-                            const selectedSupervisor = supervisors.find(superV => superV.supervisorID === Number(e.target.value));
-                            if (selectedSupervisor) {
-                                setSupervisorEmail(selectedSupervisor.email);
-                                setSupervisorName(selectedSupervisor.name);
-                                setSupervisorID(selectedSupervisor.supervisorID);
-                            }
-                            }}>
-                                <option value="">Select supervisor you want to send to </option>
-                                {supervisors.map((supervisor, index) => 
-                                <option key={index} value={supervisor.supervisorID}>{supervisor.name}</option>
-                                )}
-                            </select>
-                        </div>
-                        <div className="col-md-6 mb-4 pb-2">
-                            <label style={{color:"black"}} className="form-label label-style">Milestone Achievement</label>
-                            <select value={milestone} className='form-select' onChange={(e) => (setMilestone(e.target.value))} required>
-                            <option value="">Select your milestone achievement </option>
-                            <option value="400">400</option>
-                            <option value="800">800</option>
-                            <option value="1200">1200</option>
-                            <option value="1600">1600</option>
-                            <option value="1800">1800</option>
-                            <option value="2000">2000</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className="row p-3">
-                        <div className="col-md-6 mb-4 pb-2">
-                            <div className="form-outline">
-                            <label style={{color:"black"}} className="form-label label-style">Student Full Name</label>
-                            <input type="text" className="form-control form-control-md" value={name} placeholder="Full Name"
-                            onChange={(e)=>(setName(e.target.value))} required>
-                            </input>
+        <form onSubmit={handleSubmit} className="new-milestone">
+            <div className="row justify-content-center mb-4">
+                <div className="col-8">
+                    <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
+                    <div className="card-body p-0">
+                        <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of 400 scan milestone
+                        (Mandatory)</b></h3>
+                        <div className="row p-3 mb-4 pb-2">
+                            <div className="col-md-6 mb-4 pb-2">
+                                <label style={{color:"black"}} className="form-label label-style">Send to Supervisor</label>
+                                <select value={supervisorID} required className='form-select' 
+                                onChange={(e) => {
+                                const selectedSupervisor = supervisors.find(superV => superV.supervisorID === Number(e.target.value));
+                                if (selectedSupervisor) {
+                                    setSupervisorEmail(selectedSupervisor.email);
+                                    setSupervisorName(selectedSupervisor.name);
+                                    setSupervisorID(selectedSupervisor.supervisorID);
+                                }
+                                }}>
+                                    <option value="">Select supervisor you want to send to </option>
+                                    {supervisors.map((supervisor, index) => 
+                                    <option key={index} value={supervisor.supervisorID}>{supervisor.name}</option>
+                                    )}
+                                </select>
+                            </div>
+                            <div className="col-md-6 mb-4 pb-2">
+                                <label style={{color:"black"}} className="form-label label-style">Milestone Achievement</label>
+                                <select value={milestone} className='form-select' onChange={(e) => (setMilestone(e.target.value))} required>
+                                <option value="">Select your milestone achievement </option>
+                                <option value="400">400</option>
+                                <option value="800">800</option>
+                                <option value="1200">1200</option>
+                                <option value="1600">1600</option>
+                                <option value="1800">1800</option>
+                                <option value="2000">2000</option>
+                                </select>
                             </div>
                         </div>
-                        <div className="col-md-6 mb-4 pb-2">
-                            <div className="form-outline">
-                            <label style={{color:"black"}} className="form-label label-style">Student Email</label>
-                            <input type="email" className="form-control form-control-md" value={email} placeholder="Student Email"
-                            onChange={(e)=>(setEmail(e.target.value))} disabled required>
-                            </input>
+                        <div className="row p-3">
+                            <div className="col-md-6 mb-4 pb-2">
+                                <div className="form-outline">
+                                <label style={{color:"black"}} className="form-label label-style">Student Full Name</label>
+                                <input type="text" className="form-control form-control-md" value={name} placeholder="Full Name"
+                                onChange={(e)=>(setName(e.target.value))} required>
+                                </input>
+                                </div>
+                            </div>
+                            <div className="col-md-6 mb-4 pb-2">
+                                <div className="form-outline">
+                                <label style={{color:"black"}} className="form-label label-style">Student Email</label>
+                                <input type="email" className="form-control form-control-md" value={email} placeholder="Student Email"
+                                onChange={(e)=>(setEmail(e.target.value))} disabled required>
+                                </input>
+                                </div>
                             </div>
                         </div>
+                        <div className='row p-3'>
+                            <div className='col-md-6 mb-4 pb-2'>
+                                <div className="form-outline form-white">
+                                <label style={{color:"black"}} className="form-label label-style">Student Signature</label>
+                                <input type="text" className="form-control form-control-md" value={studentSignature} placeholder="Student Signature"
+                                onChange={(e)=>(setSignature(e.target.value))} required></input>
+                                </div>  
+                            </div>
+                        </div>  
                     </div>
-                    <div className='row p-3'>
-                        <div className='col-md-6 mb-4 pb-2'>
-                            <div className="form-outline form-white">
-                            <label style={{color:"black"}} className="form-label label-style">Student Signature</label>
-                            <input type="text" className="form-control form-control-md" value={studentSignature} placeholder="Student Signature"
-                            onChange={(e)=>(setSignature(e.target.value))} required></input>
-                            </div>  
-                        </div>
                     </div>
-                    <button type="submit" className="btn btn-primary mb-2">Submit</button>    
                 </div>
-                </div>
-                </form>
             </div>
-        </div>
-        {/* <div className="row">
-        <div className="col-11">
-            <table className="table table-bordered">
-            <thead>
-                <tr>
-                    <th scope="col" style={{width: '30%'}}>
-                        <strong><u>Professional capabilities</u></strong>
-                        <p style={{fontWeight: 'normal'}}>Trainee sonographers are required to meet
-                        the ASA Competency Standards and ASA
-                        Code of Conduct.</p>
-                    </th>
-                    <th scope="col" style={{width: '17.5%'}}>Significant need for improvement </th>
-                    <th scope="col" style={{width: '17.5%'}}>Novice</th>
-                    <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
-                    <th scope="col" style={{width: '17.5%'}}>Competent</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
-                        <p>
-                        <strong>A) Initiative and enterprise:</strong> <br/>
-                            • Trainee establishes professional role within scope of practice <br/>
-                            • Trainee is goal directed, motivated and a team player <br/>
-                            • Trainee delivers safe patient centred services <br/>
-                            • Trainee respects patient diversity <br/>
-                            • Trainee practices within professional and ethical frameworks <br/>
-                            • Trainee promotes a safe and healthy workplace environment and conforms to organisational protocols for maintaining standards and quality assurance. This also includes infection prevention and control as well as housekeeping issues such as room preparation
-                        </p>
-                    </th>
-                    <td>
-                        <label htmlFor="noInitiative"> <input type="checkbox" id="noInitiative" name="noInitiative" />
-                        Shows NO initiative and enterprise</label>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-            </table>
-        </div>
-        </div> */}
-        <table className='table table-bordered'>
-            <thead>
-                <tr>
-                    <th scope="col" style={{width: '30%'}}>Question</th>
-                    <th scope="col" style={{width: '17.5%'}}>Significant need for improvement</th>
-                    <th scope="col" style={{width: '17.5%'}}>Novice</th>
-                    <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
-                    <th scope="col" style={{width: '17.5%'}}>Competent</th>
-                </tr>
-            </thead>
-            <tbody>
-            {rows.map((row, rowIndex) => (
-            <tr key={rowIndex}>
-                <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
-                        <strong>{row.title}</strong>
-                        {row.questions.map((dot, dotIndex) => (
-                            <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
+            <div className='row'>
+                <div className='col-12'>
+                    <table className='table table-bordered'>
+                        <thead>
+                            <tr>
+                                <th scope="col" style={{width: '30%'}}>Question</th>
+                                <th scope="col" style={{width: '17.5%'}}>Significant need for improvement</th>
+                                <th scope="col" style={{width: '17.5%'}}>Novice</th>
+                                <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
+                                <th scope="col" style={{width: '17.5%'}}>Competent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {rows.map((row, rowIndex) => (
+                        <tr key={rowIndex}>
+                            <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
+                                <strong>{row.title}</strong>
+                                {row.questions.map((dot, dotIndex) => (
+                                    <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
+                                ))}
+                            </th>
+                            {row.columns.map((column, columnIndex) => (
+                            <td key={columnIndex}>
+                            {column.answers.map((answer, answerIndex) => (
+                                <label htmlFor={`${rowIndex}-${columnIndex}-${answerIndex}`} key={answerIndex} style={{textAlign: 'left', marginBottom: '1em'}}>
+                                <input 
+                                    type="checkbox" 
+                                    id={`${rowIndex}-${columnIndex}-${answerIndex}`} 
+                                    name={`${rowIndex}-${columnIndex}-${answerIndex}`} 
+                                    checked={answer.checked}
+                                    onChange={() => {
+                                    const newRows = [...rows];
+                                    newRows[rowIndex].columns.forEach((column) => {
+                                        column.answers.forEach((answer) => {
+                                        answer.checked = false;
+                                        });
+                                    });
+                                    newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked = true;
+                                    newRows[rowIndex].selectedAnswer = answer.label;
+                                    setRows(newRows);
+                                    console.log(`Selected answer for row ${rowIndex + 1}: ${answer.label}`);
+                                    }} 
+                                />
+                                {answer.label}
+                                </label>
+                            ))}
+                            </td>
                         ))}
-                </th>
-                {row.columns.map((column, columnIndex) => (
-                <td key={columnIndex}>
-                {column.answers.map((answer, answerIndex) => (
-                    <label htmlFor={`${rowIndex}-${columnIndex}-${answerIndex}`} key={answerIndex} style={{textAlign: 'left', marginBottom: '1em'}}>
-                    <input 
-                        type="checkbox" 
-                        id={`${rowIndex}-${columnIndex}-${answerIndex}`} 
-                        name={`${rowIndex}-${columnIndex}-${answerIndex}`} 
-                        checked={answer.checked}
-                        onChange={() => {
-                        const newRows = [...rows];
-                        newRows[rowIndex].columns.forEach((column) => {
-                            column.answers.forEach((answer) => {
-                            answer.checked = false;
-                            });
-                        });
-                        newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked = true;
-                        newRows[rowIndex].selectedAnswer = answer.label;
-                        setRows(newRows);
-                        console.log(`Selected answer for row ${rowIndex + 1}: ${answer.label}`);
-                        }} 
-                    />
-                    {answer.label}
-                    </label>
-                ))}
-                </td>
-            ))}
-            </tr>
-            ))}
-            </tbody>
-        </table>
-        <div>
-            {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-        </div>
+                        </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div>
+                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
+                <button type="submit" className="btn btn-primary mb-2">Submit</button>  
+            </div>
+        </form>
     </div>
-    </>
     )
 }
 
