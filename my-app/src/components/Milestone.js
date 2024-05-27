@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 
 
@@ -14,6 +14,7 @@ const Milestone = () => {
     const [supervisorEmail, setSupervisorEmail] = useState('');
     const [supervisors, setSupervisors] = useState([]);
     const [errorMessage, setErrorMessage] = useState(null);
+    const navigate = useNavigate();
 
     const [rows, setRows] = useState([
         { 
@@ -261,6 +262,9 @@ const Milestone = () => {
             try {
                 const data = await response.json();
                 console.log('Success:', data.message);
+                window.alert(data.message + ', you now will be redirected to the logbook page');
+                navigate(`/logbook/${studentID}`);
+                
             } catch (error) {
                 console.log('No data returned from server');
             }
@@ -268,7 +272,6 @@ const Milestone = () => {
         catch (error) {
             console.error('Error: ', error);
         }
-
         
         // const serviceID = process.env.REACT_APP_SERVICE_ID;
         // const templateID = process.env.REACT_APP_TEMPLATE_ID;
@@ -277,11 +280,11 @@ const Milestone = () => {
         // const emailParams = {
         // from_name: name,
         // from_email: email,
-        // to_email: supervisorEmail,
+        // //to_email: supervisorEmail, real email
+        // to_email: 'quocanh01082020@gmail.com',
         // to_name: supervisorName,
         // message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
         // }
-
         // emailjs.send(serviceID, templateID, emailParams, publicKey)
         // .then(response => {
         //     console.log('SUCCESS!', response.status, response.text);
@@ -361,7 +364,7 @@ return (
                                 <label style={{color:"black"}} className="form-label label-style">Milestone Achievement</label>
                                 <select value={milestone} className='form-select' onChange={(e) => (setMilestone(e.target.value))} required>
                                 <option value="">Select your milestone achievement </option>
-                                <option value="400">400</option>
+                                <option value="5">5</option>
                                 <option value="800">800</option>
                                 <option value="1200">1200</option>
                                 <option value="1600">1600</option>
@@ -457,7 +460,10 @@ return (
             </div>
             <div>
                 {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-                <button type="submit" className="btn btn-primary mb-2">Submit</button>  
+                <label style={{color:"black"}}>
+                    <input type="checkbox" required/>I have read and understood the above information and I certify that the information I have provided is true and accurate.
+                </label><br/>
+                <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>  
             </div>
         </form>
     </div>

@@ -300,6 +300,25 @@ app.post('/submitMilestone', (req, res) => {
         }});
     })
 
+//Check if the milestone is submited by student.
+app.post('/milestoneVerification', (req, res) => {
+    const {studentID, milestoneAchievement} = req.body;
+    const sql = 'SELECT * FROM MILESTONE WHERE studentID = ? AND milestoneAchievement = ?';
+    db.all(sql, [studentID, milestoneAchievement], (err, rows) => {
+        if (err) {
+            console.error('Error fetching milestone:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestone: ' + err.message });
+        }
+        else {
+            if (rows.length > 0) {
+                res.json({ verification: true });
+            } else {
+                res.json({ verification: false });
+            }
+        }
+    });
+});
+
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {

@@ -117,4 +117,6 @@ SELECT * FROM ACCOUNT;
 --     PRIMARY KEY(docID ASC)
 -- );
 
+-- delete from MILESTONE where milestoneID = 1;
+
 
