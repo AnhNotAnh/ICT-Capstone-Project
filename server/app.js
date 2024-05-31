@@ -270,6 +270,7 @@ app.get('/currentSupervisors/:studentID', (req, res) => {
 });
 
 //Add milestone doc to the database
+//First insert the milestone and then insert the milestone doc
 app.post('/submitMilestone', (req, res) => {
     const { studentID, studentSignature, supervisorID, milestoneAchievement, status, answers } = req.body;
     const sql = 'INSERT INTO MILESTONE (studentID, supervisorID, studentSignature, supervisorSignature , milestoneAchievement, status) VALUES (?, ?, ?, ?, ?, ?)';

@@ -16,6 +16,7 @@ const Milestone = () => {
     const [errorMessage, setErrorMessage] = useState(null);
     const navigate = useNavigate();
 
+    //Create a state to store the Milestone data in JSON format
     const [rows, setRows] = useState([
         { 
         title: 'A) Initiative and enterprise',
@@ -309,6 +310,7 @@ const Milestone = () => {
 
         const selectedAnswers = rows.map((row, index) => ({
             question: row.title,
+            // Add up all the selected answers into a string for each row
             answer: row.selectedAnswer.join(', '),
             }));
 
@@ -390,7 +392,8 @@ const Milestone = () => {
         catch (error) {
             console.error('Error: ', error);
         }
-        
+        // EmailJS Format to send email to supervisor
+
         // const serviceID = process.env.REACT_APP_SERVICE_ID;
         // const templateID = process.env.REACT_APP_TEMPLATE_ID;
         // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
