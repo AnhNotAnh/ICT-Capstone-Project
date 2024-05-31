@@ -287,8 +287,8 @@ app.post('/submitMilestone', (req, res) => {
             else {
                 const milestoneID = results[0].milestoneID;
                 res.json({ message: 'Milestone submitted successfully' });
-                const insertDoc = 'INSERT INTO MILESTONEDOC (milestoneID, answerSectionA, answerSectionBC, answerSectionD, answerSectionE) VALUES (?, ?, ?, ?, ?)';
-                db.run(insertDoc, [milestoneID, answers.sectionA, answers.sectionBC, answers.sectionD, answers.sectionE], (err) => {
+                const insertDoc = 'INSERT INTO MILESTONEDOC (milestoneID, answerSectionA, answerSectionB, answerSectionC, answerSectionD, answerSectionE, answerSectionF, answerSectionG) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+                db.run(insertDoc, [milestoneID, answers.sectionA, answers.sectionB, answers.sectionC, answers.sectionD, answers.sectionE, answers.sectionF, answers.sectionG], (err) => {
                     if (err) {
                         console.error('Error inserting milestone doc:', err.message);
                     }

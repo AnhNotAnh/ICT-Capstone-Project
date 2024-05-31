@@ -157,7 +157,7 @@ const Milestone = () => {
                 { 
                 label: 'Advanced beginner', 
                 answers: [
-                    { label: ' Plans sequencing and timing of tasks and recognises priorities and usually focuses on relevant ata ', checked: false },
+                    { label: ' Plans sequencing and timing of tasks and recognises priorities and usually focuses on relevant data', checked: false },
                     { label: ' Able to make some adjustments as indicated by the patient’s response or the clinical situation', checked: false },
                     { label: ' Seeks feedback or advice to make decisions ', checked: false },
                     { label: ' Moderate degree of guidance required from the supervisor', checked: false },
@@ -309,34 +309,46 @@ const Milestone = () => {
 
         const selectedAnswers = rows.map((row, index) => ({
             question: row.title,
-            answer: row.selectedAnswer
+            answer: row.selectedAnswer.join(', '),
             }));
 
         const answersToInsert = {
             sectionA: null,
-            sectionBC: null,
+            sectionB: null,
+            sectionC: null,
             sectionD: null,
             sectionE: null,
+            sectionF: null,
+            sectionG: null,
         };  
 
         try{
-            if (selectedAnswers.length > 0 && selectedAnswers[0].answer !== '' && selectedAnswers[1].answer !== '' && selectedAnswers[2].answer !== '' && selectedAnswers[3].answer !== '') {
+            if (selectedAnswers.every(answerObj => answerObj.answer.trim() !== '')) {
                 console.log('Total answers : ' + selectedAnswers.length);
                 //Transform the selected answers into the format that the backend expects
                 selectedAnswers.forEach((row) => {
                     switch (row.question) {
                         case 'A) Initiative and enterprise':
                             answersToInsert.sectionA = row.answer;
-                        break;
-                        case 'B, C) Learning, evaluating and reflecting and Self-Management':
-                            answersToInsert.sectionBC = row.answer;
-                        break;
+                            break;
+                        case 'B) Learning, evaluating and reflecting':
+                            answersToInsert.sectionB = row.answer;
+                            break;
+                        case 'C) Self-Management':
+                            answersToInsert.sectionC= row.answer;
+                            break;
                         case 'D) Problem solving skills':
                             answersToInsert.sectionD = row.answer;
-                        break;
+                            break;
                         case 'E) Communication skills':
                             answersToInsert.sectionE = row.answer;
-                        break;
+                            break;
+                        case 'F) Technology and resource':
+                            answersToInsert.sectionF = row.answer;
+                            break;
+                        case 'G) Hands on Scanning':
+                            answersToInsert.sectionG = row.answer;
+                            break;
                         default:
                         console.error('Invalid section:', row.question);
                     }
