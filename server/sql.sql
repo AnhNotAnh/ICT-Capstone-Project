@@ -111,9 +111,12 @@ SELECT * FROM ACCOUNT;
 --     milestoneID INTEGER,
 --     docID INTEGER,
 --     answerSectionA TEXT NOT NULL,
---     answerSectionBC TEXT NOT NULL,
+--     answerSectionB TEXT NOT NULL,
+--     answerSectionC TEXT NOT NULL,
 --     answerSectionD TEXT NOT NULL,
 --     answerSectionE TEXT NOT NULL,
+--     answerSectionF TEXT NOT NULL,
+--     answerSectionG TEXT NOT NULL,
 --     PRIMARY KEY(docID ASC)
 -- );
 

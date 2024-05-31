@@ -58,9 +58,41 @@ const Milestone = () => {
             ],
         },
         { 
-        title: 'B, C) Learning, evaluating and reflecting and Self-Management',
+        title: 'B) Learning, evaluating and reflecting',
         questions: [ 
-            {question: 'Trainee critically evaluates and reflects on own performance, learns from errors and shows commitment to improvement in order to establish lifelong learning skills and career management .'},
+            {question: 'Trainee critically evaluates and reflects on own performance, learns from errors and shows commitment to improvement in order to establish lifelong learning skills and career management .'}
+            ],
+        selectedAnswer: [],
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: ' Self-evaluations are brief, cursory and not used to improve  performance even after prompting by supervisor', checked: false }
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: ' Evaluates own performance at a basic level using simple criteria to understand and reflect on the role ', checked: false }
+                ],  
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: ' Evaluates own performance at a basic level using simple criteria to understand and reflect on the role ', checked: false }
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: ' Adequately monitors and evaluates own performance ', checked: false }
+                ],
+                },
+            ],
+        },
+        { 
+        title: 'C) Self-Management',
+        questions: [ 
             {question: 'Trainee uses reflective practice to organise self and manage realistic goals.'},
             {question: 'Trainee is calm under pressure.'}
             ],
@@ -69,7 +101,6 @@ const Milestone = () => {
                 { 
                 label: 'Significant need for improvement', 
                 answers: [
-                    { label: ' Self-evaluations are brief, cursory and not used to improve  performance even after prompting by supervisor', checked: false },
                     { label: ' Justifies personal decisions and choices without evaluating them ', checked: false },
                     { label: ' Trainee is unable to see the need for improvement  ', checked: false },
                 ],
@@ -77,7 +108,6 @@ const Milestone = () => {
                 { 
                 label: 'Novice', 
                 answers: [
-                    { label: ' Evaluates own performance at a basic level using simple criteria to understand and reflect on the role ', checked: false },
                     { label: ' Demonstrates awareness of the need for ongoing improvement and makes some effort to learn from experience and improve performance', checked: false },
                     { label: ' Able to set some goals for improvement with a high level of guidance from the supervisor ', checked: false },
                 ],  
@@ -85,7 +115,6 @@ const Milestone = () => {
                 { 
                 label: 'Advanced beginner', 
                 answers: [
-                    { label: ' Evaluates own performance at a basic level using simple criteria to understand and reflect on the role ', checked: false },
                     { label: ' Demonstrates awareness of the need for ongoing improvement and makes some effort to learn from experience and improve performance', checked: false },
                     { label: ' Able to set some goals for improvement with a moderate level of guidance from the supervisor ', checked: false },
                 ],
@@ -93,7 +122,6 @@ const Milestone = () => {
                 { 
                 label: 'Competent', 
                 answers: [
-                    { label: ' Adequately monitors and evaluates own performance ', checked: false },
                     { label: ' Demonstrates a desire and commitment to ongoing improvement', checked: false },
                     { label: ' Accurately identifies strengths and weaknesses ', checked: false },
                     { label: ' Sets goals for improvement with minimal or no guidance from the supervisor ', checked: false }
@@ -191,6 +219,84 @@ const Milestone = () => {
                     { label: ' Has a calm and confident manner ', checked: false },
                     { label: ' Assesses patients confidently, checks for their understanding and displays caring whilst reassuring them and their families ', checked: false },
                     { label: ' Communicates well with other professionals', checked: false }
+                ],
+                },
+            ],
+        },
+        {
+        exam: 'CLINICAL CORE COMPETENCIES FOR PLANNING AND CONDUCTING EXAMINATIONS',
+        title: 'F) Technology and resource',
+        subtitle: 'Trainee performs scans using appropriate skills, resources and technology. This would include:',
+        questions: [ 
+            {question: ' appropriate history taking'},
+            {question: ' demonstrating appropriate  of ultrasound equipment'},
+            {question: ' planning and conducting ultrasound exams'},
+            {question: ' use of PACS'},
+            {question: ' documenting ultrasound examination findings in accordance to organisational protocols'},
+            ],
+        selectedAnswer: [],
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: ' Unable to use technology and resources', checked: false },
+                    { label: ' Unable to select appropriate resources to perform basic tasks and scans', checked: false },
+                    { label: ' Fails to identify important information', checked: false },
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: ' Makes limited efforts to seek information', checked: false },
+                    { label: ' Uses technology and resources with high degree of guidance from the supervisor to perform basic scans', checked: false },
+                ],
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: ' Actively seeks information but occasionally does not pursue important leads', checked: false },
+                    { label: ' Uses technology and resources with some degree of guidance from the supervisor to perform a limited range of scans ', checked: false },
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: ' Assertively seeks information to plan the scan', checked: false },
+                    { label: ' Carefully collects useful data from observing and interacting with the patient and family', checked: false },
+                    { label: ' Uses technology and resources independently to perform a wide range of scans with increasing complexity', checked: false },
+                    { label: ' Able to efficiently and effectively use technology and resources with minimal or no guidance from the supervisor', checked: false }
+                ],
+                },
+            ],
+        },
+        { 
+        exam: 'CLINICAL CORE COMPETENCIES FOR PLANNING AND CONDUCTING EXAMINATIONS',
+        title: 'G) Hands on Scanning',
+        questions: [],
+        selectedAnswer: [],
+        columns: [
+                { 
+                label: 'Significant need for improvement', 
+                answers: [
+                    { label: ' Significant need for improvement', checked: false },
+                ],
+                },
+                { 
+                label: 'Novice', 
+                answers: [
+                    { label: ' Trainee sonographer needs extensive supervision during the entire procedure', checked: false },
+                ],
+                },
+                { 
+                label: 'Advanced beginner', 
+                answers: [
+                    { label: ' Some conduct of the exam needs to be supervised.', checked: false },
+                ],
+                },
+                { 
+                label: 'Competent', 
+                answers: [
+                    { label: ' Able to perform the entire procedure including all required communications', checked: false },
                 ],
                 },
             ],
@@ -420,7 +526,9 @@ return (
                         {rows.map((row, rowIndex) => (
                         <tr key={rowIndex}>
                             <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
+                                {row.exam && <strong style={{color:'red'}}>{row.exam}<br/></strong>}
                                 <strong>{row.title}</strong>
+                                {row.subtitle && <p style={{color: 'black'}}>{row.subtitle}</p>}
                                 {row.questions.map((dot, dotIndex) => (
                                     <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
                                 ))}
