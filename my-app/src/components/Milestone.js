@@ -27,7 +27,7 @@ const Milestone = () => {
             {question: ' Trainee practices within professional and ethical frameworks.'},
             {question: ' Trainee promotes a safe and healthy workplace environment and conforms to organisational protocols for maintaining standards and quality assurance. This also includes infection prevention and control as well as housekeeping issues such as room preparation'}
             ],
-        selectedAnswer: '',
+        selectedAnswer: [],
         columns: [
                 { 
                 label: 'Significant need for improvement', 
@@ -64,7 +64,7 @@ const Milestone = () => {
             {question: 'Trainee uses reflective practice to organise self and manage realistic goals.'},
             {question: 'Trainee is calm under pressure.'}
             ],
-        selectedAnswer: '',
+        selectedAnswer: [],
         columns: [
                 { 
                 label: 'Significant need for improvement', 
@@ -106,7 +106,7 @@ const Milestone = () => {
         questions: [ 
             {question: 'Trainee demonstrates problem solving skills including planning and organisation and decision making in a range of clinical contexts.'}
             ],
-        selectedAnswer: '',
+        selectedAnswer: [],
         columns: [
                 { 
                 label: 'Significant need for improvement', 
@@ -152,7 +152,7 @@ const Milestone = () => {
             {question: ' Trainee communicates effectively with patients'},
             {question: ' Trainee communicates effectively with other professionals '}
             ],
-        selectedAnswer: '',
+        selectedAnswer: [],
         columns: [
                 { 
                 label: 'Significant need for improvement', 
@@ -436,15 +436,17 @@ return (
                                     checked={answer.checked}
                                     onChange={() => {
                                     const newRows = [...rows];
-                                    newRows[rowIndex].columns.forEach((column) => {
-                                        column.answers.forEach((answer) => {
-                                        answer.checked = false;
-                                        });
-                                    });
-                                    newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked = true;
-                                    newRows[rowIndex].selectedAnswer = answer.label;
+                                    //If checked, uncheck it, if unchecked, check it
+                                    newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked = !newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked;
+                                    //Allow to select multiple answers, each answer is a string which is stored in an array called selectedAnswer.
+                                    if (newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked) {
+                                        newRows[rowIndex].selectedAnswer = [...(newRows[rowIndex].selectedAnswer || []), answer.label];
+                                    } else {
+                                        // If the answer is unchecked, remove it from the selected answers
+                                        newRows[rowIndex].selectedAnswer = (newRows[rowIndex].selectedAnswer || []).filter(selected => selected !== answer.label);
+                                    }
                                     setRows(newRows);
-                                    console.log(`Selected answer for row ${rowIndex + 1}: ${answer.label}`);
+                                    console.log(`Number of Selected answer for row ${rowIndex + 1}: ${newRows[rowIndex].selectedAnswer.length}`);
                                     }} 
                                 />
                                 {answer.label}
