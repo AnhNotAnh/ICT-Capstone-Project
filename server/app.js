@@ -192,7 +192,6 @@ app.get('/getSupervision/:studentID', (req, res) => {
 
 
 //testing for linking student and supervisor from supervisor detail page
-
 app.post('/addSupervisor', (req, res) => {
     const { studentID, name, email, qualification } = req.body;
 
@@ -211,7 +210,6 @@ app.post('/addSupervisor', (req, res) => {
         name = excluded.name,
         qualification = excluded.qualification
     `;
-    
     
     db.run(insertSupervisor, [name, email, qualification, placeholderAccountID, placeholderAsarNumber], function(err) {
         if (err) {
@@ -233,10 +231,10 @@ app.post('/addSupervisor', (req, res) => {
                 const supervisorID = row.supervisorID;
                 console.log('Supervisor ID retrieved:', supervisorID);
 
-                // SQL to link the supervisor to the student
-                const insertSupervision = "INSERT INTO SUPERVISION (studentID, supervisorID, isSupervised) VALUES (?, ?, ?)";
+                // SQL to link the supervisor to the student with isSupervised set to 0
+                const insertSupervision = "INSERT INTO SUPERVISION (studentID, supervisorID, isSupervised) VALUES (?, ?, 0)";
 
-                db.run(insertSupervision, [studentID, supervisorID, true], (err) => {
+                db.run(insertSupervision, [studentID, supervisorID], (err) => {
                     if (err) {
                         console.error('Error linking supervisor to student:', err.message);
                         return res.status(500).json({ error: 'Error linking supervisor to student: ' + err.message });
@@ -252,6 +250,8 @@ app.post('/addSupervisor', (req, res) => {
         });
     });
 });
+
+
 
 
 //fetch the current supervisor onto the student for current supervisor page
@@ -331,11 +331,11 @@ app.get('/getSupervisedStudents/:accountId', (req, res) => {
     const accountId = req.params.accountId;
 
     const sql = `
-        SELECT STUDENT.studentID, STUDENT.name, STUDENT.email, SUPERVISOR.qualification
+        SELECT STUDENT.studentID, STUDENT.name, STUDENT.email, SUPERVISION.isSupervised
         FROM STUDENT
         JOIN SUPERVISION ON STUDENT.studentID = SUPERVISION.studentID
         JOIN SUPERVISOR ON SUPERVISOR.supervisorID = SUPERVISION.supervisorID
-        WHERE SUPERVISOR.accountID = ? AND SUPERVISION.isSupervised = 1
+        WHERE SUPERVISOR.accountID = ?
     `;
     
     db.all(sql, [accountId], (err, rows) => {
@@ -346,9 +346,34 @@ app.get('/getSupervisedStudents/:accountId', (req, res) => {
         res.status(200).json(rows);
     });
 });
+//accept student on supervisor homepage 
+
+
+app.post('/acceptStudent', (req, res) => {
+    const { studentID, accountId } = req.body;
+
+    const getSupervisorIDSql = "SELECT supervisorID FROM SUPERVISOR WHERE accountID = ?";
+    db.get(getSupervisorIDSql, [accountId], (err, supervisor) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error fetching supervisor' });
+        }
+
+        const supervisorID = supervisor.supervisorID;
+        const updateSupervisionSql = "UPDATE SUPERVISION SET isSupervised = 1 WHERE studentID = ? AND supervisorID = ?";
+
+        db.run(updateSupervisionSql, [studentID, supervisorID], function (err) {
+            if (err) {
+                return res.status(500).json({ error: 'Error updating supervision' });
+            }
+            res.status(200).json({ message: 'Student accepted successfully' });
+        });
+    });
+});
+
 
 
 //rejecting students
+
 
 
 app.post('/rejectStudent', (req, res) => {
@@ -361,9 +386,9 @@ app.post('/rejectStudent', (req, res) => {
         }
 
         const supervisorID = supervisor.supervisorID;
-        const updateSupervisionSql = "UPDATE SUPERVISION SET isSupervised = 0 WHERE studentID = ? AND supervisorID = ?";
+        const deleteSupervisionSql = "DELETE FROM SUPERVISION WHERE studentID = ? AND supervisorID = ?";
 
-        db.run(updateSupervisionSql, [studentID, supervisorID], function (err) {
+        db.run(deleteSupervisionSql, [studentID, supervisorID], function (err) {
             if (err) {
                 return res.status(500).json({ error: 'Error updating supervision' });
             }

@@ -1,74 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 const Supervisor_Home = () => {
     const { accountId } = useParams();
     const [students, setStudents] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:8081/getSupervisedStudents/${accountId}`)
-            .then(response => response.json())
-            .then(data => {
-                setStudents(data);
-                setLoading(false);
+        axios.get(`http://localhost:8081/getSupervisedStudents/${accountId}`)
+            .then(response => {
+                setStudents(response.data);
             })
             .catch(error => {
-                setError(error);
-                setLoading(false);
+                console.error('Error fetching students:', error);
             });
     }, [accountId]);
 
-    const handleAccept = (studentID) => {
-        // Handle acceptance (no changes to the database)
-        alert(`Student ${studentID} accepted.`);
-    };
-
-    const handleReject = (studentID) => {
-        fetch('http://localhost:8081/rejectStudent', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ studentID, accountId }),
+    const handleDecision = (studentID, decision) => {
+        const endpoint = decision ? 'acceptStudent' : 'rejectStudent';
+        axios.post(`http://localhost:8081/${endpoint}`, {
+            studentID: studentID,
+            accountId: accountId
         })
-        .then(response => response.json())
-        .then(data => {
-            setStudents(students.filter(student => student.studentID !== studentID));
-            alert(`Student ${studentID} rejected.`);
+        .then(response => {
+            console.log(response.data.message);
+            // Refresh the student list to reflect changes
+            setStudents(students.map(student => 
+                student.studentID === studentID ? { ...student, isSupervised: decision ? 1 : 0 } : student
+            ).filter(student => student.isSupervised === 0));
         })
         .catch(error => {
-            console.error('Error:', error);
+            console.error('Error updating supervision status:', error);
         });
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
-
-    if (error) {
-        return <p>Error: {error.message}</p>;
-    }
-
     return (
         <div>
-            <h2>Supervised Students</h2>
-            {students.length === 0 ? (
-                <p>No students found.</p>
-            ) : (
-                <ul>
-                    {students.map((student, index) => (
-                        <li key={index}>
-                            <strong>Name:</strong> {student.name} <br />
-                            <strong>Email:</strong> {student.email} <br />
-                            <strong>Qualification:</strong> {student.qualification} <br />
-                            <button onClick={() => handleAccept(student.studentID)}>Accept</button>
-                            <button onClick={() => handleReject(student.studentID)}>Reject</button>
-                        </li>
-                    ))}
-                </ul>
-            )}
+            <h2>Pending Student Requests</h2>
+            {students.filter(student => student.isSupervised === 0).map(student => (
+                <div key={student.studentID} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
+                    <p>Student ID: {student.studentID}</p>
+                    <p>Name: {student.name}</p>
+                    <p>Email: {student.email}</p>
+                    <button onClick={() => handleDecision(student.studentID, true)}>Accept</button>
+                    <button onClick={() => handleDecision(student.studentID, false)}>Reject</button>
+                </div>
+            ))}
+            <h2>Accepted Students</h2>
+            {students.filter(student => student.isSupervised === 1).map(student => (
+                <div key={student.studentID} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px' }}>
+                    <p>Student ID: {student.studentID}</p>
+                    <p>Name: {student.name}</p>
+                    <p>Email: {student.email}</p>
+                </div>
+            ))}
         </div>
     );
 };
