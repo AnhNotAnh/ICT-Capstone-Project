@@ -51,10 +51,6 @@
 SELECT * FROM LOGBOOK;
 -- DROP TABLE LOGBOOK;
 
-
--- INSERT INTO ACCOUNT ( username, password, role)
--- VALUES ( 'TESTUSER', 'TESTPASSWORD', 'STUDENT');
-
 -- INSERT INTO ACCOUNT ( username, password, role)
 -- VALUES ( 'staff@unisa.edu.au', 'staff', 'STAFF');
 
@@ -78,8 +74,6 @@ SELECT * FROM ACCOUNT;
 --    FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID),
 --    PRIMARY KEY(supervisorID ASC)
 --);
-
--- INSERT INTO SUPERVISOR (name, email, qualification, accountID) VALUES ( 'Dr. John', 'john@abc.com', 'PhD', 5);
 
 -- CREATE TABLE SUPERVISION
 -- (

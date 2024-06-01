@@ -130,7 +130,12 @@ app.post('/registerSupervisor', (req, res) => {
                     if (results.length > 0) {
                         const accountID = results[0].accountID;
                         // Now can use accountID to insert data into your student table
-                        const sql = "INSERT INTO SUPERVISOR (name, email, qualification, accountID, asarNumber) VALUES (?, ?, ?, ?, ?)";
+                        const sql = `INSERT INTO SUPERVISOR (name, email, qualification, accountID, asarNumber) 
+                        VALUES (?, ?, ?, ?, ?) ON CONFLICT(email) 
+                        DO UPDATE SET name = excluded.name,
+                        qualification = excluded.qualification,
+                        accountID = excluded.accountID,
+                        asarNumber = excluded.asarNumber`;
                         db.run(sql, [ req.body.name, req.body.email, req.body.qualification, accountID, req.body.asarNumber], (err) => {
                             if (err) {
                                 console.error(err.message);
