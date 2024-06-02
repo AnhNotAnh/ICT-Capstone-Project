@@ -437,7 +437,7 @@ app.get('/getSupervisorMilestone/:milestoneID', (req, res) => {
                     console.error('Error fetching supervisor:', err.message);
                     return res.status(500).json({ error: 'Error fetching supervisor: ' + err.message });
                 }
-                supervisorObj = {name: supervisorrow.name, email: supervisorrow.email, supervisorID: supervisorrow.supervisorID};
+                supervisorObj = {name: supervisorrow.name, email: supervisorrow.email, supervisorID: supervisorrow.supervisorID, accountID: supervisorrow.accountID};
                 
                 res.json({studentObj: studentObj, supervisorObj: supervisorObj, docObj: docObj});
             });
@@ -445,6 +445,36 @@ app.get('/getSupervisorMilestone/:milestoneID', (req, res) => {
     });
 });
 
+//Update milestone status, add supervisor signature, add milestone doc, and create comment for plan improvement
+app.post('/updateMilestone', (req, res) => {
+    const { milestoneID, studentID, supervisorSignature, studentSignature, supervisorID, milestoneAchievement, status, answers, supervisorComment, planStatus, role } = req.body;
+    const sql = `UPDATE MILESTONE SET supervisorSignature = ?, status = ? 
+    WHERE milestoneID = ?`;
+    db.run(sql, [supervisorSignature, status, milestoneID], (err) => {
+        if (err) {
+            console.error('Error updating milestone:', err.message);
+            return res.status(500).json({ error: 'Error updating milestone: ' + err.message });
+        }
+        else {
+            console.log( 'Milestone submitted successfully' );
+            const insertDoc = 'INSERT INTO MILESTONEDOC (milestoneID, role, answerSectionA, answerSectionB, answerSectionC, answerSectionD, answerSectionE, answerSectionF, answerSectionG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+            db.run(insertDoc, [milestoneID, role , answers.sectionA, answers.sectionB, answers.sectionC, answers.sectionD, answers.sectionE, answers.sectionF, answers.sectionG], (err) => {
+                if (err) {
+                    console.error('Error inserting milestone doc:', err.message);
+                }
+                else {
+                console.log('Milestone doc inserted successfully');
+                const insertComment = 'INSERT INTO PLANIMPROVEMENT (milestoneID, planStrategy, comment, planStatus) VALUES (?, ?, ?, ?)';
+                db.run(insertComment, [milestoneID, '', supervisorComment, planStatus], (err) => {
+                    if (err) {
+                        console.error('Error inserting comment:', err.message);
+                    }
+                    res.json({ message: 'Your comment stored successfully' });
+                });
+                }
+            }); 
+        }});
+    })
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {

@@ -16,6 +16,7 @@ const SupervisorMilestone = () => {
     const [milestoneDocObj, setMilestoneDocObj] = useState({studentSignature: '', milestoneAchievement: 0 , sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
     const [studentObj, setStudentObj] = useState({name: '', email: '', studentID: 0});
     const [supervisorObj, setSupervisorObj] = useState({name: '', email: '', supervisorID: 0});
+    const [supervisorComment, setSupervisorComment] = useState('');
 
     //Fetch milestone, milestone doc, student and supervisor information.
     useEffect(() => {
@@ -39,9 +40,11 @@ const SupervisorMilestone = () => {
         });
     }, [milestoneID])
 
-    //Load data from JSON file
+    //Load data from JSON file for student
     const [rows, setRows] = useState(data);
+    const [supervisorRows, setSupervisorRows] = useState(data);
 
+    //Update the default table with the student's answers
     useEffect(() => {
         //Load each answer section of student from milestone document into a list, to present answers.
         const preSelectedAnswers = {
@@ -92,120 +95,126 @@ const SupervisorMilestone = () => {
 
 
     //Store data and send email to supervisor
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    //     const selectedAnswers = rows.map((row, index) => ({
-    //         question: row.title,
-    //         // Add up all the selected answers into a string for each row
-    //         answer: row.selectedAnswer.join(', '),
-    //         }));
+        const selectedAnswers = supervisorRows.map((row, index) => ({
+            question: row.title,
+            // Add up all the selected answers into a string for each row
+            answer: row.selectedAnswer.join('; '),
+            }));
 
-    //     const answersToInsert = {
-    //         sectionA: null,
-    //         sectionB: null,
-    //         sectionC: null,
-    //         sectionD: null,
-    //         sectionE: null,
-    //         sectionF: null,
-    //         sectionG: null,
-    //     };  
+        const answersToInsert = {
+            sectionA: null,
+            sectionB: null,
+            sectionC: null,
+            sectionD: null,
+            sectionE: null,
+            sectionF: null,
+            sectionG: null,
+        };  
 
-    //     try{
-    //         if (selectedAnswers.every(answerObj => answerObj.answer.trim() !== '')) {
-    //             console.log('Total answers : ' + selectedAnswers.length);
-    //             //Transform the selected answers into the format that the backend expects
-    //             selectedAnswers.forEach((row) => {
-    //                 switch (row.question) {
-    //                     case 'A) Initiative and enterprise':
-    //                         answersToInsert.sectionA = row.answer;
-    //                         break;
-    //                     case 'B) Learning, evaluating and reflecting':
-    //                         answersToInsert.sectionB = row.answer;
-    //                         break;
-    //                     case 'C) Self-Management':
-    //                         answersToInsert.sectionC= row.answer;
-    //                         break;
-    //                     case 'D) Problem solving skills':
-    //                         answersToInsert.sectionD = row.answer;
-    //                         break;
-    //                     case 'E) Communication skills':
-    //                         answersToInsert.sectionE = row.answer;
-    //                         break;
-    //                     case 'F) Technology and resource':
-    //                         answersToInsert.sectionF = row.answer;
-    //                         break;
-    //                     case 'G) Hands on Scanning':
-    //                         answersToInsert.sectionG = row.answer;
-    //                         break;
-    //                     default:
-    //                     console.error('Invalid section:', row.question);
-    //                 }
-    //             });
-    //             setErrorMessage(null);
-    //             console.log('Answers to insert:', answersToInsert);
-    //         }
-    //         else {
-    //             setErrorMessage('Please fill in all the answers !!!');
-    //             return;
-    //         }
-    //         const response = await fetch(`http://localhost:8081/submitMilestone`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             body: JSON.stringify({
-    //                 studentID: studentID,
-    //                 studentSignature: studentSignature,
-    //                 supervisorID: supervisorID,
-    //                 milestoneAchievement: milestone,
-    //                 status: 0,
-    //                 answers: answersToInsert,
-    //             }),
-    //         })
-    //         if (!response.ok) {
-    //             throw new Error(`HTTP error! status: ${response.status}`);
-    //         }
-    //         try {
-    //             const data = await response.json();
-    //             console.log('Success:', data.message);
-    //             window.alert(data.message + ', you now will be redirected to the logbook page');
-    //             navigate(`/logbook/${studentID}`);
+        try{
+            if (selectedAnswers.every(answerObj => answerObj.answer.trim() !== '')) {
+                console.log('Total answers : ' + selectedAnswers.length);
+                //Transform the selected answers into the format that the backend expects
+                selectedAnswers.forEach((row) => {
+                    switch (row.question) {
+                        case 'A) Initiative and enterprise':
+                            answersToInsert.sectionA = row.answer;
+                            break;
+                        case 'B) Learning, evaluating and reflecting':
+                            answersToInsert.sectionB = row.answer;
+                            break;
+                        case 'C) Self-Management':
+                            answersToInsert.sectionC= row.answer;
+                            break;
+                        case 'D) Problem solving skills':
+                            answersToInsert.sectionD = row.answer;
+                            break;
+                        case 'E) Communication skills':
+                            answersToInsert.sectionE = row.answer;
+                            break;
+                        case 'F) Technology and resource':
+                            answersToInsert.sectionF = row.answer;
+                            break;
+                        case 'G) Hands on Scanning':
+                            answersToInsert.sectionG = row.answer;
+                            break;
+                        default:
+                        console.error('Invalid section:', row.question);
+                    }
+                });
+                setErrorMessage(null);
+                console.log('Answers to insert:', answersToInsert);
+            }
+            else {
+                setErrorMessage('Please fill in all the answers !!!');
+                return;
+            }
+            const response = await fetch(`http://localhost:8081/updateMilestone`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    milestoneID: milestoneID,
+                    studentID: studentObj.studentID,
+                    supervisorSignature: supervisorSignature,
+                    studentSignature: milestoneDocObj.studentSignature,
+                    supervisorID: supervisorObj.supervisorID,
+                    milestoneAchievement: milestoneDocObj.milestoneAchievement,
+                    status: 1,
+                    answers: answersToInsert,
+                    supervisorComment: supervisorComment,
+                    planStatus: 0,
+                    role : 'SUPERVISOR'
+                }),
+            })
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+                console.log("studentID : " + studentObj.studentID + "and supervisorID: " + supervisorObj.supervisorID )
+            }
+            try {
+                const data = await response.json();
+                console.log('Success:', data.message);
+                window.alert(data.message + ', you now will be redirected to the supervisor home page !');
+                navigate(`/Supervisor_Home/${supervisorObj.accountID}`);
                 
-    //         } catch (error) {
-    //             console.log('No data returned from server');
-    //         }
-    //     }
-    //     catch (error) {
-    //         console.error('Error: ', error);
-    //     }
-    //     // EmailJS Format to send email to supervisor
+            } catch (error) {
+                console.log('No data returned from server');
+            }
+        }
+        catch (error) {
+            console.error('Error: ', error);
+        }
+        // EmailJS Format to send email to supervisor
 
-    //     // const serviceID = process.env.REACT_APP_SERVICE_ID;
-    //     // const templateID = process.env.REACT_APP_TEMPLATE_ID;
-    //     // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
+        // const serviceID = process.env.REACT_APP_SERVICE_ID;
+        // const templateID = process.env.REACT_APP_TEMPLATE_ID;
+        // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
 
-    //     // const emailParams = {
-    //     // from_name: name,
-    //     // from_email: email,
-    //     // //to_email: supervisorEmail, real email
-    //     // to_email: 'quocanh01082020@gmail.com',
-    //     // to_name: supervisorName,
-    //     // message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
-    //     // }
-    //     // emailjs.send(serviceID, templateID, emailParams, publicKey)
-    //     // .then(response => {
-    //     //     console.log('SUCCESS!', response.status, response.text);
-    //     // })
-    //     // .catch(error => {
-    //     //     console.log('FAILED...', error);
-    //     // });
-    // }
+        // const emailParams = {
+        // from_name: name,
+        // from_email: email,
+        // //to_email: supervisorEmail, real email
+        // to_email: 'quocanh01082020@gmail.com',
+        // to_name: supervisorName,
+        // message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
+        // }
+        // emailjs.send(serviceID, templateID, emailParams, publicKey)
+        // .then(response => {
+        //     console.log('SUCCESS!', response.status, response.text);
+        // })
+        // .catch(error => {
+        //     console.log('FAILED...', error);
+        // });
+    }
 
 
 return (
     <div className="container">
-        {/* <form onSubmit={handleSubmit} className="new-milestone"> */}
+        <form onSubmit={handleSubmit} className="new-milestone">
             <div className="row justify-content-center mb-4">
                 <div className="col-8">
                     <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
@@ -267,6 +276,7 @@ return (
             </div>
             <div className='row'>
                 <div className='col-12'>
+                    <h4 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>SECTION A: Performance Self-Appraisal <i>(TO BE COMPLETED BY THE TRAINEE SONOGRAPHER)</i></b></h4>
                     <table className='table table-bordered'>
                         <thead>
                             <tr>
@@ -297,20 +307,6 @@ return (
                                     id={`${rowIndex}-${columnIndex}-${answerIndex}`} 
                                     name={`${rowIndex}-${columnIndex}-${answerIndex}`} 
                                     checked={answer.checked}
-                                    // onChange={() => {
-                                    // const newRows = [...rows];
-                                    // //If checked, uncheck it, if unchecked, check it
-                                    // newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked = !newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked;
-                                    // //Allow to select multiple answers, each answer is a string which is stored in an array called selectedAnswer.
-                                    // if (newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked) {
-                                    //     newRows[rowIndex].selectedAnswer = [...(newRows[rowIndex].selectedAnswer || []), answer.label];
-                                    // } else {
-                                    //     // If the answer is unchecked, remove it from the selected answers
-                                    //     newRows[rowIndex].selectedAnswer = (newRows[rowIndex].selectedAnswer || []).filter(selected => selected !== answer.label);
-                                    // }
-                                    // setRows(newRows);
-                                    // console.log(`Number of Selected answer for row ${rowIndex + 1}: ${newRows[rowIndex].selectedAnswer.length}`);
-                                    // }} 
                                     disabled
                                 />
                                 {answer.label}
@@ -324,6 +320,73 @@ return (
                     </table>
                 </div>
             </div>
+            <div className='row'>
+                <div className='col-12'>
+                    <h4 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>SECTION B: Performance Appraisal <i>(TO BE COMPLETED BY THE TRAINEE’S SUPERVISOR)</i></b></h4>
+                    <table className='table table-bordered'>
+                        <thead>
+                            <tr>
+                                <th scope="col" style={{width: '30%'}}>Question</th>
+                                <th scope="col" style={{width: '17.5%'}}>Significant need for improvement</th>
+                                <th scope="col" style={{width: '17.5%'}}>Novice</th>
+                                <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
+                                <th scope="col" style={{width: '17.5%'}}>Competent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {supervisorRows.map((row, rowIndex) => (
+                        <tr key={rowIndex}>
+                            <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
+                                {row.exam && <strong style={{color:'red'}}>{row.exam}<br/></strong>}
+                                <strong>{row.title}</strong>
+                                {row.subtitle && <p style={{color: 'black'}}>{row.subtitle}</p>}
+                                {row.questions.map((dot, dotIndex) => (
+                                    <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
+                                ))}
+                            </th>
+                            {row.columns.map((column, columnIndex) => (
+                            <td key={columnIndex}>
+                            {column.answers.map((answer, answerIndex) => (
+                                <label htmlFor={`${rowIndex}-${columnIndex}-${answerIndex}`} key={answerIndex} style={{textAlign: 'left', marginBottom: '1em'}}>
+                                <input 
+                                    type="checkbox" 
+                                    id={`${rowIndex}-${columnIndex}-${answerIndex}`} 
+                                    name={`${rowIndex}-${columnIndex}-${answerIndex}`} 
+                                    checked={answer.checked}
+                                    onChange={() => {
+                                    const newRows = [...supervisorRows];
+                                    //If checked, uncheck it, if unchecked, check it
+                                    newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked = !newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked;
+                                    //Allow to select multiple answers, each answer is a string which is stored in an array called selectedAnswer.
+                                    if (newRows[rowIndex].columns[columnIndex].answers[answerIndex].checked) {
+                                        //Create a new array of selected answers. If new row null or undefine, create empty array otherwise add the new answer to the array
+                                        newRows[rowIndex].selectedAnswer = [...(newRows[rowIndex].selectedAnswer || []), answer.label];
+                                    } else {
+                                        // If the answer is unchecked, remove it from the selected answers
+                                        newRows[rowIndex].selectedAnswer = (newRows[rowIndex].selectedAnswer || []).filter(selected => selected !== answer.label);
+                                    }
+                                    setSupervisorRows(newRows);
+                                    console.log(`Number of Selected answer for row ${rowIndex + 1}: ${newRows[rowIndex].selectedAnswer.length}`);
+                                    }} 
+                                />
+                                {answer.label}
+                                </label>
+                            ))}
+                            </td>
+                        ))}
+                        </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div className='row'>   
+                <div className='col-12'>
+                    <label htmlFor='supervisorComment' style={{color:"black"}}><i>Any additional Supervisor comments: </i></label>
+                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" 
+                    onChange={(e) => { setSupervisorComment(e.target.value)}}></textarea>
+                </div>
+            </div>
             <div>
                 {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
                 <label style={{color:"black"}}>
@@ -331,7 +394,7 @@ return (
                 </label><br/>
                 <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>  
             </div>
-        {/* </form> */}
+        </form>
     </div>
     )
 }
