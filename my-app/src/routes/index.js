@@ -10,3 +10,4 @@ export { default as Current_Supervisor } from './Current_Supervisor'
 export {default as Supervisor_Home} from './Supervisor_Home'
 export { default as CoursePage } from "./CoursePage";
 export { default as Logbook } from "./Logbook";
+export { default as SupervisorMilestone } from "./SupervisorMilestone";
