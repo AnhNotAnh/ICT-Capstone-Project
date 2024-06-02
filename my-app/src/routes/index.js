@@ -10,3 +10,5 @@ export { default as Current_Supervisor } from './Current_Supervisor'
 export {default as Supervisor_Home} from './Supervisor_Home'
 export { default as CoursePage } from "./CoursePage";
 export { default as Logbook } from "./Logbook";
+export {default as PendingRequests} from "./PendingRequests"
+export {default as AcceptedStudents} from "./AcceptedStudents"

@@ -29,23 +29,31 @@ const Current_Supervisor = () => {
     }
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-            <h2>Current Supervisors</h2>
+        <div className="container text-center">
+            <h2 style={{ padding: "30px" }}>Current Supervisors</h2>
             {supervisors.length === 0 ? (
                 <p>No supervisors found.</p>
             ) : (
-                <ul>
-                    {supervisors.map((supervisor, index) => (
-                        <li key={index} style={{ marginBottom: '10px' }}>
-                            <strong>Name:</strong> {supervisor.name} <br />
-                            <strong>Email:</strong> {supervisor.email} <br />
-                            <strong>Qualification:</strong> {supervisor.qualification}
-                        </li>
-                    ))}
-                </ul>
+                <table className="table">
+                    <thead style={{ backgroundColor: "#98C0E6" }}>
+                        <tr>
+                            <th style={{ color: "#003C72" }}>Name</th>
+                            <th style={{ color: "#003C72" }}>Email</th>
+                            <th style={{ color: "#003C72" }}>Qualification</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {supervisors.map((supervisor, index) => (
+                            <tr key={index}>
+                                <td>{supervisor.name}</td>
+                                <td>{supervisor.email}</td>
+                                <td>{supervisor.qualification}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             )}
         </div>
     );
 };
-
 export default Current_Supervisor;
