@@ -376,6 +376,7 @@ const Milestone = () => {
                     milestoneAchievement: milestone,
                     status: 0,
                     answers: answersToInsert,
+                    role: 'STUDENT'
                 }),
             })
             if (!response.ok) {
@@ -577,7 +578,7 @@ return (
                                 {answer.label}
                                 </label>
                             ))}
-                            </td>
+                        </td>
                         ))}
                         </tr>
                         ))}

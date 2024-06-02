@@ -280,7 +280,7 @@ app.get('/currentSupervisors/:studentID', (req, res) => {
 //Add milestone doc to the database
 //First insert the milestone and then insert the milestone doc
 app.post('/submitMilestone', (req, res) => {
-    const { studentID, studentSignature, supervisorID, milestoneAchievement, status, answers } = req.body;
+    const { studentID, studentSignature, supervisorID, milestoneAchievement, status, answers, role } = req.body;
     const sql = 'INSERT INTO MILESTONE (studentID, supervisorID, studentSignature, supervisorSignature , milestoneAchievement, status) VALUES (?, ?, ?, ?, ?, ?)';
     db.run(sql, [studentID, supervisorID, studentSignature, 'Not signed', milestoneAchievement, status], (err) => {
         if (err) {
@@ -296,8 +296,8 @@ app.post('/submitMilestone', (req, res) => {
             else {
                 const milestoneID = results[0].milestoneID;
                 res.json({ message: 'Milestone submitted successfully' });
-                const insertDoc = 'INSERT INTO MILESTONEDOC (milestoneID, answerSectionA, answerSectionB, answerSectionC, answerSectionD, answerSectionE, answerSectionF, answerSectionG) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-                db.run(insertDoc, [milestoneID, answers.sectionA, answers.sectionB, answers.sectionC, answers.sectionD, answers.sectionE, answers.sectionF, answers.sectionG], (err) => {
+                const insertDoc = 'INSERT INTO MILESTONEDOC (milestoneID, role, answerSectionA, answerSectionB, answerSectionC, answerSectionD, answerSectionE, answerSectionF, answerSectionG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+                db.run(insertDoc, [milestoneID, role , answers.sectionA, answers.sectionB, answers.sectionC, answers.sectionD, answers.sectionE, answers.sectionF, answers.sectionG], (err) => {
                     if (err) {
                         console.error('Error inserting milestone doc:', err.message);
                     }
@@ -412,7 +412,7 @@ app.get('/getSupervisorMilestone/:milestoneID', (req, res) => {
         SELECT MILESTONE.studentID, MILESTONE.studentSignature, MILESTONE.supervisorID, MILESTONE.milestoneAchievement, MILESTONEDOC.answerSectionA, MILESTONEDOC.answerSectionB, MILESTONEDOC.answerSectionC, MILESTONEDOC.answerSectionD, MILESTONEDOC.answerSectionE, MILESTONEDOC.answerSectionF, MILESTONEDOC.answerSectionG
         FROM MILESTONE
         JOIN MILESTONEDOC ON MILESTONE.milestoneID = MILESTONEDOC.milestoneID
-        WHERE MILESTONE.milestoneID = ? AND MILESTONE.status = 0`;
+        WHERE MILESTONE.milestoneID = ? AND MILESTONE.status = 0 AND MILESTONEDOC.role = "STUDENT"`;
     //get the milestone details: studentID, supervisorID, milestoneAchievement, all answers from the milestone doc
     db.get(sql, [milestoneID], (err, row) => {
         if (err) {

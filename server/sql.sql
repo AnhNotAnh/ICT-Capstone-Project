@@ -74,7 +74,7 @@ SELECT * FROM ACCOUNT;
 --    FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID),
 --    PRIMARY KEY(supervisorID ASC)
 --);
- delete from SUPERVISOR where supervisorID = 09;
+-- delete from SUPERVISOR where supervisorID = 09;
 
 
 -- CREATE TABLE SUPERVISION
@@ -86,7 +86,7 @@ SELECT * FROM ACCOUNT;
 -- );
 
 -- INSERT INTO SUPERVISION (supervisorID, studentID, isSupervised) VALUES ( 2, 123123123, 1);
---DELETE FROM SUPERVISION WHERE supervisorID = 1 AND studentID = 123123123;
+-- DELETE FROM SUPERVISION WHERE supervisorID = 1 AND studentID = 123123123;
 
 -- DROP TABLE MILESTONE;
 -- CREATE TABLE MILESTONE
@@ -106,6 +106,7 @@ SELECT * FROM ACCOUNT;
 -- (
 --     milestoneID INTEGER,
 --     docID INTEGER,
+--     role VARCHAR(255) NOT NULL,
 --     answerSectionA TEXT NOT NULL,
 --     answerSectionB TEXT NOT NULL,
 --     answerSectionC TEXT NOT NULL,
@@ -115,6 +116,19 @@ SELECT * FROM ACCOUNT;
 --     answerSectionG TEXT NOT NULL,
 --     PRIMARY KEY(docID ASC)
 -- );
+
+-- DROP TABLE PLANIMPROVEMENT;
+-- CREATE TABLE PLANIMPROVEMENT
+-- (
+--     planID INTEGER,
+--     milestoneID INT,
+--     planStrategy VARCHAR(255) NOT NULL,
+--     comment VARCHAR(255) NOT NULL,
+--     planStatus BOOLEAN NOT NULL,
+--     PRIMARY KEY(planID ASC)
+-- );
+
+
 
 -- delete from MILESTONE where milestoneID = 1;
 
