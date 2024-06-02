@@ -193,64 +193,67 @@ app.get('/getSupervision/:studentID', (req, res) => {
 
 //testing for linking student and supervisor from supervisor detail page
 app.post('/addSupervisor', (req, res) => {
-    const { studentID, name, email, qualification } = req.body;
-
-    // Using default values for testing purpose
-    const placeholderAccountID = 0;
-    const placeholderAsarNumber = '0000';
-
-    // Log the incoming request data for testing purpose
-    console.log('Received request to add supervisor:', req.body);
-
-    // SQL to insert or update the supervisor
-    const insertSupervisor = `
-        INSERT INTO SUPERVISOR (name, email, qualification, accountID, asarNumber)
-        VALUES (?, ?, ?, ?, ?)
-        ON CONFLICT(email) DO UPDATE SET 
-        name = excluded.name,
-        qualification = excluded.qualification
-    `;
     
-    db.run(insertSupervisor, [name, email, qualification, placeholderAccountID, placeholderAsarNumber], function(err) {
-        if (err) {
-            console.error('Error inserting/updating supervisor:', err.message);
-            return res.status(500).json({ error: 'Error adding or updating supervisor: ' + err.message });
-        }
+const { studentID, name, email, qualification } = req.body;
 
-        console.log('Supervisor inserted/updated successfully');
+const placeholderAccountID = 0;
+const placeholderAsarNumber = '0000';
 
-        // SQL to get the supervisorID of the newly inserted/updated supervisor
-        const getSupervisorID = "SELECT supervisorID FROM SUPERVISOR WHERE email = ?";
-        db.get(getSupervisorID, [email], (err, row) => {
+console.log('Received request to add supervisor:', req.body);
+
+// Check if the supervisor email already exists
+const checkEmailSql = "SELECT supervisorID FROM SUPERVISOR WHERE email = ?";
+db.get(checkEmailSql, [email], (err, row) => {
+    if (err) {
+        console.error('Error checking email existence:', err.message);
+        return res.status(500).json({ error: 'Error checking email existence: ' + err.message });
+    }
+
+    if (row) {
+        const supervisorID = row.supervisorID;
+        console.log('Supervisor ID retrieved:', supervisorID);
+
+        // Insert the supervision link with isSupervised set to 0
+        const insertSupervision = "INSERT INTO SUPERVISION (studentID, supervisorID, isSupervised) VALUES (?, ?, 0)";
+        db.run(insertSupervision, [studentID, supervisorID], (err) => {
             if (err) {
-                console.error('Error retrieving supervisor ID:', err.message);
-                return res.status(500).json({ error: 'Error retrieving supervisor ID: ' + err.message });
+                console.error('Error linking supervisor to student:', err.message);
+                return res.status(500).json({ error: 'Error linking supervisor to student: ' + err.message });
             }
 
-            if (row) {
-                const supervisorID = row.supervisorID;
-                console.log('Supervisor ID retrieved:', supervisorID);
-
-                // SQL to link the supervisor to the student with isSupervised set to 0
-                const insertSupervision = "INSERT INTO SUPERVISION (studentID, supervisorID, isSupervised) VALUES (?, ?, 0)";
-
-                db.run(insertSupervision, [studentID, supervisorID], (err) => {
-                    if (err) {
-                        console.error('Error linking supervisor to student:', err.message);
-                        return res.status(500).json({ error: 'Error linking supervisor to student: ' + err.message });
-                    }
-
-                    console.log('Supervisor linked to student successfully');
-                    return res.status(200).json({ message: 'Supervisor added and linked to student successfully' });
-                });
-            } else {
-                console.error('Supervisor ID not found after insertion');
-                return res.status(500).json({ error: 'Supervisor ID not found after insertion' });
-            }
+            console.log('Supervisor linked to student successfully');
+            return res.status(200).json({ message: 'Supervisor linked to student successfully' });
         });
-    });
-});
+    } else {
+        // Insert new supervisor and then link to the student
+        const insertSupervisor = `
+            INSERT INTO SUPERVISOR (name, email, qualification, accountID, asarNumber)
+            VALUES (?, ?, ?, ?, ?)
+        `;
 
+        db.run(insertSupervisor, [name, email, qualification, placeholderAccountID, placeholderAsarNumber], function(err) {
+            if (err) {
+                console.error('Error inserting supervisor:', err.message);
+                return res.status(500).json({ error: 'Error adding supervisor: ' + err.message });
+            }
+
+            console.log('Supervisor inserted successfully');
+            const supervisorID = this.lastID;
+
+            const insertSupervision = "INSERT INTO SUPERVISION (studentID, supervisorID, isSupervised) VALUES (?, ?, 0)";
+            db.run(insertSupervision, [studentID, supervisorID], (err) => {
+                if (err) {
+                    console.error('Error linking supervisor to student:', err.message);
+                    return res.status(500).json({ error: 'Error linking supervisor to student: ' + err.message });
+                }
+
+                console.log('Supervisor linked to student successfully');
+                return res.status(200).json({ message: 'Supervisor added and linked to student successfully' });
+            });
+        });
+    }
+});
+});
 
 
 
@@ -326,6 +329,7 @@ app.post('/milestoneVerification', (req, res) => {
 
 
 //fetch the student for supervisor home page
+
 app.get('/getSupervisedStudents/:accountId', (req, res) => {
     const accountId = req.params.accountId;
 
@@ -345,8 +349,9 @@ app.get('/getSupervisedStudents/:accountId', (req, res) => {
         res.status(200).json(rows);
     });
 });
-
 //accept student on supervisor homepage 
+
+
 app.post('/acceptStudent', (req, res) => {
     const { studentID, accountId } = req.body;
 
@@ -371,6 +376,9 @@ app.post('/acceptStudent', (req, res) => {
 
 
 //rejecting students
+
+
+
 app.post('/rejectStudent', (req, res) => {
     const { studentID, accountId } = req.body;
 
@@ -391,51 +399,6 @@ app.post('/rejectStudent', (req, res) => {
         });
     });
 });
-
-//milestone for supervisor page
-app.get('/getSupervisorMilestone/:milestoneID', (req, res) => {
-    const milestoneID = req.params.milestoneID;
-    let studentObj = {};
-    let supervisorObj = {};
-    let docObj = {};
-    const sql = `
-        SELECT MILESTONE.studentID, MILESTONE.studentSignature, MILESTONE.supervisorID, MILESTONE.milestoneAchievement, MILESTONEDOC.answerSectionA, MILESTONEDOC.answerSectionB, MILESTONEDOC.answerSectionC, MILESTONEDOC.answerSectionD, MILESTONEDOC.answerSectionE, MILESTONEDOC.answerSectionF, MILESTONEDOC.answerSectionG
-        FROM MILESTONE
-        JOIN MILESTONEDOC ON MILESTONE.milestoneID = MILESTONEDOC.milestoneID
-        WHERE MILESTONE.milestoneID = ? AND MILESTONE.status = 0`;
-    //get the milestone details: studentID, supervisorID, milestoneAchievement, all answers from the milestone doc
-    db.get(sql, [milestoneID], (err, row) => {
-        if (err) {
-            console.error('Error fetching milestone:', err.message);
-            return res.status(500).json({ error: 'Error fetching milestone: ' + err.message });
-        }
-        const studentID = row.studentID;
-        const supervisorID = row.supervisorID;
-        docObj = {studentSignature: row.studentSignature, milestoneAchievement: row.milestoneAchievement , sectionA: row.sectionA, sectionB: row.sectionB, sectionC: row.sectionC, sectionD: row.sectionD, sectionE: row.sectionE, sectionF: row.sectionF, sectionG: row.sectionG};
-        //get the student details: name, email, studentID
-        const sql2 = 'SELECT * FROM STUDENT WHERE studentID = ?';
-        db.get(sql2, [studentID], (err, studentrow) => {
-            if (err) {
-                console.error('Error fetching student:', err.message);
-                return res.status(500).json({ error: 'Error fetching student: ' + err.message });
-            }
-            studentObj = {name: studentrow.name, email: studentrow.email, studentID: studentrow.studentID};
-            //get the supervisor details: name, email, supervisorID 
-            const sql3 = 'SELECT * FROM SUPERVISOR WHERE supervisorID = ?';
-            db.get(sql3, [supervisorID], (err, supervisorrow) => {
-                if (err) {
-                    console.error('Error fetching supervisor:', err.message);
-                    return res.status(500).json({ error: 'Error fetching supervisor: ' + err.message });
-                }
-                supervisorObj = {name: supervisorrow.name, email: supervisorrow.email, supervisorID: supervisorrow.supervisorID};
-                
-                res.json({studentObj: studentObj, supervisorObj: supervisorObj, docObj: docObj});
-            });
-        });
-    });
-});
-
-
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {

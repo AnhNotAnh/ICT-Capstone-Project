@@ -60,7 +60,7 @@ SELECT * FROM LOGBOOK;
 SELECT * FROM ACCOUNT;
 
 -- delete from ACCOUNT where role = 'STUDENT';
- delete from ACCOUNT where accountID = 13;
+ --delete from ACCOUNT where accountID = 16;
 
 --DROP TABLE SUPERVISOR; 
 -- CREATE TABLE SUPERVISOR
@@ -74,6 +74,8 @@ SELECT * FROM ACCOUNT;
 --    FOREIGN KEY(accountID) REFERENCES ACCOUNT(accountID),
 --    PRIMARY KEY(supervisorID ASC)
 --);
+ delete from SUPERVISOR where supervisorID = 09;
+
 
 -- CREATE TABLE SUPERVISION
 -- (
