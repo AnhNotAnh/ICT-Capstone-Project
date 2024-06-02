@@ -313,7 +313,7 @@ const Milestone = () => {
         const selectedAnswers = rows.map((row, index) => ({
             question: row.title,
             // Add up all the selected answers into a string for each row
-            answer: row.selectedAnswer.join(', '),
+            answer: row.selectedAnswer.join('; '),
             }));
 
         const answersToInsert = {

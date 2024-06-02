@@ -45,13 +45,13 @@ const SupervisorMilestone = () => {
     useEffect(() => {
         //Load each answer section of student from milestone document into a list, to present answers.
         const preSelectedAnswers = {
-            0: milestoneDocObj.sectionA?.split(', '),
-            1: milestoneDocObj.sectionB?.split(', '),
-            2: milestoneDocObj.sectionC?.split(', '),
-            3: milestoneDocObj.sectionD?.split(', '),
-            4: milestoneDocObj.sectionE?.split(', '),
-            5: milestoneDocObj.sectionF?.split(', '),
-            6: milestoneDocObj.sectionG?.split(', '),
+            0: milestoneDocObj.sectionA?.split('; '),
+            1: milestoneDocObj.sectionB?.split('; '),
+            2: milestoneDocObj.sectionC?.split('; '),
+            3: milestoneDocObj.sectionD?.split('; '),
+            4: milestoneDocObj.sectionE?.split('; '),
+            5: milestoneDocObj.sectionF?.split('; '),
+            6: milestoneDocObj.sectionG?.split('; '),
         };
 
         setRows(rows => {
