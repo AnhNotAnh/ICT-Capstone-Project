@@ -60,7 +60,7 @@ SELECT * FROM LOGBOOK;
 SELECT * FROM ACCOUNT;
 
 -- delete from ACCOUNT where role = 'STUDENT';
--- delete from ACCOUNT where role = 'SUPERVISOR';
+ delete from ACCOUNT where accountID = 13;
 
 --DROP TABLE SUPERVISOR; 
 -- CREATE TABLE SUPERVISOR
