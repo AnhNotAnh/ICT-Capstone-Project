@@ -197,7 +197,7 @@ const SupervisorMilestone = () => {
         // from_email: supervisorObj.email,
         // to_email: studentObj.email
         // to_name: studentObj.name,
-        // message: 'Your supervisor have finished milestone document, and add a new comment, please come to the Milestone Summary website to review and make a plan for improvement !'
+        // message: 'Your supervisor have finished milestone document, and add a new comment, please come to the Plan For Improvement page to review and make a plan !'
         // }
         // emailjs.send(serviceID, templateID, emailParams, publicKey)
         // .then(response => {
@@ -299,7 +299,7 @@ return (
                             <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
                                 {row.exam && <strong style={{color:'red'}}>{row.exam}<br/></strong>}
                                 <strong>{row.title}</strong>
-                                {row.subtitle && <p style={{color: 'black'}}>{row.subtitle}</p>}
+                                {row.subtitle && <p>{row.subtitle}</p>}
                                 {row.questions.map((dot, dotIndex) => (
                                     <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
                                 ))}
@@ -354,7 +354,7 @@ return (
                             <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
                                 {row.exam && <strong style={{color:'red'}}>{row.exam}<br/></strong>}
                                 <strong>{row.title}</strong>
-                                {row.subtitle && <p style={{color: 'black'}}>{row.subtitle}</p>}
+                                {row.subtitle && <p>{row.subtitle}</p>}
                                 {row.questions.map((dot, dotIndex) => (
                                     <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
                                 ))}

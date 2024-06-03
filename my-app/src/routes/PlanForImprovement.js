@@ -7,15 +7,15 @@ import data from '../data.json';
 const PlanForImprovement = () => {
     const [supervisorSignature, setSignature] = useState('');
     const { milestoneID } = useParams();
-    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
-    const [milestoneDocObj, setMilestoneDocObj] = useState({studentSignature: '', milestoneAchievement: 0 , sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
-    const [studentObj, setStudentObj] = useState({name: '', email: '', studentID: 0});
-    const [supervisorObj, setSupervisorObj] = useState({name: '', email: '', supervisorID: 0});
+    const [milestoneDocObj, setMilestoneDocObj] = useState({studentSignature: '', milestoneAchievement: 0});
+    const [studentObj, setStudentObj] = useState({name: '', email: '', sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
+    const [supervisorObj, setSupervisorObj] = useState({name: '', email: '', sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
     const [supervisorComment, setSupervisorComment] = useState('');
     const [supervisorDate, setSupervisorDate] = useState('');
     const [studentDate, setStudentDate] = useState('');
     const [planID, setPlanID] = useState(0);
+    const [planStrategy, setPlanStrategy] = useState('');
 
     //Fetch milestone, milestone doc, student and supervisor information.
     useEffect(() => {
@@ -155,6 +155,7 @@ const PlanForImprovement = () => {
             setSupervisorComment(data.comment);
             setSupervisorDate(data.supervisorDate);
             setPlanID(data.planID);
+            console.log("Plan ID is " + data.planID);
         })
         .catch((err) => {
             console.error(err.message);
@@ -164,89 +165,27 @@ const PlanForImprovement = () => {
     //Store data and send email to supervisor
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const selectedAnswers = supervisorRows.map((row, index) => ({
-            question: row.title,
-            // Add up all the selected answers into a string for each row
-            answer: row.selectedAnswer.join('; '),
-            }));
-
-        const answersToInsert = {
-            sectionA: null,
-            sectionB: null,
-            sectionC: null,
-            sectionD: null,
-            sectionE: null,
-            sectionF: null,
-            sectionG: null,
-        };  
-
         try{
-            if (selectedAnswers.every(answerObj => answerObj.answer.trim() !== '')) {
-                console.log('Total answers : ' + selectedAnswers.length);
-                //Transform the selected answers into the format that the backend expects
-                selectedAnswers.forEach((row) => {
-                    switch (row.question) {
-                        case 'A) Initiative and enterprise':
-                            answersToInsert.sectionA = row.answer;
-                            break;
-                        case 'B) Learning, evaluating and reflecting':
-                            answersToInsert.sectionB = row.answer;
-                            break;
-                        case 'C) Self-Management':
-                            answersToInsert.sectionC= row.answer;
-                            break;
-                        case 'D) Problem solving skills':
-                            answersToInsert.sectionD = row.answer;
-                            break;
-                        case 'E) Communication skills':
-                            answersToInsert.sectionE = row.answer;
-                            break;
-                        case 'F) Technology and resource':
-                            answersToInsert.sectionF = row.answer;
-                            break;
-                        case 'G) Hands on Scanning':
-                            answersToInsert.sectionG = row.answer;
-                            break;
-                        default:
-                        console.error('Invalid section:', row.question);
-                    }
-                });
-                setErrorMessage(null);
-                console.log('Answers to insert:', answersToInsert);
-            }
-            else {
-                setErrorMessage('Please fill in all the answers !!!');
-                return;
-            }
-            const response = await fetch(`http://localhost:8081/updateMilestone`, {
+            const response = await fetch(`http://localhost:8081/updatePlan`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    milestoneID: milestoneID,
-                    studentID: studentObj.studentID,
-                    supervisorSignature: supervisorSignature,
-                    studentSignature: milestoneDocObj.studentSignature,
-                    supervisorID: supervisorObj.supervisorID,
-                    milestoneAchievement: milestoneDocObj.milestoneAchievement,
-                    status: 1,
-                    answers: answersToInsert,
-                    supervisorComment: supervisorComment,
-                    planStatus: 0,
-                    role : 'SUPERVISOR'
+                    planID: planID,
+                    planStrategy: planStrategy,
+                    studentDate: studentDate,
+                    planStatus: 1
                 }),
             })
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
-                console.log("studentID : " + studentObj.studentID + "and supervisorID: " + supervisorObj.supervisorID )
             }
             try {
                 const data = await response.json();
                 console.log('Success:', data.message);
-                window.alert(data.message + ', you now will be redirected to the supervisor home page !');
-                navigate(`/Supervisor_Home/${supervisorObj.accountID}`);
+                // window.alert(data.message + ', you now will be redirected to the supervisor home page !');
+                // navigate(`/Supervisor_Home/${supervisorObj.accountID}`);
                 
             } catch (error) {
                 console.log('No data returned from server');
@@ -262,11 +201,11 @@ const PlanForImprovement = () => {
         // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
 
         // const emailParams = {
-        // from_name: supervisorObj.name,
-        // from_email: supervisorObj.email,
-        // to_email: studentObj.email
-        // to_name: studentObj.name,
-        // message: 'Your supervisor have finished milestone document, and add a new comment, please come to the Milestone Summary website to review and make a plan for improvement !'
+        // from_name: studentObj.name,
+        // from_email: studentObj.email,
+        // to_email: supervisorObj.email,
+        // to_name: supervisorObj.name,
+        // message: 'Your student has completed plan for improvement, come to Milestone Summary to review !'
         // }
         // emailjs.send(serviceID, templateID, emailParams, publicKey)
         // .then(response => {
@@ -365,7 +304,7 @@ return (
                             <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
                                 {row.exam && <strong style={{color:'red'}}>{row.exam}<br/></strong>}
                                 <strong>{row.title}</strong>
-                                {row.subtitle && <p style={{color: 'black'}}>{row.subtitle}</p>}
+                                {row.subtitle && <p>{row.subtitle}</p>}
                                 {row.questions.map((dot, dotIndex) => (
                                     <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
                                 ))}
@@ -420,7 +359,7 @@ return (
                         <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
                             {row.exam && <strong style={{color:'red'}}>{row.exam}<br/></strong>}
                             <strong>{row.title}</strong>
-                            {row.subtitle && <p style={{color: 'black'}}>{row.subtitle}</p>}
+                            {row.subtitle && <p>{row.subtitle}</p>}
                             {row.questions.map((dot, dotIndex) => (
                                 <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
                             ))}
@@ -449,12 +388,55 @@ return (
             </div>
             <div className='row'>   
                 <div className='col-12'>
-                    <label htmlFor='supervisorComment' style={{color:"black"}}><i>Any additional Supervisor comments: </i></label>
+                    <label htmlFor='supervisorComment'><i>Any additional Supervisor comments: </i></label>
                     <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" value={supervisorComment} disabled></textarea>
                 </div>
             </div>
+            <div className='row'>   
+                <div className='col-12'>
+                    <p style={{ textAlign: 'left', fontWeight: 'bold', marginTop: '2em'}}>ACTION PLAN FOR IMPROVEMENT: (To be completed by trainee in consultation with Supervisor)</p>
+                    <p style={{ textAlign: 'left'}}>This section identifies specific goals, objectives and deadlines. Trainee sonographer reflects on his/her own performance appraisal.</p>
+                    <p style={{ textAlign: 'left'}}>The action plan requires that the student reflects on their own performance appraisal and the appraisal provided by their tutor/ supervisor.</p>
+                    <p style={{ textAlign: 'left'}}>During this discussion SMART goals (Specific, Measurable, Achievable, Realistic and Timely) must be set and recoded below.</p>
+                    <p style={{ textAlign: 'left'}}>Please attach an extra page if necessary.</p>
+                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Plan..." value={planStrategy} onChange={(e) => setPlanStrategy(e.target.value)} ></textarea>
+                </div>
+            </div>
             <div>
-            <table className="table table-bordered mt-3" style={{textAlign: 'left'}}>
+                <table className="table table-bordered mt-3" style={{textAlign: 'left'}}>
+                    <thead>
+                        <tr>
+                        <th scope="col" style={{fontSize : 'small'}}>Trainee Declaration</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>
+                                <p>
+                                I confirm that: <br />
+                                • The above is an accurate record of the issues discussed and the advice I have received during my clinical training review. <br />
+                                • I understand the advice I have received <br/>
+                                • A copy of this completed form will be scanned and submitted to the University of South Australia as proof of progress of clinical training and a copy will be retained for 
+                                workplace and trainee records for the purpose of ASAR requirements.<br />
+                                </p>
+                            </th>
+                        </tr>
+                        {/* <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>3</th>
+                        </tr> */}
+                        <tr>
+                            <th scope="row" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small', width: '70%'}}>
+                            Trainee Signature: {milestoneDocObj.studentSignature}
+                            </th>
+                            <td>
+                                <label style={{marginRight: '1em'}}> Date:</label>
+                                <input type='date' placeholder="dd/mm/yyyy" value={studentDate} onChange={(e) => setStudentDate(e.target.value)} required></input>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table className="table table-bordered mt-3" style={{textAlign: 'left'}}>
                     <thead>
                         <tr>
                         <th scope="col" style={{fontSize : 'small'}}>Clinical Supervisor Declaration</th>
@@ -490,43 +472,6 @@ return (
                         </tr>
                     </tbody>
                 </table>
-                <table className="table table-bordered mt-3" style={{textAlign: 'left'}}>
-                    <thead>
-                        <tr>
-                        <th scope="col" style={{fontSize : 'small'}}>Clinical Supervisor Declaration</th>
-                        <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>
-                                <p>
-                                I confirm that: <br />
-                                • The above is an accurate record of the issues discussed and the advice I have provided during this training review. <br />
-                                • A copy of this completed form will be scanned and submitted to the University of South Australia as proof of progress of clinical training and a copy will be retained for 
-                                workplace and trainee records for the purpose of ASAR requirements. <br /> 
-                                • I am required to contact the course coordinator at the University of South Australia if there are any concerns with the trainee’s training and progress. <br />
-                                </p>
-                            </th>
-                        </tr>
-                        <tr>
-                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>Clinical Supervisor’s  name: {supervisorObj.name}</th>
-                        </tr>
-                        {/* <tr>
-                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>3</th>
-                        </tr> */}
-                        <tr>
-                            <th scope="row" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small', width: '70%'}}>
-                                Clinical Supervisor’s signature: {supervisorSignature}
-                            </th>
-                            <td>
-                                <label style={{marginRight: '1em'}}> Date:</label>
-                                <input type='date' placeholder="dd/mm/yyyy" value={studentDate} onChange={(e) => setStudentDate(e.target.value)} required></input>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
                 <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>  
             </div>
         </form>

@@ -556,7 +556,7 @@ return (
                             <th scope="row" style={{textAlign: 'left', fontWeight: 'normal'}}>
                                 {row.exam && <strong style={{color:'red'}}>{row.exam}<br/></strong>}
                                 <strong>{row.title}</strong>
-                                {row.subtitle && <p style={{color: 'black'}}>{row.subtitle}</p>}
+                                {row.subtitle && <p>{row.subtitle}</p>}
                                 {row.questions.map((dot, dotIndex) => (
                                     <p style={{margin: '0em'}} key={dotIndex}>•{dot.question}</p>
                                 ))}

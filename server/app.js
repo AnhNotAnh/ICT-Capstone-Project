@@ -549,6 +549,21 @@ app.get('/getSupervisorPlan/:milestoneID', (req, res) => {
     });
 });
 
+//update the plan improvement
+app.post('/updatePlan', (req, res) => {
+    const { planID, planStrategy, studentDate, planStatus } = req.body;
+    const sql = `UPDATE PLANIMPROVEMENT SET planStrategy = ?, planStatus = ?, studentDate = ?
+    WHERE planID = ?`;
+    db.run(sql, [planStrategy, planStatus, studentDate, planID], (err) => {
+        if (err) {
+            console.error('Error updating plan:', err.message);
+            return res.status(500).json({ error: 'Error updating plan: ' + err.message });
+        }
+        else {
+            res.json({ message: 'PlanForImprovement update successfully'});
+        }});
+    })
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081, listening for requests..");
