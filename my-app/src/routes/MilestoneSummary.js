@@ -4,7 +4,7 @@ import emailjs from '@emailjs/browser';
 import data from '../data.json';
 
 
-const PlanForImprovement = () => {
+const MilestoneSummary = () => {
     const [supervisorSignature, setSignature] = useState('');
     const { milestoneID } = useParams();
     const navigate = useNavigate();
@@ -16,6 +16,7 @@ const PlanForImprovement = () => {
     const [studentDate, setStudentDate] = useState('');
     const [planID, setPlanID] = useState(0);
     const [planStrategy, setPlanStrategy] = useState('');
+    const [planObj, setPlanObj] = useState({planID: 0, planStrategy: '', studentDate: '', planStatus: 0, milestoneID: 0, supervisorDate: '', comment: ''});
 
     //Fetch milestone, milestone doc, student and supervisor information.
     useEffect(() => {
@@ -142,7 +143,7 @@ const PlanForImprovement = () => {
 
     //Get supetvisor comments and consent date
     useEffect(() => {
-        fetch(`http://localhost:8081/getSupervisorPlan/${milestoneID}`)
+        fetch(`http://localhost:8081/getPlan/${milestoneID}`)
         .then((res) => {
             if (!res.ok) {
                 throw new Error(
@@ -152,10 +153,7 @@ const PlanForImprovement = () => {
             return res.json();
         })
         .then((data) => {
-            setSupervisorComment(data.comment);
-            setSupervisorDate(data.supervisorDate);
-            setPlanID(data.planID);
-            console.log("Plan ID is " + data.planID);
+            setPlanObj(data);
         })
         .catch((err) => {
             console.error(err.message);
@@ -163,63 +161,63 @@ const PlanForImprovement = () => {
     }, [milestoneID]);
 
     //Store data and send email to supervisor
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try{
-            const response = await fetch(`http://localhost:8081/updatePlan`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    planID: planID,
-                    planStrategy: planStrategy,
-                    studentDate: studentDate,
-                    planStatus: 1
-                }),
-            })
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            try {
-                const data = await response.json();
-                console.log('Success:', data.message);
-                // window.alert(data.message + ', you now will be redirected to the supervisor home page !');
-                // navigate(`/Supervisor_Home/${supervisorObj.accountID}`);
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     try{
+    //         const response = await fetch(`http://localhost:8081/updatePlan`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //                 planID: planID,
+    //                 planStrategy: planStrategy,
+    //                 studentDate: studentDate,
+    //                 planStatus: 1
+    //             }),
+    //         })
+    //         if (!response.ok) {
+    //             throw new Error(`HTTP error! status: ${response.status}`);
+    //         }
+    //         try {
+    //             const data = await response.json();
+    //             console.log('Success:', data.message);
+    //             // window.alert(data.message + ', you now will be redirected to the supervisor home page !');
+    //             // navigate(`/Supervisor_Home/${supervisorObj.accountID}`);
                 
-            } catch (error) {
-                console.log('No data returned from server');
-            }
-        }
-        catch (error) {
-            console.error('Error: ', error);
-        }
-        // EmailJS Format to send email to supervisor
+    //         } catch (error) {
+    //             console.log('No data returned from server');
+    //         }
+    //     }
+    //     catch (error) {
+    //         console.error('Error: ', error);
+    //     }
+    //     // EmailJS Format to send email to supervisor
 
-        // const serviceID = process.env.REACT_APP_SERVICE_ID;
-        // const templateID = process.env.REACT_APP_TEMPLATE_ID;
-        // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
+    //     // const serviceID = process.env.REACT_APP_SERVICE_ID;
+    //     // const templateID = process.env.REACT_APP_TEMPLATE_ID;
+    //     // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
 
-        // const emailParams = {
-        // from_name: studentObj.name,
-        // from_email: studentObj.email,
-        // to_email: supervisorObj.email,
-        // to_name: supervisorObj.name,
-        // message: 'Your student has completed plan for improvement, come to Milestone Summary to review !'
-        // }
-        // emailjs.send(serviceID, templateID, emailParams, publicKey)
-        // .then(response => {
-        //     console.log('SUCCESS!', response.status, response.text);
-        // })
-        // .catch(error => {
-        //     console.log('FAILED...', error);
-        // });
-    }
+    //     // const emailParams = {
+    //     // from_name: studentObj.name,
+    //     // from_email: studentObj.email,
+    //     // to_email: supervisorObj.email,
+    //     // to_name: supervisorObj.name,
+    //     // message: 'Your student has completed plan for improvement, come to Milestone Summary to review !'
+    //     // }
+    //     // emailjs.send(serviceID, templateID, emailParams, publicKey)
+    //     // .then(response => {
+    //     //     console.log('SUCCESS!', response.status, response.text);
+    //     // })
+    //     // .catch(error => {
+    //     //     console.log('FAILED...', error);
+    //     // });
+    // }
 
 
 return (
     <div className="container">
-        <form onSubmit={handleSubmit} className="new-milestone">
+        {/* <form onSubmit={handleSubmit} className="new-milestone"> */}
             <div className="row justify-content-center mb-4">
                 <div className="col-8">
                     <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
@@ -389,7 +387,7 @@ return (
             <div className='row'>   
                 <div className='col-12'>
                     <label htmlFor='supervisorComment'><i>Any additional Supervisor comments: </i></label>
-                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" value={supervisorComment} disabled></textarea>
+                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" value={planObj.comment} disabled></textarea>
                 </div>
             </div>
             <div className='row'>   
@@ -399,7 +397,7 @@ return (
                     <p style={{ textAlign: 'left'}}>The action plan requires that the student reflects on their own performance appraisal and the appraisal provided by their tutor/ supervisor.</p>
                     <p style={{ textAlign: 'left'}}>During this discussion SMART goals (Specific, Measurable, Achievable, Realistic and Timely) must be set and recoded below.</p>
                     <p style={{ textAlign: 'left'}}>Please attach an extra page if necessary.</p>
-                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Plan..." value={planStrategy} onChange={(e) => setPlanStrategy(e.target.value)} ></textarea>
+                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Plan..." value={planObj.planStrategy} disabled ></textarea>
                 </div>
             </div>
             <div>
@@ -431,7 +429,7 @@ return (
                             </th>
                             <td>
                                 <label style={{marginRight: '1em'}}> Date:</label>
-                                <input type='date' placeholder="dd/mm/yyyy" value={studentDate} onChange={(e) => setStudentDate(e.target.value)} required></input>
+                                <input type='date' placeholder="dd/mm/yyyy" value={planObj.studentDate} disabled></input>
                             </td>
                         </tr>
                     </tbody>
@@ -467,16 +465,16 @@ return (
                             </th>
                             <td>
                                 <label style={{marginRight: '1em'}}> Date:</label>
-                                <input type='date' placeholder="dd/mm/yyyy" value={supervisorDate} disabled></input>
+                                <input type='date' placeholder="dd/mm/yyyy" value={planObj.supervisorDate} disabled></input>
                             </td>
                         </tr>
                     </tbody>
                 </table>
-                <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>  
+                {/* <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>   */}
             </div>
-        </form>
+        {/* </form> */}
     </div>
     )
 }
 
-export default PlanForImprovement
+export default MilestoneSummary

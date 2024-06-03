@@ -216,7 +216,7 @@ return (
                 <div className="col-8">
                     <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
                     <div className="card-body p-0">
-                        <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of {milestoneDocObj.milestoneAchievement} scan milestone
+                        <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of {milestoneDocObj.milestoneAchievement} scans milestone
                         (Mandatory)</b></h3>
                         <div className="row p-3">
                             <div className="col-md-6 mb-4 pb-2">

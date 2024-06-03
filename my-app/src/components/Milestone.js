@@ -464,7 +464,7 @@ return (
                 <div className="col-8">
                     <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
                     <div className="card-body p-0">
-                        <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of every 400 scan milestone
+                        <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of every 400 scans milestone
                         (Mandatory)</b></h3>
                         <div className="row p-3 mb-4 pb-2">
                             <div className="col-md-6 mb-4 pb-2">

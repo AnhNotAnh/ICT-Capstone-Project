@@ -564,6 +564,23 @@ app.post('/updatePlan', (req, res) => {
         }});
     })
 
+//get the plan improvement
+//get supervisor comments, date consented and plan ID
+app.get('/getPlan/:milestoneID', (req, res) => {
+    const milestoneID = req.params.milestoneID;
+    const sql = `
+        SELECT * FROM PLANIMPROVEMENT
+        WHERE PLANIMPROVEMENT.milestoneID = ?`;
+    //get the milestone details: studentID, supervisorID, milestoneAchievement, all answers from the milestone doc
+    db.get(sql, [milestoneID], (err, row) => {
+        if (err) {
+            console.error('Error fetching comment:', err.message);
+            return res.status(500).json({ error: 'Error fetching comment: ' + err.message });
+        }
+        res.json(row);
+    });
+});
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081, listening for requests..");
