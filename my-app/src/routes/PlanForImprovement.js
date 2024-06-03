@@ -13,7 +13,9 @@ const PlanForImprovement = () => {
     const [studentObj, setStudentObj] = useState({name: '', email: '', studentID: 0});
     const [supervisorObj, setSupervisorObj] = useState({name: '', email: '', supervisorID: 0});
     const [supervisorComment, setSupervisorComment] = useState('');
+    const [supervisorDate, setSupervisorDate] = useState('');
     const [studentDate, setStudentDate] = useState('');
+    const [planID, setPlanID] = useState(0);
 
     //Fetch milestone, milestone doc, student and supervisor information.
     useEffect(() => {
@@ -138,6 +140,26 @@ const PlanForImprovement = () => {
         });
     }, [supervisorObj]);
 
+    //Get supetvisor comments and consent date
+    useEffect(() => {
+        fetch(`http://localhost:8081/getSupervisorPlan/${milestoneID}`)
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(
+                    `Failed to fetch plan for milestone ID: ${milestoneID}`
+                );
+            }
+            return res.json();
+        })
+        .then((data) => {
+            setSupervisorComment(data.comment);
+            setSupervisorDate(data.supervisorDate);
+            setPlanID(data.planID);
+        })
+        .catch((err) => {
+            console.error(err.message);
+        });
+    }, [milestoneID]);
 
     //Store data and send email to supervisor
     const handleSubmit = async (e) => {
@@ -293,16 +315,15 @@ return (
                                 <div className="form-outline">
                                 <label style={{color:"black"}} className="form-label label-style">Supervisor Email</label>
                                 <input type="email" className="form-control form-control-md" value={supervisorObj.email} disabled>
-                                    
                                 </input>
                                 </div>
                             </div>
                         </div>
                         <div className='row p-3'>
                             <div className='col-md-6 mb-4 pb-2'>
-                                <div className="form-outline form-white">
+                                <div className="form-outline">
                                 <label style={{color:"black"}} className="form-label label-style">Supervisor Signature</label>
-                                <input type="text" className="form-control form-control-md" value={milestoneDocObj.supervisorSignature} disabled></input>
+                                <input type="text" className="form-control form-control-md" value={milestoneDocObj.supervisorSignature || ''} disabled></input>
                                 </div>  
                             </div>
                             <div className="col-md-6 mb-4 pb-2">
@@ -429,15 +450,46 @@ return (
             <div className='row'>   
                 <div className='col-12'>
                     <label htmlFor='supervisorComment' style={{color:"black"}}><i>Any additional Supervisor comments: </i></label>
-                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" 
-                    onChange={(e) => { setSupervisorComment(e.target.value)}}></textarea>
+                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" value={supervisorComment} disabled></textarea>
                 </div>
             </div>
             <div>
-                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-                {/* <label style={{color:"black"}}>
-                    <input type="checkbox" required/>I have read and understood the above information and I certify that the information I have provided is true and accurate.
-                </label><br/> */}
+            <table className="table table-bordered mt-3" style={{textAlign: 'left'}}>
+                    <thead>
+                        <tr>
+                        <th scope="col" style={{fontSize : 'small'}}>Clinical Supervisor Declaration</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>
+                                <p>
+                                I confirm that: <br />
+                                • The above is an accurate record of the issues discussed and the advice I have provided during this training review. <br />
+                                • A copy of this completed form will be scanned and submitted to the University of South Australia as proof of progress of clinical training and a copy will be retained for 
+                                workplace and trainee records for the purpose of ASAR requirements. <br /> 
+                                • I am required to contact the course coordinator at the University of South Australia if there are any concerns with the trainee’s training and progress. <br />
+                                </p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>Clinical Supervisor’s  name: {supervisorObj.name}</th>
+                        </tr>
+                        {/* <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>3</th>
+                        </tr> */}
+                        <tr>
+                            <th scope="row" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small', width: '70%'}}>
+                                Clinical Supervisor’s signature: {milestoneDocObj.supervisorSignature}
+                            </th>
+                            <td>
+                                <label style={{marginRight: '1em'}}> Date:</label>
+                                <input type='date' placeholder="dd/mm/yyyy" value={supervisorDate} disabled></input>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <table className="table table-bordered mt-3" style={{textAlign: 'left'}}>
                     <thead>
                         <tr>
@@ -474,6 +526,7 @@ return (
                         </tr>
                     </tbody>
                 </table>
+                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
                 <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>  
             </div>
         </form>

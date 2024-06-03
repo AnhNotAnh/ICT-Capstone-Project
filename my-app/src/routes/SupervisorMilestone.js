@@ -398,12 +398,11 @@ return (
             <div className='row'>   
                 <div className='col-12'>
                     <label htmlFor='supervisorComment' style={{color:"black"}}><i>Any additional Supervisor comments: </i></label>
-                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" 
-                    onChange={(e) => { setSupervisorComment(e.target.value)}}></textarea>
+                    <textarea className="form-control" id="supervisorComment" rows="10" placeholder="Comments" value={supervisorComment}
+                    onChange={(e) => {setSupervisorComment(e.target.value)}}></textarea>
                 </div>
             </div>
             <div>
-                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
                 {/* <label style={{color:"black"}}>
                     <input type="checkbox" required/>I have read and understood the above information and I certify that the information I have provided is true and accurate.
                 </label><br/> */}
@@ -443,6 +442,7 @@ return (
                         </tr>
                     </tbody>
                 </table>
+                {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
                 <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>  
             </div>
         </form>
