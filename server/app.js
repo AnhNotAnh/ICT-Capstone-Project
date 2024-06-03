@@ -419,6 +419,10 @@ app.get('/getSupervisorMilestone/:milestoneID', (req, res) => {
             console.error('Error fetching milestone:', err.message);
             return res.status(500).json({ error: 'Error fetching milestone: ' + err.message });
         }
+        else if (!row) {
+            console.log('Milestone not found or supervisor milestone already submitted');
+        }
+        else {
         studentID = row.studentID;
         supervisorID = row.supervisorID;
         docObj = {studentSignature: row.studentSignature, milestoneAchievement: row.milestoneAchievement , sectionA: row.answerSectionA, sectionB: row.answerSectionB, sectionC: row.answerSectionC, sectionD: row.answerSectionD, sectionE: row.answerSectionE, sectionF: row.answerSectionF, sectionG: row.answerSectionG};
@@ -442,7 +446,7 @@ app.get('/getSupervisorMilestone/:milestoneID', (req, res) => {
                 res.json({studentObj: studentObj, supervisorObj: supervisorObj, docObj: docObj});
             });
         });
-    });
+    }});
 });
 
 //Update milestone status, add supervisor signature, add milestone doc, and create comment for plan improvement
