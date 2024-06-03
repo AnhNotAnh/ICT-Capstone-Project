@@ -476,6 +476,63 @@ app.post('/updateMilestone', (req, res) => {
         }});
     })
 
+//milestone for supervisor and student
+app.get('/getSSMilestone/:milestoneID', (req, res) => {
+    const milestoneID = req.params.milestoneID;
+    let studentObj = {};
+    let supervisorObj = {};
+    let milestoneObj = {};
+    let studentID = 0;
+    let supervisorID = 0;
+    const sql = `
+        SELECT * FROM MILESTONE
+        WHERE MILESTONE.milestoneID = ?`;
+    //get the milestone details: studentID, supervisorID, milestoneAchievement, all answers from the milestone doc
+    db.get(sql, [milestoneID], (err, row) => {
+        if (err) {
+            console.error('Error fetching milestone:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestone: ' + err.message });
+        }
+        studentID = row.studentID;
+        supervisorID = row.supervisorID;
+        milestoneObj = {studentSignature: row.studentSignature, supervisorSignature: row.supervisorSignature, milestoneAchievement: row.milestoneAchievement, status: row.status};
+        //get the student details: name, email, studentID, doc answers
+        const sql2 = `SELECT STUDENT.name, STUDENT.email, MILESTONEDOC.answerSectionA,
+        MILESTONEDOC.answerSectionB, MILESTONEDOC.answerSectionC, MILESTONEDOC.answerSectionD, MILESTONEDOC.answerSectionE, 
+        MILESTONEDOC.answerSectionF, MILESTONEDOC.answerSectionG FROM STUDENT 
+        JOIN MILESTONE ON STUDENT.studentID = MILESTONE.studentID
+        JOIN MILESTONEDOC ON MILESTONE.milestoneID = MILESTONEDOC.milestoneID
+        WHERE MILESTONE.milestoneID = ? AND MILESTONEDOC.role = "STUDENT"`;
+        db.get(sql2, [milestoneID], (err, studentrow) => {
+            if (err) {
+                console.error('Error fetching student:', err.message);
+                return res.status(500).json({ error: 'Error fetching student: ' + err.message });
+            }
+            studentObj = {name: studentrow.name, email: studentrow.email, studentID: studentrow.studentID, sectionA: studentrow.answerSectionA,
+                sectionB: studentrow.answerSectionB, sectionC: studentrow.answerSectionC, sectionD: studentrow.answerSectionD, sectionE: 
+                studentrow.answerSectionE, sectionF: studentrow.answerSectionF, sectionG: studentrow.answerSectionG};
+            //get the supervisor details: name, email, supervisorID, doc answers
+            const sql3 = `SELECT SUPERVISOR.name, SUPERVISOR.email, MILESTONEDOC.answerSectionA,
+            MILESTONEDOC.answerSectionB, MILESTONEDOC.answerSectionC, MILESTONEDOC.answerSectionD, MILESTONEDOC.answerSectionE, 
+            MILESTONEDOC.answerSectionF, MILESTONEDOC.answerSectionG FROM SUPERVISOR 
+            JOIN MILESTONE ON SUPERVISOR.supervisorID = MILESTONE.supervisorID
+            JOIN MILESTONEDOC ON MILESTONE.milestoneID = MILESTONEDOC.milestoneID
+            WHERE MILESTONE.milestoneID = ? AND MILESTONEDOC.role = "SUPERVISOR"`;
+            db.get(sql3, [milestoneID], (err, supervisorrow) => {
+                if (err) {
+                    console.error('Error fetching supervisor:', err.message);
+                    return res.status(500).json({ error: 'Error fetching supervisor: ' + err.message });
+                }
+                supervisorObj = {name: supervisorrow.name, email: supervisorrow.email, supervisorID: supervisorrow.supervisorID, 
+                accountID: supervisorrow.accountID, sectionA: supervisorrow.answerSectionA, sectionB: supervisorrow.answerSectionB, 
+                sectionC: supervisorrow.answerSectionC, sectionD: supervisorrow.answerSectionD, sectionE: supervisorrow.answerSectionE, 
+                sectionF: supervisorrow.answerSectionF, sectionG: supervisorrow.answerSectionG};
+                res.json({studentObj: studentObj, supervisorObj: supervisorObj, docObj: milestoneObj});
+            });
+        });
+    });
+});
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081, listening for requests..");

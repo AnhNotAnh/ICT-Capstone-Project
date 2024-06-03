@@ -13,3 +13,4 @@ export { default as Logbook } from "./Logbook";
 export {default as PendingRequests} from "./PendingRequests"
 export {default as AcceptedStudents} from "./AcceptedStudents"
 export {default as SupervisorMilestone} from "./SupervisorMilestone"
+export {default as PlanForImprovement} from "./PlanForImprovement"
