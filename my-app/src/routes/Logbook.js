@@ -15,6 +15,7 @@ function Logbook() {
     const [logbook1, setLogbook1] = useState([]);
     const remainder = scanNumber % 5;
     const [isDocSubmitted, setIsDocSubmitted] = useState(false);
+    const [milestoneID, setMilestoneID] = useState(0);
 
     //Could be removed as logbook ID now is auto increment
     useEffect(() => {
@@ -83,6 +84,24 @@ function Logbook() {
             });
     }, [scanNumber, studentID]);
 
+    useEffect(() => {
+        fetch(`http://localhost:8081/checkStudentPlan/${studentID}`)
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(
+                    `Failed to check if plan page is ready for: ${studentID}`
+                );
+            }
+            return res.json();
+        })
+        .then((data) => {
+            setMilestoneID(data.milestoneID);
+        })
+        .catch((err) => {
+            console.error(err.message);
+        });
+    }, [studentID]);
+
     const handleSubmit = async (event) => { 
     event.preventDefault();
     const logbookData = {
@@ -130,6 +149,14 @@ function Logbook() {
             <div className='col-7'>
                 <p style={{color: 'red'}}>You have reach a Milestone, please go to Milestone page to finish your document !</p>
                 <Link to={`/Milestone/${studentID}`} className="btn btn-danger">Milestone</Link>
+            </div>
+        </div>
+        }
+        { milestoneID !== 0 && 
+        <div className="row justify-content-center">
+            <div className='col-7'>
+                <p style={{color: 'red'}}>Your supervisor have completed Sectioc B Milestone, please go to Milestone page to finish your plan !</p>
+                <Link to={`/PlanForImprovement/${milestoneID}`} className="btn btn-danger">Milestone</Link>
             </div>
         </div>
         }

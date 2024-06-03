@@ -623,6 +623,22 @@ app.get('/checkSupervisorMilestone/:studentID/:supervisorID', (req, res) => {
     });
 });
 
+//Check if the section B milestone doc is submited by supervisor which mean the plan page is ready for student to fill in.
+app.get('/checkStudentPlan/:studentID', (req, res) => {
+    const { studentID } = req.params;
+    const sql = `
+        SELECT MILESTONE.milestoneID FROM MILESTONE
+        JOIN PLANIMPROVEMENT ON MILESTONE.milestoneID = PLANIMPROVEMENT.milestoneID
+        WHERE MILESTONE.studentID = ? AND MILESTONE.status = 1 AND PLANIMPROVEMENT.planStatus = 0`;
+    db.get(sql, [studentID], (err, row) => {
+        if (err) {
+            console.error('Error fetching milestones:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestones: ' + err.message });
+        }
+        res.json(row);
+    });
+});
+
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
