@@ -447,7 +447,7 @@ app.get('/getSupervisorMilestone/:milestoneID', (req, res) => {
 
 //Update milestone status, add supervisor signature, add milestone doc, and create comment for plan improvement
 app.post('/updateMilestone', (req, res) => {
-    const { milestoneID, studentID, supervisorSignature, studentSignature, supervisorID, milestoneAchievement, status, answers, supervisorComment, planStatus, role } = req.body;
+    const { milestoneID, studentID, supervisorSignature, studentSignature, supervisorID, milestoneAchievement, status, answers, supervisorComment, planStatus, role, supervisorDate } = req.body;
     const sql = `UPDATE MILESTONE SET supervisorSignature = ?, status = ? 
     WHERE milestoneID = ?`;
     db.run(sql, [supervisorSignature, status, milestoneID], (err) => {
@@ -464,8 +464,8 @@ app.post('/updateMilestone', (req, res) => {
                 }
                 else {
                 console.log('Milestone doc inserted successfully');
-                const insertComment = 'INSERT INTO PLANIMPROVEMENT (milestoneID, planStrategy, comment, planStatus) VALUES (?, ?, ?, ?)';
-                db.run(insertComment, [milestoneID, '', supervisorComment, planStatus], (err) => {
+                const insertComment = 'INSERT INTO PLANIMPROVEMENT (milestoneID, planStrategy, comment, planStatus, supervisorDate, studentDate) VALUES (?, ?, ?, ?, ?, ?)';
+                db.run(insertComment, [milestoneID, '', supervisorComment, planStatus, supervisorDate, ''], (err) => {
                     if (err) {
                         console.error('Error inserting comment:', err.message);
                     }

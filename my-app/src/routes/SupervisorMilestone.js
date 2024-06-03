@@ -5,18 +5,15 @@ import data from '../data.json';
 
 
 const SupervisorMilestone = () => {
-    // const [email, setEmail] = useState('');
-    // const [name, setName] = useState('');
-    // const [milestone, setMilestone] = useState(0);
     const [supervisorSignature, setSignature] = useState('');
     const { milestoneID } = useParams();
-    const [supervisorID, setSupervisorID] = useState(0);
     const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const [milestoneDocObj, setMilestoneDocObj] = useState({studentSignature: '', milestoneAchievement: 0 , sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
     const [studentObj, setStudentObj] = useState({name: '', email: '', studentID: 0});
     const [supervisorObj, setSupervisorObj] = useState({name: '', email: '', supervisorID: 0});
     const [supervisorComment, setSupervisorComment] = useState('');
+    const [supervisorDate, setSupervisorDate] = useState('');
 
     //Fetch milestone, milestone doc, student and supervisor information.
     useEffect(() => {
@@ -168,7 +165,8 @@ const SupervisorMilestone = () => {
                     answers: answersToInsert,
                     supervisorComment: supervisorComment,
                     planStatus: 0,
-                    role : 'SUPERVISOR'
+                    role : 'SUPERVISOR',
+                    supervisorDate : supervisorDate
                 }),
             })
             if (!response.ok) {
@@ -388,9 +386,45 @@ return (
             </div>
             <div>
                 {errorMessage && <p style={{color: 'red'}}>{errorMessage}</p>}
-                <label style={{color:"black"}}>
+                {/* <label style={{color:"black"}}>
                     <input type="checkbox" required/>I have read and understood the above information and I certify that the information I have provided is true and accurate.
-                </label><br/>
+                </label><br/> */}
+                <table className="table table-bordered mt-3" style={{textAlign: 'left'}}>
+                    <thead>
+                        <tr>
+                        <th scope="col" style={{fontSize : 'small'}}>Clinical Supervisor Declaration</th>
+                        <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>
+                                <p>
+                                I confirm that: <br />
+                                • The above is an accurate record of the issues discussed and the advice I have provided during this training review. <br />
+                                • A copy of this completed form will be scanned and submitted to the University of South Australia as proof of progress of clinical training and a copy will be retained for 
+                                workplace and trainee records for the purpose of ASAR requirements. <br /> 
+                                • I am required to contact the course coordinator at the University of South Australia if there are any concerns with the trainee’s training and progress. <br />
+                                </p>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>Clinical Supervisor’s  name: {supervisorObj.name}</th>
+                        </tr>
+                        {/* <tr>
+                            <th scope="row" colSpan="2" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small'}}>3</th>
+                        </tr> */}
+                        <tr>
+                            <th scope="row" style={{textAlign: 'left', fontWeight: 'normal', fontSize : 'small', width: '70%'}}>
+                                Clinical Supervisor’s signature: {supervisorSignature}
+                            </th>
+                            <td>
+                                <label style={{marginRight: '1em'}}> Date:</label>
+                                <input type='date' placeholder="dd/mm/yyyy" value={supervisorDate} onChange={(e) => setSupervisorDate(e.target.value)} required></input>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
                 <button type="submit" className="btn btn-primary mb-2 mt-2">Submit</button>  
             </div>
         </form>

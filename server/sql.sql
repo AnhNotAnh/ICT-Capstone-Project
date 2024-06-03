@@ -125,6 +125,8 @@ SELECT * FROM ACCOUNT;
 --     planStrategy VARCHAR(255) NOT NULL,
 --     comment VARCHAR(255) NOT NULL,
 --     planStatus BOOLEAN NOT NULL,
+--     supervisorDate VARCHAR(255) NOT NULL,
+--     studentDate VARCHAR(255) NOT NULL,
 --     PRIMARY KEY(planID ASC)
 -- );
 
