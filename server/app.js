@@ -497,6 +497,10 @@ app.get('/getSSMilestone/:milestoneID', (req, res) => {
             console.error('Error fetching milestone:', err.message);
             return res.status(500).json({ error: 'Error fetching milestone: ' + err.message });
         }
+        else if (!row) {
+            console.log('Milestone not found or supervisor milestone already submitted');
+        }
+        else {
         studentID = row.studentID;
         supervisorID = row.supervisorID;
         milestoneObj = {studentSignature: row.studentSignature, supervisorSignature: row.supervisorSignature, milestoneAchievement: row.milestoneAchievement, status: row.status};
@@ -534,7 +538,7 @@ app.get('/getSSMilestone/:milestoneID', (req, res) => {
                 res.json({studentObj: studentObj, supervisorObj: supervisorObj, docObj: milestoneObj});
             });
         });
-    });
+    }});
 });
 
 //get supervisor comments, date consented and plan ID
@@ -601,6 +605,21 @@ app.get('/getMilestones/:studentID/:supervisorID', (req, res) => {
             console.log('No milestones found');
         }
         res.json(rows);
+    });
+});
+
+//Check if the section A milestone doc is submited by student.
+app.get('/checkSupervisorMilestone/:studentID/:supervisorID', (req, res) => {
+    const { studentID, supervisorID } = req.params;
+    const sql = `
+        SELECT milestoneID, milestoneAchievement FROM MILESTONE
+        WHERE studentID = ? AND supervisorID = ? AND status = 0`;
+    db.get(sql, [studentID, supervisorID], (err, row) => {
+        if (err) {
+            console.error('Error fetching milestones:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestones: ' + err.message });
+        }
+        res.json(row);
     });
 });
 
