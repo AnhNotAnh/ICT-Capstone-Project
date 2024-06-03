@@ -464,7 +464,7 @@ return (
                 <div className="col-8">
                     <div className="card mt-4" style={{borderRadius: 15 + "px"}}>
                     <div className="card-body p-0">
-                        <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of 400 scan milestone
+                        <h3 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>Summary of Student progress at the end of every 400 scan milestone
                         (Mandatory)</b></h3>
                         <div className="row p-3 mb-4 pb-2">
                             <div className="col-md-6 mb-4 pb-2">
@@ -489,7 +489,7 @@ return (
                                 <select value={milestone} className='form-select' onChange={(e) => (setMilestone(e.target.value))} required>
                                 <option value="">Select your milestone achievement </option>
                                 <option value="5">5</option>
-                                <option value="800">800</option>
+                                <option value="10">10</option>
                                 <option value="1200">1200</option>
                                 <option value="1600">1600</option>
                                 <option value="1800">1800</option>
@@ -530,10 +530,20 @@ return (
             </div>
             <div className='row'>
                 <div className='col-12'>
+                <h4 className="fw-normal mb-4 mt-4" style={{color:"black"}}><b>SECTION A: Performance Self-Appraisal <i>(TO BE COMPLETED BY THE TRAINEE SONOGRAPHER)</i></b></h4>
                     <table className='table table-bordered'>
                         <thead>
                             <tr>
-                                <th scope="col" style={{width: '30%'}}>Question</th>
+                                <th scope="col" style={{width: '30%'}}>
+                                    <span>
+                                        <u>Professional capabilities</u><br/>
+                                        <p style={{fontWeight : 'normal'}}>
+                                        Trainee sonographers are required to meet 
+                                        the ASA Competency Standards and ASA <br/>
+                                        Code of Conduct.
+                                        </p>
+                                    </span>
+                                </th>
                                 <th scope="col" style={{width: '17.5%'}}>Significant need for improvement</th>
                                 <th scope="col" style={{width: '17.5%'}}>Novice</th>
                                 <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>

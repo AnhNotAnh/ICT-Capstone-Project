@@ -322,7 +322,16 @@ return (
                     <table className='table table-bordered'>
                         <thead>
                             <tr>
-                                <th scope="col" style={{width: '30%'}}>Question</th>
+                                <th scope="col" style={{width: '30%'}}>
+                                    <span>
+                                        <u>Professional capabilities</u><br/>
+                                        <p style={{fontWeight : 'normal'}}>
+                                        Trainee sonographers are required to meet 
+                                        the ASA Competency Standards and ASA <br/>
+                                        Code of Conduct.
+                                        </p>
+                                    </span>
+                                </th>
                                 <th scope="col" style={{width: '17.5%'}}>Significant need for improvement</th>
                                 <th scope="col" style={{width: '17.5%'}}>Novice</th>
                                 <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
@@ -368,7 +377,16 @@ return (
                     <table className='table table-bordered'>
                         <thead>
                             <tr>
-                                <th scope="col" style={{width: '30%'}}>Question</th>
+                                <th scope="col" style={{width: '30%'}}>
+                                    <span>
+                                        <u>Professional capabilities</u><br/>
+                                        <p style={{fontWeight : 'normal'}}>
+                                        Trainee sonographers are required to meet 
+                                        the ASA Competency Standards and ASA <br/>
+                                        Code of Conduct.
+                                        </p>
+                                    </span>
+                                </th>
                                 <th scope="col" style={{width: '17.5%'}}>Significant need for improvement</th>
                                 <th scope="col" style={{width: '17.5%'}}>Novice</th>
                                 <th scope="col" style={{width: '17.5%'}}>Advanced beginner</th>
