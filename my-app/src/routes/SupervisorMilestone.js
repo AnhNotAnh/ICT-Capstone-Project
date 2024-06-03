@@ -195,12 +195,11 @@ const SupervisorMilestone = () => {
         // const publicKey = process.env.REACT_APP_PUBLISH_KEY;
 
         // const emailParams = {
-        // from_name: name,
-        // from_email: email,
-        // //to_email: supervisorEmail, real email
-        // to_email: 'quocanh01082020@gmail.com',
-        // to_name: supervisorName,
-        // message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
+        // from_name: supervisorObj.name,
+        // from_email: supervisorObj.email,
+        // to_email: studentObj.email
+        // to_name: studentObj.name,
+        // message: 'Your supervisor have finished milestone document, and add a new comment, please come to the Milestone Summary website to review and make a plan for improvement !'
         // }
         // emailjs.send(serviceID, templateID, emailParams, publicKey)
         // .then(response => {
