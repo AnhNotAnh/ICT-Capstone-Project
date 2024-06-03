@@ -334,7 +334,7 @@ app.get('/getSupervisedStudents/:accountId', (req, res) => {
     const accountId = req.params.accountId;
 
     const sql = `
-        SELECT STUDENT.studentID, STUDENT.name, STUDENT.email, SUPERVISION.isSupervised
+        SELECT STUDENT.studentID, STUDENT.name, STUDENT.email, SUPERVISION.isSupervised, SUPERVISOR.supervisorID
         FROM STUDENT
         JOIN SUPERVISION ON STUDENT.studentID = SUPERVISION.studentID
         JOIN SUPERVISOR ON SUPERVISOR.supervisorID = SUPERVISION.supervisorID
@@ -565,7 +565,6 @@ app.post('/updatePlan', (req, res) => {
     })
 
 //get the plan improvement
-//get supervisor comments, date consented and plan ID
 app.get('/getPlan/:milestoneID', (req, res) => {
     const milestoneID = req.params.milestoneID;
     const sql = `
@@ -580,6 +579,27 @@ app.get('/getPlan/:milestoneID', (req, res) => {
         res.json(row);
     });
 });
+
+//Get all completed milestones doc of a student under a supervisor
+app.get('/getMilestones/:studentID/:supervisorID', (req, res) => {
+    const { studentID, supervisorID } = req.params;
+    const sql = `
+        SELECT MILESTONE.milestoneID, MILESTONE.milestoneAchievement FROM MILESTONE
+        JOIN PLANIMPROVEMENT ON MILESTONE.milestoneID = PLANIMPROVEMENT.milestoneID
+        WHERE PLANIMPROVEMENT.planStatus = 1 AND MILESTONE.studentID = ? AND MILESTONE.supervisorID = ?
+        `;
+    db.all(sql, [studentID, supervisorID], (err, rows) => {
+        if (err) {
+            console.error('Error fetching milestones:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestones: ' + err.message });
+        }
+        else if (rows.length === 0) {
+            console.log('No milestones found');
+        }
+        res.json(rows);
+    });
+});
+
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {

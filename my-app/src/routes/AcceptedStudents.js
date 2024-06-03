@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const AcceptedStudents = () => {
@@ -28,6 +28,7 @@ const AcceptedStudents = () => {
                             <th style={{ color: "#003C72" }}>Student ID</th>
                             <th style={{ color: "#003C72" }}>Name</th>
                             <th style={{ color: "#003C72" }}>Email</th>
+                            <th style={{ color: "#003C72" }}>Milestone Document</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,6 +37,9 @@ const AcceptedStudents = () => {
                                 <td>{student.studentID}</td>
                                 <td>{student.name}</td>
                                 <td>{student.email}</td>
+                                <td>
+                                    <Link to={`/MilestoneAcceptedStudent/${student.supervisorID}/${student.studentID}`} className="btn btn-primary">List of Document</Link>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
