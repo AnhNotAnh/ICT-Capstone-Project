@@ -640,6 +640,20 @@ app.get('/checkStudentPlan/:studentID', (req, res) => {
 });
 
 
+//FETCH STUDENTS FROM STUDENT DATABASE FOR STAFF HOMEPAGE
+app.get('/getAllStudents', (req, res) => {
+    const sql = "SELECT * FROM STUDENT";
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error('Error fetching all students:', err.message);
+            return res.status(500).json({ error: 'Error fetching all students: ' + err.message });
+        }
+        res.status(200).json(rows);
+    });
+});
+
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081, listening for requests..");
