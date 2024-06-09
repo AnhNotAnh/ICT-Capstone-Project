@@ -47,7 +47,7 @@ const Supervisor_Details = () => {
             if (response.ok) {
                 console.log('Supervisor added and linked to student successfully', responseData);
                 setShowAlert(true);
-                /*
+                
                 // Send email notification
                 emailjs.send('service_otfz7pr', 'template_g28nptg', {
                     name: supervisorName,
@@ -62,7 +62,7 @@ const Supervisor_Details = () => {
                 .catch((error) => {
                     console.error('Error sending email', error);
                 });
-                */
+                
             } else {
                 throw new Error(responseData.error || 'Failed to add supervisor');
             }
