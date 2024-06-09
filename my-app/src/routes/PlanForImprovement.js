@@ -9,8 +9,8 @@ const PlanForImprovement = () => {
     const { milestoneID } = useParams();
     const navigate = useNavigate();
     const [milestoneDocObj, setMilestoneDocObj] = useState({studentSignature: '', milestoneAchievement: 0});
-    const [studentObj, setStudentObj] = useState({name: '', email: '', sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
-    const [supervisorObj, setSupervisorObj] = useState({name: '', email: '', sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
+    const [studentObj, setStudentObj] = useState({name: '', email: '', studentID: 0, sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
+    const [supervisorObj, setSupervisorObj] = useState({name: '', email: '', supervisorID: 0, sectionA: '', sectionB: '', sectionC: '', sectionD: '', sectionE: '', sectionF: '', sectionG: ''});
     const [supervisorComment, setSupervisorComment] = useState('');
     const [supervisorDate, setSupervisorDate] = useState('');
     const [studentDate, setStudentDate] = useState('');
@@ -184,8 +184,8 @@ const PlanForImprovement = () => {
             try {
                 const data = await response.json();
                 console.log('Success:', data.message);
-                // window.alert(data.message + ', you now will be redirected to the supervisor home page !');
-                // navigate(`/Supervisor_Home/${supervisorObj.accountID}`);
+                window.alert(data.message + ', you now will be redirected to the supervisor home page !');
+                navigate(`/Logbook/${studentObj.studentID}`);
                 
             } catch (error) {
                 console.log('No data returned from server');

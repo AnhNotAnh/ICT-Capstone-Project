@@ -50,15 +50,13 @@ const MilestoneAcceptedStudent = () => {
                 <table className="table mt-3">
                     <thead style={{ backgroundColor: "#98C0E6" }}>
                         <tr>
-                            <th style={{ color: "#003C72" }}>Number</th>
                             <th style={{ color: "#003C72" }}>Milestone Achievement</th>
                             <th style={{ color: "#003C72" }}>Milestone Summary</th>
                         </tr>
                     </thead>
                     <tbody>
-                    {milestones.map((milestone, index) => (
+                    { milestones.length > 0 ? milestones.map((milestone) => (
                             <tr key={milestone.milestoneID}>
-                                <td>{index + 1}</td>
                                 <td>{milestone.milestoneAchievement}</td>
                                 <td>
                                     <Link to={`/MilestoneSummary/${milestone.milestoneID}`} className="btn btn-primary">
@@ -66,7 +64,10 @@ const MilestoneAcceptedStudent = () => {
                                     </Link>
                                 </td>
                             </tr>
-                        ))}
+                        )) : <tr>
+                                <td>No completed milestone document</td>
+                                <td></td>
+                            </tr>}
                     </tbody>
                 </table>
             </div>
@@ -81,7 +82,7 @@ const MilestoneAcceptedStudent = () => {
                     <tbody>
                             <tr>
                                 <td>
-                                {uncompletedMilestone.milestoneAchievement === 0 ? "No Milestone Document in process" 
+                                {uncompletedMilestone.milestoneAchievement === 0 ? "No milestone document in process" 
                                 : uncompletedMilestone.milestoneAchievement}</td>
                                 <td>
                                     {uncompletedMilestone.milestoneAchievement === 0 ? "" :

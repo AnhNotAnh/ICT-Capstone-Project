@@ -84,6 +84,7 @@ function Logbook() {
             });
     }, [scanNumber, studentID]);
 
+    //Check if student plan is available
     useEffect(() => {
         fetch(`http://localhost:8081/checkStudentPlan/${studentID}`)
         .then((res) => {

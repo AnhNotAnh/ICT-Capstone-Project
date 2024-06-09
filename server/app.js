@@ -329,7 +329,6 @@ app.post('/milestoneVerification', (req, res) => {
 
 
 //fetch the student for supervisor home page
-
 app.get('/getSupervisedStudents/:accountId', (req, res) => {
     const accountId = req.params.accountId;
 
@@ -349,9 +348,9 @@ app.get('/getSupervisedStudents/:accountId', (req, res) => {
         res.status(200).json(rows);
     });
 });
+
+
 //accept student on supervisor homepage 
-
-
 app.post('/acceptStudent', (req, res) => {
     const { studentID, accountId } = req.body;
 
@@ -376,9 +375,6 @@ app.post('/acceptStudent', (req, res) => {
 
 
 //rejecting students
-
-
-
 app.post('/rejectStudent', (req, res) => {
     const { studentID, accountId } = req.body;
 
@@ -505,7 +501,7 @@ app.get('/getSSMilestone/:milestoneID', (req, res) => {
         supervisorID = row.supervisorID;
         milestoneObj = {studentSignature: row.studentSignature, supervisorSignature: row.supervisorSignature, milestoneAchievement: row.milestoneAchievement, status: row.status};
         //get the student details: name, email, studentID, doc answers
-        const sql2 = `SELECT STUDENT.name, STUDENT.email, MILESTONEDOC.answerSectionA,
+        const sql2 = `SELECT STUDENT.name, STUDENT.email, STUDENT.studentID, MILESTONEDOC.answerSectionA,
         MILESTONEDOC.answerSectionB, MILESTONEDOC.answerSectionC, MILESTONEDOC.answerSectionD, MILESTONEDOC.answerSectionE, 
         MILESTONEDOC.answerSectionF, MILESTONEDOC.answerSectionG FROM STUDENT 
         JOIN MILESTONE ON STUDENT.studentID = MILESTONE.studentID
@@ -520,7 +516,7 @@ app.get('/getSSMilestone/:milestoneID', (req, res) => {
                 sectionB: studentrow.answerSectionB, sectionC: studentrow.answerSectionC, sectionD: studentrow.answerSectionD, sectionE: 
                 studentrow.answerSectionE, sectionF: studentrow.answerSectionF, sectionG: studentrow.answerSectionG};
             //get the supervisor details: name, email, supervisorID, doc answers
-            const sql3 = `SELECT SUPERVISOR.name, SUPERVISOR.email, MILESTONEDOC.answerSectionA,
+            const sql3 = `SELECT SUPERVISOR.name, SUPERVISOR.email, SUPERVISOR.supervisorID, MILESTONEDOC.answerSectionA,
             MILESTONEDOC.answerSectionB, MILESTONEDOC.answerSectionC, MILESTONEDOC.answerSectionD, MILESTONEDOC.answerSectionE, 
             MILESTONEDOC.answerSectionF, MILESTONEDOC.answerSectionG FROM SUPERVISOR 
             JOIN MILESTONE ON SUPERVISOR.supervisorID = MILESTONE.supervisorID
@@ -650,6 +646,26 @@ app.get('/getAllStudents', (req, res) => {
             return res.status(500).json({ error: 'Error fetching all students: ' + err.message });
         }
         res.status(200).json(rows);
+    });
+});
+
+//Get all completed milestones doc for a student 
+app.get('/getStudentMilestones/:studentID', (req, res) => {
+    const { studentID } = req.params;
+    const sql = `
+        SELECT MILESTONE.milestoneID, MILESTONE.milestoneAchievement FROM MILESTONE
+        JOIN PLANIMPROVEMENT ON MILESTONE.milestoneID = PLANIMPROVEMENT.milestoneID
+        WHERE PLANIMPROVEMENT.planStatus = 1 AND MILESTONE.studentID = ? ORDER BY MILESTONE.milestoneAchievement
+        `;
+    db.all(sql, [studentID], (err, rows) => {
+        if (err) {
+            console.error('Error fetching milestones:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestones: ' + err.message });
+        }
+        else if (rows.length === 0) {
+            console.log('No milestones found');
+        }
+        res.json(rows);
     });
 });
 

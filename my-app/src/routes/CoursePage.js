@@ -26,9 +26,9 @@ const CoursePage = () => {
                       <Link to={`/Logbook/${studentID}`} className="btn btn-outline-primary">
                         Manage Logbook
                       </Link>
-                      <button className="btn btn-outline-primary" type="button">
-                        Upload Report
-                      </button>
+                      <Link to={`/MilestoneStudent/${studentID}`} className="btn btn-outline-primary">
+                        View Milestone Documents
+                      </Link>
                       <button className="btn btn-outline-primary" type="button">
                         Upload Manual Logbook
                       </button>
