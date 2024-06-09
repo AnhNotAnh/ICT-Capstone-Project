@@ -30,9 +30,6 @@ const CoursePage = () => {
                         View Milestone Documents
                       </Link>
                       <button className="btn btn-outline-primary" type="button">
-                        Upload Manual Logbook
-                      </button>
-                      <button className="btn btn-outline-primary" type="button">
                         View Summary
                       </button>
                     </div>

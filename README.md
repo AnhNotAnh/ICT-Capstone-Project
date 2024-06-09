@@ -30,7 +30,7 @@ The project goal is to allow the cardiac sonography students to digitally log th
 
 3. **Create table for database**
     Install sqlite3 extension for your IDE so that we can run database inside IDE
-    Run sql.sql for table creation
+    Run sql.sql for table creation if needed
     
 
 ## Usage
