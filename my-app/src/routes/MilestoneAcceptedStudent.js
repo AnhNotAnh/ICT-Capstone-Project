@@ -82,7 +82,7 @@ const MilestoneAcceptedStudent = () => {
                     <tbody>
                             <tr>
                                 <td>
-                                {uncompletedMilestone.milestoneAchievement === 0 ? "No milestone document in process" 
+                                {uncompletedMilestone.milestoneAchievement === 0 ? "No milestone document need to be completed" 
                                 : uncompletedMilestone.milestoneAchievement}</td>
                                 <td>
                                     {uncompletedMilestone.milestoneAchievement === 0 ? "" :
