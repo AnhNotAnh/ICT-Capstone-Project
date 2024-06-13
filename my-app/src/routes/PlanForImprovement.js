@@ -203,9 +203,9 @@ const PlanForImprovement = () => {
         // const emailParams = {
         // from_name: studentObj.name,
         // from_email: studentObj.email,
-        // to_email: supervisorObj.email,
-        // to_name: supervisorObj.name,
-        // message: 'Your student has completed plan for improvement, come to Milestone Summary to review !'
+        // to_email: staff@unisa.edu.au,
+        // to_name: UniSA staff,
+        // message: 'Your student has completed milestone, come to website to double check !'
         // }
         // emailjs.send(serviceID, templateID, emailParams, publicKey)
         // .then(response => {
