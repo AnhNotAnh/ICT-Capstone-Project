@@ -631,7 +631,11 @@ app.get('/checkStudentPlan/:studentID', (req, res) => {
             console.error('Error fetching milestones:', err.message);
             return res.status(500).json({ error: 'Error fetching milestones: ' + err.message });
         }
-        res.json(row);
+        else if (!row) {
+            res.json({ milestoneID: 0});
+        }
+        else
+        {res.json({ milestoneID : row.milestoneID});}
     });
 });
 
@@ -669,6 +673,29 @@ app.get('/getStudentMilestones/:studentID', (req, res) => {
     });
 });
 
+
+//Check if the milestone is finalised. 
+app.get('/checkMilestoneCompleted/:studentID/:milestoneAchievement', (req, res) => {
+    const { studentID, milestoneAchievement } = req.params;
+    const sql = `
+        SELECT * FROM MILESTONE
+        JOIN PLANIMPROVEMENT ON MILESTONE.milestoneID = PLANIMPROVEMENT.milestoneID
+        WHERE PLANIMPROVEMENT.planStatus = 1 AND MILESTONE.studentID = ? AND MILESTONE.milestoneAchievement = ? ORDER BY MILESTONE.milestoneAchievement
+        `;
+    db.get(sql, [studentID, milestoneAchievement], (err, row) => {
+        if (err) {
+            console.error('Error fetching milestones:', err.message);
+            return res.status(500).json({ error: 'Error fetching milestones: ' + err.message });
+        }
+        else if (!row) {
+            console.log('No completed milestones found');
+            res.json({ verification: false });
+        }
+        else {
+            res.json({ verification: true });
+        }
+    });
+});
 
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {

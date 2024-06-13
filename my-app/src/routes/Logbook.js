@@ -16,6 +16,7 @@ function Logbook() {
     const remainder = scanNumber % 5;
     const [isDocSubmitted, setIsDocSubmitted] = useState(false);
     const [milestoneID, setMilestoneID] = useState(0);
+    const [isDocFullyCompleted, setDocCompleted] = useState(false);
 
     //Could be removed as logbook ID now is auto increment
     useEffect(() => {
@@ -37,6 +38,7 @@ function Logbook() {
         });
     }, []);
 
+    //get all student's logbook
     useEffect(() => {
     fetch(`http://localhost:8081/Logbook/${studentID}`)
         .then((response) => {
@@ -57,6 +59,7 @@ function Logbook() {
         });
     }, [studentID]);
 
+    //Sort logbook by date
     useEffect(() => {
     const sortedData = [...logbook1].sort((a, b) => new Date(a.date) - new Date(b.date));
     setLogbook(sortedData);
@@ -97,11 +100,32 @@ function Logbook() {
         })
         .then((data) => {
             setMilestoneID(data.milestoneID);
+            console.log("The milestone that fetched is : " + data.milestoneID);
         })
         .catch((err) => {
             console.error(err.message);
         });
     }, [studentID]);
+
+    //Check if student milestone document of current milestone is fully completed, this prevent student to add more logbook
+    useEffect(() => {
+        fetch(`http://localhost:8081/checkMilestoneCompleted/${studentID}/${scanNumber}`)
+        .then((res) => {
+            if (!res.ok) {
+                throw new Error(
+                    `Failed to check if plan page is ready for: ${studentID}`
+                );
+            }
+            return res.json();
+        })
+        .then((data) => {
+            setDocCompleted(data.verification);
+        })
+        .catch((err) => {
+            console.error(err.message);
+        });
+    }, [studentID, scanNumber]);
+
 
     const handleSubmit = async (event) => { 
     event.preventDefault();
@@ -309,16 +333,21 @@ function Logbook() {
                     </select>
                 </div>
                 <div className="col-2">
-                <label htmlFor="addLogbook" className="form-label">
+                    <label htmlFor="addLogbook" className="form-label">
+                        Confirm
+                    </label>
+                    {(remainder === 0 && scanNumber !== 0 && isDocFullyCompleted !== true ) ?
+                    <button type="submit" className="btn btn-primary d-grid gap-2 col-8 mx-auto" id="addLogbook" disabled>
+                        Add
+                    </button>
+                    : 
+                    <button type="submit" className="btn btn-primary d-grid gap-2 col-8 mx-auto" id="addLogbook">
+                        Add
+                    </button>}
+                    {/* <label htmlFor="addLogbook" className="form-label">
                     Confirm
-                </label>
-                <button
-                    type="submit"
-                    className="btn btn-primary d-grid gap-2 col-8 mx-auto"
-                    id="addLogbook"
-                >
-                    Add
-                </button>
+                    </label>
+                    <button type="submit" className="btn btn-primary d-grid gap-2 col-8 mx-auto" id="addLogbook">Add</button> */}
                 </div>
             </div>
         </form>
