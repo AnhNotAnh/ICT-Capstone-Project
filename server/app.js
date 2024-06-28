@@ -697,6 +697,22 @@ app.get('/checkMilestoneCompleted/:studentID/:milestoneAchievement', (req, res) 
     });
 });
 
+//Get each pathology and its count for a student
+app.get('/PathologySummary/:studentID', (req, res) => {
+    const sql = "SELECT pathology, COUNT(logbookID) AS count FROM LOGBOOK WHERE studentID = ? GROUP BY pathology";
+    db.all(sql, [req.params.studentID], (err, results) => {
+        if (err) {
+            console.error(err.message);
+            // Send a 500 Internal Server Error response if there's a database error
+            res.status(500).send('Internal server error');
+        } else {
+            // Send the results back with a 200 OK status code
+            res.status(200).json(results);
+            }
+        }
+    )
+});
+
 const PORT = process.env.PORT ?? 8081; 
 app.listen(PORT, () => {
     console.log("Server running on port 8081, listening for requests..");

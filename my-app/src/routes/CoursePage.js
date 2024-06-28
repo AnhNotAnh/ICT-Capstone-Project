@@ -29,9 +29,9 @@ const CoursePage = () => {
                       <Link to={`/MilestoneStudent/${studentID}`} className="btn btn-outline-primary">
                         View Milestone Documents
                       </Link>
-                      <button className="btn btn-outline-primary" type="button">
+                      <Link to={`/LogbookSummary/${studentID}`} className="btn btn-outline-primary">
                         View Summary
-                      </button>
+                      </Link>
                     </div>
                   </td>
                 </tr>
