@@ -11,7 +11,7 @@ function Logbook() {
     const [pathology, setPathology] = useState("");
     const [logbook, setLogbook] = useState([]);
     const [scanNumber, setScanNumber] = useState(0);
-    //const [nextLogbookID, setNextLogbookID] = useState(0);
+    const [deleteLogbookID, setLogbookID] = useState(0);
     const [logbook1, setLogbook1] = useState([]);
     const remainder = scanNumber % 5;
     const [isDocSubmitted, setIsDocSubmitted] = useState(false);
@@ -126,7 +126,6 @@ function Logbook() {
         });
     }, [studentID, scanNumber]);
 
-
     const handleSubmit = async (event) => { 
     event.preventDefault();
     const logbookData = {
@@ -147,7 +146,7 @@ function Logbook() {
             body: JSON.stringify(logbookData),
         });
         if (!response.ok) {
-            throw new Error(`Failed to create account`);
+            throw new Error(`Failed to insert a scan`);
         }
         const responseData = await response.json();
         const newLogbookID = responseData.logbookID;
@@ -165,6 +164,28 @@ function Logbook() {
     } catch (error) {
         console.error(error);
     }
+    };
+
+    //Delete logbook
+    const handleDelete = async (logbookID) => {
+        try {
+        const response = await fetch(`http://localhost:8081/deleteScan/${logbookID}`, {
+            method: 'DELETE',
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+            },
+        });
+        if(!response.ok) {
+            throw new Error(`Failed to delete scan`);
+        }
+        const responseData = await response.json();
+        console.log(responseData.message);
+        setLogbook1(currentLogbook => currentLogbook.filter(scan => scan.logbookID !== logbookID));
+        setScanNumber(scanNumber - 1);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     return (
@@ -362,6 +383,7 @@ function Logbook() {
                     <th scope="col">Full supervision</th>
                     <th scope="col">Partial supervision</th>
                     <th scope="col">Pathology</th>
+                    <th scope="col">Edit</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -377,6 +399,11 @@ function Logbook() {
                         <td>{scan.supervisionStatus === "Full" && "Yes"}</td>
                         <td>{scan.supervisionStatus === "Partial" && "Yes"}</td>
                         <td>{scan.pathology}</td>
+                        <td>
+                            <button type="submit" className="btn btn-danger" id="deleteLogbook" onClick={() => handleDelete(scan.logbookID)}>
+                                Delete
+                            </button>
+                        </td>
                       </tr>
                     );
                 })}
