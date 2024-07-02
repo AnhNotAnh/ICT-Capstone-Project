@@ -704,7 +704,7 @@ app.get('/checkMilestoneCompleted/:studentID/:milestoneAchievement', (req, res) 
             return res.status(500).json({ error: 'Error fetching milestones: ' + err.message });
         }
         else if (!row) {
-            console.log('No completed milestones found');
+            //console.log('No completed milestones found');
             res.json({ verification: false });
         }
         else {

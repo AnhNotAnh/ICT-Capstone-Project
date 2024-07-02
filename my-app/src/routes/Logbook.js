@@ -11,32 +11,11 @@ function Logbook() {
     const [pathology, setPathology] = useState("");
     const [logbook, setLogbook] = useState([]);
     const [scanNumber, setScanNumber] = useState(0);
-    const [deleteLogbookID, setLogbookID] = useState(0);
     const [logbook1, setLogbook1] = useState([]);
     const remainder = scanNumber % 5;
     const [isDocSubmitted, setIsDocSubmitted] = useState(false);
     const [milestoneID, setMilestoneID] = useState(0);
     const [isDocFullyCompleted, setDocCompleted] = useState(false);
-
-    //Could be removed as logbook ID now is auto increment
-    // useEffect(() => {
-    // fetch(`http://localhost:8081/Logbook`)
-    //     .then((response) => {
-    //     if (!response.ok) {
-    //         throw new Error(
-    //         `Failed to fetch logbook`
-    //         );
-    //     }
-    //     return response.json();
-    //     })
-    //     .then((data) => {
-    //     console.log(data);
-    //     setNextLogbookID(data.length + 1);
-    //     })
-    //     .catch((err) => {
-    //     console.error(err.message);
-    //     });
-    // }, []);
 
     //get all student's logbook
     useEffect(() => {
@@ -129,7 +108,6 @@ function Logbook() {
     const handleSubmit = async (event) => { 
     event.preventDefault();
     const logbookData = {
-    //logbookID: nextLogbookID,
     studentID: studentID,
     date: date,
     supervisionStatus: supervisionStatus,
@@ -159,7 +137,6 @@ function Logbook() {
         setDate("");
         setSupervisionStatus("full");
         setPathology("");
-        //setNextLogbookID(nextLogbookID + 1);
         setScanNumber(scanNumber + 1);
     } catch (error) {
         console.error(error);
@@ -240,20 +217,6 @@ function Logbook() {
                     <option value="Partial">Partial supervision</option>
                 </select>
                 </div>
-                {/* <div className="col-3">
-                        <label htmlFor="pathology" className="form-label">
-                        Pathology
-                        </label>
-                        <input
-                        type="text"
-                        className="form-control"
-                        id="pathology"
-                        required
-                        placeholder="Pathology"
-                        value={pathology}
-                        onChange={(e) => setPathology(e.target.value)}
-                        />
-                    </div> */}
                 <div className="col-4">
                     <label htmlFor="pathology" className="form-label">Pathology</label>
                     <select value={pathology} className="form-select"
@@ -367,10 +330,6 @@ function Logbook() {
                     <button type="submit" className="btn btn-primary d-grid gap-2 col-8 mx-auto" id="addLogbook">
                         Add
                     </button>}
-                    {/* <label htmlFor="addLogbook" className="form-label">
-                    Confirm
-                    </label>
-                    <button type="submit" className="btn btn-primary d-grid gap-2 col-8 mx-auto" id="addLogbook">Add</button> */}
                 </div>
             </div>
         </form>
@@ -391,9 +350,7 @@ function Logbook() {
                     const date = new Date(scan.date);
                     const formattedDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
                     return (
-                      // <tr key={scan.id}>
-                      <tr key={scan.logbookID}>
-                        {/* <th scope="row">{scan.number}</th> */}
+                    <tr key={scan.logbookID}>
                         <th scope="row">{index + 1}</th>
                         <td>{formattedDate}</td>
                         <td>{scan.supervisionStatus === "Full" && "Yes"}</td>
@@ -404,7 +361,7 @@ function Logbook() {
                                 Delete
                             </button>
                         </td>
-                      </tr>
+                    </tr>
                     );
                 })}
                 </tbody>
