@@ -37,9 +37,10 @@
 --     PRIMARY KEY(accountID ASC)
 -- );
 
+-- DROP TABLE LOGBOOK;
 -- CREATE TABLE LOGBOOK
 -- (
---     logbookID INT, // change to INTEGER for auto increment
+--     logbookID INTEGER, 
 --     studentID INT NOT NULL,
 --     date VARCHAR(255) NOT NULL,
 --     supervisionStatus VARCHAR(255) NOT NULL,
@@ -49,7 +50,7 @@
 -- );
 
 SELECT * FROM LOGBOOK;
--- DROP TABLE LOGBOOK;
+
 
 -- INSERT INTO ACCOUNT ( username, password, role)
 -- VALUES ( 'staff@unisa.edu.au', 'staff', 'STAFF');

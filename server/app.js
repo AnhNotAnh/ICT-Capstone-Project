@@ -36,13 +36,16 @@ app.get('/Logbook/:studentID', (req, res) => {
     })
 });
 
+// Inserting logbook data into the database
 app.post('/Logbook/studentID', (req, res) => {
-    const sql = "INSERT INTO LOGBOOK (logbookID, studentID, date, supervisionStatus, pathology) VALUES (?, ?, ?, ?, ?)";
-    db.run(sql, [req.body.logbookID, req.body.studentID, req.body.date, req.body.supervisionStatus, req.body.pathology], (err) => {
+    const sql = "INSERT INTO LOGBOOK (studentID, date, supervisionStatus, pathology) VALUES (?, ?, ?, ?)";
+    db.run(sql, [req.body.studentID, req.body.date, req.body.supervisionStatus, req.body.pathology], function(err) {
         if (err) {
             console.error(err.message);
+            res.status(500).json({ message: "Error in inserting logbook entry" });
         } else {
-            res.json({ message: "success" });
+            // Use 'this.lastID' to access the auto-incremented ID of the last inserted row
+            res.json({ message: "success", logbookID: this.lastID });
         }
     });
 });

@@ -11,7 +11,7 @@ function Logbook() {
     const [pathology, setPathology] = useState("");
     const [logbook, setLogbook] = useState([]);
     const [scanNumber, setScanNumber] = useState(0);
-    const [nextLogbookID, setNextLogbookID] = useState(0);
+    //const [nextLogbookID, setNextLogbookID] = useState(0);
     const [logbook1, setLogbook1] = useState([]);
     const remainder = scanNumber % 5;
     const [isDocSubmitted, setIsDocSubmitted] = useState(false);
@@ -19,24 +19,24 @@ function Logbook() {
     const [isDocFullyCompleted, setDocCompleted] = useState(false);
 
     //Could be removed as logbook ID now is auto increment
-    useEffect(() => {
-    fetch(`http://localhost:8081/Logbook`)
-        .then((response) => {
-        if (!response.ok) {
-            throw new Error(
-            `Failed to fetch logbook`
-            );
-        }
-        return response.json();
-        })
-        .then((data) => {
-        console.log(data);
-        setNextLogbookID(data.length + 1);
-        })
-        .catch((err) => {
-        console.error(err.message);
-        });
-    }, []);
+    // useEffect(() => {
+    // fetch(`http://localhost:8081/Logbook`)
+    //     .then((response) => {
+    //     if (!response.ok) {
+    //         throw new Error(
+    //         `Failed to fetch logbook`
+    //         );
+    //     }
+    //     return response.json();
+    //     })
+    //     .then((data) => {
+    //     console.log(data);
+    //     setNextLogbookID(data.length + 1);
+    //     })
+    //     .catch((err) => {
+    //     console.error(err.message);
+    //     });
+    // }, []);
 
     //get all student's logbook
     useEffect(() => {
@@ -100,7 +100,7 @@ function Logbook() {
         })
         .then((data) => {
             setMilestoneID(data.milestoneID);
-            console.log("The milestone that fetched is : " + data.milestoneID);
+            console.log("The milestoneID that fetched for student plant is : " + data.milestoneID);
         })
         .catch((err) => {
             console.error(err.message);
@@ -130,7 +130,7 @@ function Logbook() {
     const handleSubmit = async (event) => { 
     event.preventDefault();
     const logbookData = {
-    logbookID: nextLogbookID,
+    //logbookID: nextLogbookID,
     studentID: studentID,
     date: date,
     supervisionStatus: supervisionStatus,
@@ -149,17 +149,19 @@ function Logbook() {
         if (!response.ok) {
             throw new Error(`Failed to create account`);
         }
+        const responseData = await response.json();
+        const newLogbookID = responseData.logbookID;
+        console.log("New logbook ID: " + newLogbookID + " and message is: " + responseData.message);
         setLogbook1(currentLogbook => {
             return [...currentLogbook,
-            {logbookID: logbookData.logbookID, studentID : studentID , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
+            {logbookID: newLogbookID, studentID : studentID , date: date, supervisionStatus: supervisionStatus, pathology: pathology },
             ];
         })
         setDate("");
         setSupervisionStatus("full");
         setPathology("");
-        setNextLogbookID(nextLogbookID + 1);
+        //setNextLogbookID(nextLogbookID + 1);
         setScanNumber(scanNumber + 1);
-        return await response.json();
     } catch (error) {
         console.error(error);
     }
