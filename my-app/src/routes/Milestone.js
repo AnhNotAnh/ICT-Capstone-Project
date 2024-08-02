@@ -110,6 +110,7 @@ const Milestone = () => {
         }
 
         //EmailJS Format to send email to supervisor
+        //Replace these 3 keys with 3 keys (including serviceID, templateID, publicKey) that you have when you register an EmailJS service
         const serviceID = process.env.REACT_APP_SERVICE_ID;
         const templateID = process.env.REACT_APP_TEMPLATE_ID;
         const publicKey = process.env.REACT_APP_PUBLISH_KEY;
@@ -117,8 +118,7 @@ const Milestone = () => {
         const emailParams = {
         from_name: name,
         from_email: email,
-        //to_email: supervisorEmail, real email
-        to_email: 'quocanh01082020@gmail.com',
+        to_email: supervisorEmail, //an chosen email from list of supervisor is the email that notification will be sent to. 
         to_name: supervisorName,
         message: 'Your student have finished milestone document, please come to the Logbook website to review and sign off !'
         }

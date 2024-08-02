@@ -4,8 +4,7 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Home, About, SignIn, Register, SignInAsStaff,Student_Home,Staff_Home, Supervisor_Details, CoursePage, Logbook, Current_Supervisor,Supervisor_Home, PendingRequests, AcceptedStudents, SupervisorMilestone, PlanForImprovement, MilestoneSummary, MilestoneAcceptedStudent, MilestoneStudent, LogbookSummary} from './routes';
-import Milestone from './components/Milestone';
+import { Home, About, SignIn, Register, SignInAsStaff,Student_Home,Staff_Home, Supervisor_Details, CoursePage, Logbook, Current_Supervisor,Supervisor_Home, PendingRequests, AcceptedStudents, SupervisorMilestone, PlanForImprovement, MilestoneSummary, MilestoneAcceptedStudent, MilestoneStudent, LogbookSummary, Milestone} from './routes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
